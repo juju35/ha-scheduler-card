@@ -1,12 +1,14 @@
 // Shared by the screenshot scripts: theme variables, <ha-card> / <ha-icon> / <ha-switch> stand-ins, a fixed clock
 // and the render loop.
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import * as mdi from "@mdi/js";
 import { chromium } from "playwright";
 import { mockHass, NOW } from "./mock.mjs";
 
 export const root = fileURLToPath(new URL("../..", import.meta.url));
+// The captures' folder (not in git until the first capture is committed).
+mkdirSync(`${root}screenshots`, { recursive: true });
 // Read on first use: the tests import writeIfChanged without a built bundle.
 let bundle;
 const cardJs = () => (bundle ??= readFileSync(`${root}dist/scheduler-card.js`, "utf8"));
