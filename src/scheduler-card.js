@@ -1995,6 +1995,13 @@ const plural = (hass, config, key, n) => {
   return t(hass, config, k, { n });
 };
 
+// The whole width of an element's text in its own font, an ellipsised one included.
+const textWidth = (el) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return range.getBoundingClientRect().width;
+};
+
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
 const num = (v) => (v === null || v === undefined || v === "" || !Number.isFinite(Number(v)) ? null : Number(v));
 const cap = (s) => {
@@ -2672,25 +2679,25 @@ const STYLE = `
   .titles { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; }
   .titles > * { flex: 1 0 100%; min-width: 0; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  /* The title, then its status pill 8 px after it, centred on it: the title ellipsises first but keeps about 4
-     characters (48 px), the pill keeps its whole label when it can. Its colour is the header icon's. */
+  /* The title, then its status pill 8 px after it, centred on it, while the whole title and the pill's whole label fit
+     on that row; otherwise (measured by the card, see _fitPill) the title takes its whole line and the pill goes under
+     the statistics (.below, kept to one line), its dot alone (.pill-dot) when even then the text would run into the
+     timeline strip. Its colour is the header icon's. */
   .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .trow .name { flex: 0 1000 auto; min-width: 48px; }
-  /* A long label (Greek, Hungarian…) on a short line: once the title is down to its 4 characters, the pill ellipsises. */
-  .chip.status { flex: 0 1 auto; --c: var(--sc-accent); }
+  .trow .name { flex: 0 1 auto; min-width: 0; }
+  .chip.status { flex: none; --c: var(--sc-accent); }
   .chip.status.st-idle { --c: #7d8794; } .chip.status.st-warn { --c: var(--sc-warn); }
   .night .chip.status.st-active { --c: #7fd6d8; } .night .chip.status.st-idle { --c: #a3adba; }
   .banner .chip { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
   .banner.night .chip { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
   .banner .chip.status .dot { width: 7px; height: 7px; }
-  /* A narrow card: the title takes its whole line, the pill goes under the statistics; under 200 px only its dot
-     shows, on the title line (its text stays its tooltip and accessible name). */
-  @container (min-width: 201px) and (max-width: 260px) {
-    .trow { display: contents; }
-    .trow .name { flex: 1 0 100%; }
-    .titles > .stats { order: 1; max-height: 16px; }
-    .titles .chip.status { order: 2; margin-top: 2px; }
-  }
+  .titles.below .trow { display: contents; }
+  .titles.below .trow .name { flex: 1 0 100%; }
+  .titles.below > .stats { order: 1; max-height: 16px; }
+  .titles.below .chip.status { order: 2; margin-top: 2px; max-width: 100%; }
+  .titles.pill-dot .chip.status, .mhd.pill-dot .chip.status { padding: 5px; }
+  .titles.pill-dot .chip.status .txt, .mhd.pill-dot .chip.status .txt { display: none; }
+  /* Under 200 px only its dot shows (its text stays its tooltip and accessible name). */
   @container (max-width: 200px) { .chip.status { padding: 5px; } .chip.status .txt { display: none; } }
   /* The statistics on two lines at most: a part that does not fit goes to a third line, clipped away; the "·" that
      starts a line sits in the negative margin, clipped too. */
@@ -2854,6 +2861,14 @@ const MINI_STYLE = `
   .mhd { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .mhd .chip.status { flex: 0 0 auto; }
   .mhd .st { margin-left: auto; }
+  /* The whole title and the pill's whole label do not fit on one line (measured by the card, see _fitPill): the title
+     and the detail button keep the first line, the pill goes on a line of its own under the next action. */
+  .mhd.below { flex-wrap: wrap; row-gap: 2px; }
+  .mhd.below .title { flex: 1 1 0; }
+  .mhd.below .zoom { order: 1; }
+  .mhd.below .st { order: 2; flex: 1 0 100%; margin: 0; }
+  .mhd.below::after { content: ""; order: 3; flex: 1 0 100%; }
+  .mhd.below .chip.status { order: 4; max-width: 100%; }
   /* Narrow: the next action goes under the title and its pill. */
   @container (max-width: 260px) { .mhd { flex-wrap: wrap; row-gap: 2px; } .mhd .title { flex: 1 1 0; } .mhd .st { order: 3; flex: 1 0 100%; margin: 0; } }
   .title { flex: 0 1 auto; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
@@ -2976,12 +2991,26 @@ class SchedulerCard extends HTMLElement {
     clearInterval(this._timer);
     this._timer = setInterval(() => this._hass && this._config && (this.hass = this._hass), 30000);
     this._update();
+    // A new width (or the web font loaded): the status pill is fitted again, in the next frame.
+    if (typeof ResizeObserver === "function") {
+      this._resize ??= new ResizeObserver((entries) => {
+        const w = Math.round(entries.at(-1).contentRect.width);
+        if (w === this._fitWidth) return;
+        this._fitWidth = w;
+        cancelAnimationFrame(this._fitFrame);
+        this._fitFrame = requestAnimationFrame(() => this._fitPill());
+      });
+      this._resize.observe(this);
+    }
+    document.fonts?.ready?.then(() => this._fitPill());
   }
 
   disconnectedCallback() {
     this._outsideWatch?.off();
     window.removeEventListener("keydown", this._onKey);
     clearInterval(this._timer);
+    this._resize?.disconnect();
+    this._fitWidth = null;
     // Left (another view, a conditional card hidden): the popup closes without anything else, the weekly grid
     // folds back to today's timeline.
     this._edit = null;
@@ -3030,6 +3059,7 @@ class SchedulerCard extends HTMLElement {
       this._html = html;
       morph(this.shadowRoot, html);
     }
+    this._fitPill();
     // A switch keeps the state of the entity, even after a click the service did not follow.
     // Only an upgraded switch: a property set before would shadow its own setter.
     const Switch = customElements.get("ha-switch");
@@ -3168,6 +3198,32 @@ class SchedulerCard extends HTMLElement {
   _status(models, now) {
     if (!models.length) return "warn";
     return models.some((m) => this._runningNow(m, now)) ? "active" : "idle";
+  }
+
+  // The status pill stays right after the title only while the whole title and the pill's whole label fit on that
+  // row; otherwise it takes a line of its own under the statistics or the next action (.below), and when even then
+  // the line is too narrow for it or (on the banner) the text would run into the timeline strip, it keeps its dot
+  // alone (.pill-dot). Measured in the real fonts, so that every language and title length gets its own answer.
+  _fitPill() {
+    for (const t of this.shadowRoot?.querySelectorAll?.(".titles, .mhd") || []) {
+      const pill = t.querySelector(".chip.status");
+      if (!pill?.getBoundingClientRect) continue;
+      t.classList.remove("below", "pill-dot");
+      const row = pill.parentElement;
+      const name = row.querySelector(":scope > .name, :scope > .title");
+      const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+      const shown = name && getComputedStyle(name).display !== "none";
+      const natural = pill.getBoundingClientRect().width;
+      // The banner's row holds the title and the pill alone; the classic mini card's line shares the title's room.
+      const have = row.classList.contains("trow") ? row.getBoundingClientRect().width : (shown ? name.getBoundingClientRect().width + gap : 0) + natural;
+      if ((shown ? textWidth(name) + gap : 0) + natural <= have) continue;
+      t.classList.add("below");
+      const r = t.getBoundingClientRect();
+      const banner = t.closest(".banner");
+      const box = banner?.getBoundingClientRect();
+      const floor = banner?.querySelector(".strip")?.getBoundingClientRect().top ?? box?.bottom;
+      if ((box && (r.bottom > floor + 0.5 || r.top < box.top - 0.5)) || natural > r.width + 0.5) t.classList.add("pill-dot");
+    }
   }
 
   // The status pill, in the header icon's colour: a schedule running now, idle, nothing to show.
