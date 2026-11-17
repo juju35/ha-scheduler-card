@@ -2956,8 +2956,8 @@ class SchedulerCard extends HTMLElement {
     return this._list;
   }
 
-  // Night illustration: forced by illustration_theme, else the sun below the horizon (sun.sun), else Home Assistant's
-  // dark mode, else the hour. Evening: the last two hours before sunset, in automatic mode.
+  // Night illustration: forced by illustration_theme, else Home Assistant's dark mode or the sun below the horizon
+  // (sun.sun), else the hour when sun.sun is missing. Evening: the last two hours before sunset, in automatic mode.
   _sky(now) {
     const sun = sunTimes(this._hass);
     const sky = skyAt(now.min, sun);
@@ -2966,9 +2966,8 @@ class SchedulerCard extends HTMLElement {
     let night = sky.night;
     if (mode === "night") night = true;
     else if (mode === "day") night = false;
-    else if (state === "below_horizon") night = true;
+    else if (this._hass?.themes?.darkMode || state === "below_horizon") night = true;
     else if (state === "above_horizon") night = false;
-    else if (this._hass?.themes?.darkMode) night = true;
     const evening = !night && mode !== "day" && now.min >= sun.set - 120 && now.min < sun.set + 60;
     return { night, evening };
   }

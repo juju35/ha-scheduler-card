@@ -441,6 +441,11 @@ test("the illustrated header: today's timeline, the slot running now, the status
   delete dark.states["sun.sun"];
   dark.themes = { darkMode: true };
   assert.match(card(sc.SchedulerCard, {}, dark)._render(), /class="banner night"/);
+  // The dark mode makes it night while the sun is up too, unless forced to day.
+  const darkDay = hassWith();
+  darkDay.themes = { darkMode: true };
+  assert.match(card(sc.SchedulerCard, {}, darkDay)._render(), /class="banner night"/);
+  assert.match(card(sc.SchedulerCard, { illustration_theme: "day" }, darkDay)._render(), /class="banner"/);
   // The mini card: the same banner, the next action on its sky, the status on its icon.
   const mini = card(sc.SchedulerMiniCard)._render();
   assert.match(mini, /class="mini-card illustrated"[\s\S]*class="banner"[\s\S]*class="badge st-active"/);

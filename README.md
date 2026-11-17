@@ -25,7 +25,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 
 - Two cards: a full **Scheduler Card** and a compact **Scheduler Mini Card**, of type `custom:scheduler-card` and `custom:scheduler-mini-card`
 - The illustration is the header (90 px, on both cards): the title on the sky at the left, and at the right **today's timeline** of up to three schedules (the ones running now first): their icons, their slots as blocks in their colours over 0–24 h, the **slot running now pulsing**, and a red **"now" cursor** that follows the clock; a ruler strip of the day runs along the bottom
-- The sky follows the time of day: **day**, a warmer **evening** in the two hours before sunset, and **night** after sunset (`sun.sun`, else Home Assistant's dark mode)
+- The sky follows the time of day: **day**, a warmer **evening** in the two hours before sunset, and **night** after sunset (`sun.sun`) or with Home Assistant's dark mode
 - The round header icon shows the **status** by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the card's filters
 - **Today's timeline**: enabled / disabled chips, then one tile per schedule with
   - the icon of the entity it acts on, coloured only while one of its slots is running, and a green (enabled) or grey (disabled) dot
@@ -138,7 +138,7 @@ zoom: true
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
 | `editable` | both | `true` | The **New schedule** button, the slot editor and the clickable grid; `false` for a read-only card (the switches still work) |
 | `illustration` | both | `true` | The illustrated header with today's timeline; `false` for a classic header with a round icon |
-| `illustration_theme` | both | `auto` | `auto` (night when `sun.sun` is below the horizon, else with Home Assistant's dark mode; evening in the two hours before sunset), `day` or `night` |
+| `illustration_theme` | both | `auto` | `auto` (night when `sun.sun` is below the horizon or with Home Assistant's dark mode; evening in the two hours before sunset), `day` or `night` |
 | `next_actions` | mini | `3` | Number of upcoming actions listed (1 to 10) |
 | `zoom` | mini | `true` | Detail button at the top right: unfolds the full card and back (`false` removes it). The full card's options above apply to the unfolded view and are also set in the mini card's visual editor |
 | `language` | both | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
