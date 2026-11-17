@@ -7,14 +7,14 @@
  * attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `next_slot`, `next_trigger`, `tags`),
  * enabled and disabled with `switch.turn_on` / `switch.turn_off`, edited with the `scheduler.add`, `scheduler.edit`
  * and `scheduler.remove` services from the full schedule returned by the `scheduler` and `scheduler/item` websocket
- * commands. Everything is drawn under an illustrated banner whose sun follows the time of day.
+ * commands. Everything is drawn under an illustrated banner showing today's timeline and a "now" cursor.
  */
 
 const VERSION = "__VERSION__";
 
 // mdi icon paths drawn by the card itself (the schedules' own icons come from their entities, through <ha-icon>).
 const ICONS = {
-  // mdi:calendar-clock: the Scheduler component's icon, the header badge.
+  // mdi:calendar-clock: the Scheduler component's icon, the header badge and a schedule without an icon of its own.
   calendarClock:
     "M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z",
   // mdi:arrow-expand and mdi:arrow-collapse: the mini card's detail button.
@@ -33,7 +33,7 @@ const STRINGS = {
     enabled_other: "{n} enabled",
     disabled_one: "{n} disabled",
     disabled_other: "{n} disabled",
-    now_hint: "White line = now",
+    now_hint: "Red line = now",
     next_time: "Next {time}",
     new_schedule: "New schedule",
     state_disabled: "Disabled",
@@ -97,10 +97,13 @@ const STRINGS = {
     err_save: "Could not save: {error}",
     zoom_in: "Show the full card",
     zoom_out: "Back to the compact view",
+    status_active: "Running",
+    status_idle: "Idle",
+    status_warn: "No schedule",
     title: "Title",
     illustration: "Illustration",
     illustration_theme: "Illustration theme",
-    theme_auto: "Automatic",
+    theme_auto: "Automatic (sun or dark theme)",
     theme_day: "Day",
     theme_night: "Night",
     show_disabled: "Disabled schedules",
@@ -116,7 +119,7 @@ const STRINGS = {
     enabled_other: "{n} activés",
     disabled_one: "{n} désactivé",
     disabled_other: "{n} désactivés",
-    now_hint: "Trait blanc = maintenant",
+    now_hint: "Trait rouge = maintenant",
     next_time: "Prochain {time}",
     new_schedule: "Nouveau planning",
     state_disabled: "Désactivé",
@@ -180,10 +183,13 @@ const STRINGS = {
     err_save: "Enregistrement impossible : {error}",
     zoom_in: "Afficher la carte complète",
     zoom_out: "Revenir à la vue compacte",
+    status_active: "En cours",
+    status_idle: "Au repos",
+    status_warn: "Aucune planification",
     title: "Titre",
     illustration: "Illustration",
     illustration_theme: "Thème de l'illustration",
-    theme_auto: "Automatique",
+    theme_auto: "Automatique (soleil ou thème sombre)",
     theme_day: "Jour",
     theme_night: "Nuit",
     show_disabled: "Plannings désactivés",
@@ -199,7 +205,7 @@ const STRINGS = {
     enabled_other: "{n} aktiv",
     disabled_one: "{n} deaktiviert",
     disabled_other: "{n} deaktiviert",
-    now_hint: "Weiße Linie = jetzt",
+    now_hint: "Rote Linie = jetzt",
     next_time: "Nächste {time}",
     new_schedule: "Neuer Zeitplan",
     state_disabled: "Deaktiviert",
@@ -263,10 +269,13 @@ const STRINGS = {
     err_save: "Speichern fehlgeschlagen: {error}",
     zoom_in: "Vollständige Karte anzeigen",
     zoom_out: "Zurück zur kompakten Ansicht",
+    status_active: "Läuft",
+    status_idle: "Inaktiv",
+    status_warn: "Kein Zeitplan",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Thema der Illustration",
-    theme_auto: "Automatisch",
+    theme_auto: "Automatisch (Sonne oder dunkles Design)",
     theme_day: "Tag",
     theme_night: "Nacht",
     show_disabled: "Deaktivierte Zeitpläne",
@@ -282,7 +291,7 @@ const STRINGS = {
     enabled_other: "{n} activadas",
     disabled_one: "{n} desactivada",
     disabled_other: "{n} desactivadas",
-    now_hint: "Línea blanca = ahora",
+    now_hint: "Línea roja = ahora",
     next_time: "Próxima {time}",
     new_schedule: "Nueva programación",
     state_disabled: "Desactivada",
@@ -346,10 +355,13 @@ const STRINGS = {
     err_save: "No se ha podido guardar: {error}",
     zoom_in: "Mostrar la tarjeta completa",
     zoom_out: "Volver a la vista compacta",
+    status_active: "En curso",
+    status_idle: "En reposo",
+    status_warn: "Sin programación",
     title: "Título",
     illustration: "Ilustración",
     illustration_theme: "Tema de la ilustración",
-    theme_auto: "Automático",
+    theme_auto: "Automático (sol o tema oscuro)",
     theme_day: "Día",
     theme_night: "Noche",
     show_disabled: "Programaciones desactivadas",
@@ -367,7 +379,7 @@ const STRINGS = {
     disabled_one: "{n} искључен",
     disabled_few: "{n} искључена",
     disabled_other: "{n} искључених",
-    now_hint: "Бела линија = сада",
+    now_hint: "Црвена линија = сада",
     next_time: "Следеће {time}",
     new_schedule: "Нови распоред",
     state_disabled: "Искључен",
@@ -431,10 +443,13 @@ const STRINGS = {
     err_save: "Чување није успело: {error}",
     zoom_in: "Прикажи целу картицу",
     zoom_out: "Назад на компактни приказ",
+    status_active: "У току",
+    status_idle: "Мирује",
+    status_warn: "Нема распореда",
     title: "Наслов",
     illustration: "Илустрација",
     illustration_theme: "Тема илустрације",
-    theme_auto: "Аутоматски",
+    theme_auto: "Аутоматски (сунце или тамна тема)",
     theme_day: "Дан",
     theme_night: "Ноћ",
     show_disabled: "Искључени распореди",
@@ -452,7 +467,7 @@ const STRINGS = {
     disabled_one: "{n} isključen",
     disabled_few: "{n} isključena",
     disabled_other: "{n} isključenih",
-    now_hint: "Bela linija = sada",
+    now_hint: "Crvena linija = sada",
     next_time: "Sledeće {time}",
     new_schedule: "Novi raspored",
     state_disabled: "Isključen",
@@ -516,10 +531,13 @@ const STRINGS = {
     err_save: "Čuvanje nije uspelo: {error}",
     zoom_in: "Prikaži celu karticu",
     zoom_out: "Nazad na kompaktni prikaz",
+    status_active: "U toku",
+    status_idle: "Miruje",
+    status_warn: "Nema rasporeda",
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
-    theme_auto: "Automatski",
+    theme_auto: "Automatski (sunce ili tamna tema)",
     theme_day: "Dan",
     theme_night: "Noć",
     show_disabled: "Isključeni rasporedi",
@@ -535,7 +553,7 @@ const STRINGS = {
     enabled_other: "{n} attive",
     disabled_one: "{n} disattivata",
     disabled_other: "{n} disattivate",
-    now_hint: "Linea bianca = adesso",
+    now_hint: "Linea rossa = adesso",
     next_time: "Prossima {time}",
     new_schedule: "Nuova programmazione",
     state_disabled: "Disattivata",
@@ -599,10 +617,13 @@ const STRINGS = {
     err_save: "Salvataggio non riuscito: {error}",
     zoom_in: "Mostra la scheda completa",
     zoom_out: "Torna alla vista compatta",
+    status_active: "In corso",
+    status_idle: "A riposo",
+    status_warn: "Nessuna pianificazione",
     title: "Titolo",
     illustration: "Illustrazione",
     illustration_theme: "Tema dell'illustrazione",
-    theme_auto: "Automatico",
+    theme_auto: "Automatico (sole o tema scuro)",
     theme_day: "Giorno",
     theme_night: "Notte",
     show_disabled: "Programmazioni disattivate",
@@ -618,7 +639,7 @@ const STRINGS = {
     enabled_other: "{n} actief",
     disabled_one: "{n} uitgeschakeld",
     disabled_other: "{n} uitgeschakeld",
-    now_hint: "Witte lijn = nu",
+    now_hint: "Rode lijn = nu",
     next_time: "Volgende {time}",
     new_schedule: "Nieuw schema",
     state_disabled: "Uitgeschakeld",
@@ -682,10 +703,13 @@ const STRINGS = {
     err_save: "Opslaan mislukt: {error}",
     zoom_in: "Volledige kaart tonen",
     zoom_out: "Terug naar de compacte weergave",
+    status_active: "Actief",
+    status_idle: "Inactief",
+    status_warn: "Geen schema",
     title: "Titel",
     illustration: "Illustratie",
     illustration_theme: "Thema van de illustratie",
-    theme_auto: "Automatisch",
+    theme_auto: "Automatisch (zon of donker thema)",
     theme_day: "Dag",
     theme_night: "Nacht",
     show_disabled: "Uitgeschakelde schema's",
@@ -701,7 +725,7 @@ const STRINGS = {
     enabled_other: "{n} ativos",
     disabled_one: "{n} desativado",
     disabled_other: "{n} desativados",
-    now_hint: "Linha branca = agora",
+    now_hint: "Linha vermelha = agora",
     next_time: "Próximo {time}",
     new_schedule: "Novo agendamento",
     state_disabled: "Desativado",
@@ -765,10 +789,13 @@ const STRINGS = {
     err_save: "Não foi possível guardar: {error}",
     zoom_in: "Mostrar o cartão completo",
     zoom_out: "Voltar à vista compacta",
+    status_active: "Em curso",
+    status_idle: "Inativo",
+    status_warn: "Sem agendamento",
     title: "Título",
     illustration: "Ilustração",
     illustration_theme: "Tema da ilustração",
-    theme_auto: "Automático",
+    theme_auto: "Automático (sol ou tema escuro)",
     theme_day: "Dia",
     theme_night: "Noite",
     show_disabled: "Agendamentos desativados",
@@ -788,7 +815,7 @@ const STRINGS = {
     disabled_few: "{n} wyłączone",
     disabled_many: "{n} wyłączonych",
     disabled_other: "{n} wyłączonego",
-    now_hint: "Biała linia = teraz",
+    now_hint: "Czerwona linia = teraz",
     next_time: "Następne {time}",
     new_schedule: "Nowy harmonogram",
     state_disabled: "Wyłączony",
@@ -852,10 +879,13 @@ const STRINGS = {
     err_save: "Nie udało się zapisać: {error}",
     zoom_in: "Pokaż pełną kartę",
     zoom_out: "Wróć do widoku kompaktowego",
+    status_active: "W toku",
+    status_idle: "Bezczynny",
+    status_warn: "Brak harmonogramu",
     title: "Tytuł",
     illustration: "Ilustracja",
     illustration_theme: "Motyw ilustracji",
-    theme_auto: "Automatycznie",
+    theme_auto: "Automatycznie (słońce lub ciemny motyw)",
     theme_day: "Dzień",
     theme_night: "Noc",
     show_disabled: "Wyłączone harmonogramy",
@@ -873,7 +903,7 @@ const STRINGS = {
     disabled_one: "{n} dezactivată",
     disabled_few: "{n} dezactivate",
     disabled_other: "{n} de dezactivate",
-    now_hint: "Linia albă = acum",
+    now_hint: "Linia roșie = acum",
     next_time: "Următoarea {time}",
     new_schedule: "Programare nouă",
     state_disabled: "Dezactivată",
@@ -937,10 +967,13 @@ const STRINGS = {
     err_save: "Salvarea a eșuat: {error}",
     zoom_in: "Afișează cardul complet",
     zoom_out: "Înapoi la vizualizarea compactă",
+    status_active: "În curs",
+    status_idle: "Inactiv",
+    status_warn: "Niciun program",
     title: "Titlu",
     illustration: "Ilustrație",
     illustration_theme: "Tema ilustrației",
-    theme_auto: "Automat",
+    theme_auto: "Automat (soare sau temă întunecată)",
     theme_day: "Zi",
     theme_night: "Noapte",
     show_disabled: "Programări dezactivate",
@@ -956,7 +989,7 @@ const STRINGS = {
     enabled_other: "{n} aktive",
     disabled_one: "{n} deaktiveret",
     disabled_other: "{n} deaktiverede",
-    now_hint: "Hvid streg = nu",
+    now_hint: "Rød streg = nu",
     next_time: "Næste {time}",
     new_schedule: "Ny tidsplan",
     state_disabled: "Deaktiveret",
@@ -1020,10 +1053,13 @@ const STRINGS = {
     err_save: "Kunne ikke gemme: {error}",
     zoom_in: "Vis hele kortet",
     zoom_out: "Tilbage til kompakt visning",
+    status_active: "Kører",
+    status_idle: "Inaktiv",
+    status_warn: "Ingen tidsplan",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
-    theme_auto: "Automatisk",
+    theme_auto: "Automatisk (sol eller mørkt tema)",
     theme_day: "Dag",
     theme_night: "Nat",
     show_disabled: "Deaktiverede tidsplaner",
@@ -1039,7 +1075,7 @@ const STRINGS = {
     enabled_other: "{n} aktiva",
     disabled_one: "{n} inaktiverat",
     disabled_other: "{n} inaktiverade",
-    now_hint: "Vit linje = nu",
+    now_hint: "Röd linje = nu",
     next_time: "Nästa {time}",
     new_schedule: "Nytt schema",
     state_disabled: "Inaktiverat",
@@ -1103,10 +1139,13 @@ const STRINGS = {
     err_save: "Kunde inte spara: {error}",
     zoom_in: "Visa hela kortet",
     zoom_out: "Tillbaka till kompakt vy",
+    status_active: "Pågår",
+    status_idle: "Vilande",
+    status_warn: "Inget schema",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
-    theme_auto: "Automatiskt",
+    theme_auto: "Automatiskt (sol eller mörkt tema)",
     theme_day: "Dag",
     theme_night: "Natt",
     show_disabled: "Inaktiverade scheman",
@@ -1122,7 +1161,7 @@ const STRINGS = {
     enabled_other: "{n} активни",
     disabled_one: "{n} изключен",
     disabled_other: "{n} изключени",
-    now_hint: "Бяла линия = сега",
+    now_hint: "Червена линия = сега",
     next_time: "Следващо {time}",
     new_schedule: "Нов график",
     state_disabled: "Изключен",
@@ -1186,10 +1225,13 @@ const STRINGS = {
     err_save: "Неуспешно запазване: {error}",
     zoom_in: "Покажи цялата карта",
     zoom_out: "Назад към компактния изглед",
+    status_active: "Изпълнява се",
+    status_idle: "Неактивно",
+    status_warn: "Няма график",
     title: "Заглавие",
     illustration: "Илюстрация",
     illustration_theme: "Тема на илюстрацията",
-    theme_auto: "Автоматично",
+    theme_auto: "Автоматично (слънце или тъмна тема)",
     theme_day: "Ден",
     theme_night: "Нощ",
     show_disabled: "Изключени графици",
@@ -1209,7 +1251,7 @@ const STRINGS = {
     disabled_few: "{n} отключено",
     disabled_many: "{n} отключено",
     disabled_other: "{n} отключено",
-    now_hint: "Белая линия = сейчас",
+    now_hint: "Красная линия = сейчас",
     next_time: "Следующее {time}",
     new_schedule: "Новое расписание",
     state_disabled: "Отключено",
@@ -1273,10 +1315,13 @@ const STRINGS = {
     err_save: "Не удалось сохранить: {error}",
     zoom_in: "Показать полную карточку",
     zoom_out: "Назад к компактному виду",
+    status_active: "Выполняется",
+    status_idle: "Неактивно",
+    status_warn: "Нет расписания",
     title: "Заголовок",
     illustration: "Иллюстрация",
     illustration_theme: "Тема иллюстрации",
-    theme_auto: "Автоматически",
+    theme_auto: "Автоматически (солнце или тёмная тема)",
     theme_day: "День",
     theme_night: "Ночь",
     show_disabled: "Отключённые расписания",
@@ -1296,7 +1341,7 @@ const STRINGS = {
     disabled_few: "{n} вимкнено",
     disabled_many: "{n} вимкнено",
     disabled_other: "{n} вимкнено",
-    now_hint: "Біла лінія = зараз",
+    now_hint: "Червона лінія = зараз",
     next_time: "Наступне {time}",
     new_schedule: "Новий розклад",
     state_disabled: "Вимкнено",
@@ -1360,10 +1405,13 @@ const STRINGS = {
     err_save: "Не вдалося зберегти: {error}",
     zoom_in: "Показати повну картку",
     zoom_out: "Назад до компактного вигляду",
+    status_active: "Виконується",
+    status_idle: "Неактивно",
+    status_warn: "Немає розкладу",
     title: "Заголовок",
     illustration: "Ілюстрація",
     illustration_theme: "Тема ілюстрації",
-    theme_auto: "Автоматично",
+    theme_auto: "Автоматично (сонце або темна тема)",
     theme_day: "День",
     theme_night: "Ніч",
     show_disabled: "Вимкнені розклади",
@@ -1379,7 +1427,7 @@ const STRINGS = {
     enabled_other: "{n} engedélyezve",
     disabled_one: "{n} letiltva",
     disabled_other: "{n} letiltva",
-    now_hint: "Fehér vonal = most",
+    now_hint: "Piros vonal = most",
     next_time: "Következő {time}",
     new_schedule: "Új ütemezés",
     state_disabled: "Letiltva",
@@ -1443,10 +1491,13 @@ const STRINGS = {
     err_save: "A mentés nem sikerült: {error}",
     zoom_in: "Teljes kártya megjelenítése",
     zoom_out: "Vissza a kompakt nézethez",
+    status_active: "Fut",
+    status_idle: "Tétlen",
+    status_warn: "Nincs ütemezés",
     title: "Cím",
     illustration: "Illusztráció",
     illustration_theme: "Az illusztráció témája",
-    theme_auto: "Automatikus",
+    theme_auto: "Automatikus (nap vagy sötét téma)",
     theme_day: "Nappal",
     theme_night: "Éjszaka",
     show_disabled: "Letiltott ütemezések",
@@ -1466,7 +1517,7 @@ const STRINGS = {
     disabled_few: "{n} vypnuté",
     disabled_many: "{n} vypnutých",
     disabled_other: "{n} vypnutých",
-    now_hint: "Biela čiara = teraz",
+    now_hint: "Červená čiara = teraz",
     next_time: "Ďalšie {time}",
     new_schedule: "Nový plán",
     state_disabled: "Vypnutý",
@@ -1530,10 +1581,13 @@ const STRINGS = {
     err_save: "Uloženie zlyhalo: {error}",
     zoom_in: "Zobraziť celú kartu",
     zoom_out: "Späť na kompaktné zobrazenie",
+    status_active: "Prebieha",
+    status_idle: "Nečinné",
+    status_warn: "Žiadny plán",
     title: "Názov",
     illustration: "Ilustrácia",
     illustration_theme: "Téma ilustrácie",
-    theme_auto: "Automaticky",
+    theme_auto: "Automaticky (slnko alebo tmavá téma)",
     theme_day: "Deň",
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
@@ -1553,7 +1607,7 @@ const STRINGS = {
     disabled_few: "{n} vypnuté",
     disabled_many: "{n} vypnutých",
     disabled_other: "{n} vypnutých",
-    now_hint: "Bílá čára = teď",
+    now_hint: "Červená čára = teď",
     next_time: "Další {time}",
     new_schedule: "Nový plán",
     state_disabled: "Vypnutý",
@@ -1617,10 +1671,13 @@ const STRINGS = {
     err_save: "Uložení se nezdařilo: {error}",
     zoom_in: "Zobrazit celou kartu",
     zoom_out: "Zpět na kompaktní zobrazení",
+    status_active: "Probíhá",
+    status_idle: "Nečinné",
+    status_warn: "Žádný plán",
     title: "Název",
     illustration: "Ilustrace",
     illustration_theme: "Motiv ilustrace",
-    theme_auto: "Automaticky",
+    theme_auto: "Automaticky (slunce nebo tmavý motiv)",
     theme_day: "Den",
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
@@ -1640,7 +1697,7 @@ const STRINGS = {
     disabled_two: "{n} izklopljena",
     disabled_few: "{n} izklopljeni",
     disabled_other: "{n} izklopljenih",
-    now_hint: "Bela črta = zdaj",
+    now_hint: "Rdeča črta = zdaj",
     next_time: "Naslednje {time}",
     new_schedule: "Nov urnik",
     state_disabled: "Izklopljen",
@@ -1704,10 +1761,13 @@ const STRINGS = {
     err_save: "Shranjevanje ni uspelo: {error}",
     zoom_in: "Prikaži celotno kartico",
     zoom_out: "Nazaj na strnjen prikaz",
+    status_active: "Poteka",
+    status_idle: "Nedejavno",
+    status_warn: "Ni urnika",
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
-    theme_auto: "Samodejno",
+    theme_auto: "Samodejno (sonce ali temna tema)",
     theme_day: "Dan",
     theme_night: "Noč",
     show_disabled: "Izklopljeni urniki",
@@ -1725,7 +1785,7 @@ const STRINGS = {
     disabled_zero: "{n} izslēgti",
     disabled_one: "{n} izslēgts",
     disabled_other: "{n} izslēgti",
-    now_hint: "Baltā līnija = tagad",
+    now_hint: "Sarkanā līnija = tagad",
     next_time: "Nākamais {time}",
     new_schedule: "Jauns grafiks",
     state_disabled: "Izslēgts",
@@ -1789,10 +1849,13 @@ const STRINGS = {
     err_save: "Neizdevās saglabāt: {error}",
     zoom_in: "Rādīt pilno kartīti",
     zoom_out: "Atpakaļ uz kompakto skatu",
+    status_active: "Darbojas",
+    status_idle: "Dīkstāvē",
+    status_warn: "Nav grafika",
     title: "Virsraksts",
     illustration: "Ilustrācija",
     illustration_theme: "Ilustrācijas tēma",
-    theme_auto: "Automātiski",
+    theme_auto: "Automātiski (saule vai tumšā tēma)",
     theme_day: "Diena",
     theme_night: "Nakts",
     show_disabled: "Izslēgtie grafiki",
@@ -1808,7 +1871,7 @@ const STRINGS = {
     enabled_other: "{n} ενεργά",
     disabled_one: "{n} ανενεργό",
     disabled_other: "{n} ανενεργά",
-    now_hint: "Λευκή γραμμή = τώρα",
+    now_hint: "Κόκκινη γραμμή = τώρα",
     next_time: "Επόμενο {time}",
     new_schedule: "Νέο πρόγραμμα",
     state_disabled: "Απενεργοποιημένο",
@@ -1872,10 +1935,13 @@ const STRINGS = {
     err_save: "Η αποθήκευση απέτυχε: {error}",
     zoom_in: "Εμφάνιση πλήρους κάρτας",
     zoom_out: "Επιστροφή στη συμπαγή προβολή",
+    status_active: "Σε εξέλιξη",
+    status_idle: "Αδρανές",
+    status_warn: "Κανένα πρόγραμμα",
     title: "Τίτλος",
     illustration: "Εικονογράφηση",
     illustration_theme: "Θέμα εικονογράφησης",
-    theme_auto: "Αυτόματο",
+    theme_auto: "Αυτόματο (ήλιος ή σκούρο θέμα)",
     theme_day: "Ημέρα",
     theme_night: "Νύχτα",
     show_disabled: "Απενεργοποιημένα προγράμματα",
@@ -1927,6 +1993,13 @@ const plural = (hass, config, key, n) => {
   const table = STRINGS[lang(hass, config)];
   const k = `${key}_${cat}` in table ? `${key}_${cat}` : `${key}_other`;
   return t(hass, config, k, { n });
+};
+
+// The whole width of an element's text in its own font, an ellipsised one included.
+const textWidth = (el) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return range.getBoundingClientRect().width;
 };
 
 const svgIcon = (path, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
@@ -2488,64 +2561,46 @@ const watchOutside = (card, handler) => {
 };
 
 // ---------------------------------------------------------------------------
-// The illustration: the sun (or the moon) on its arc, at the real time of day
+// The illustration: today's timeline of the schedules, with a "now" cursor
 // ---------------------------------------------------------------------------
 
 // Every animation of the illustration lasts a divisor of 12 s, so a recording of 12 s loops.
-// The arc, a quadratic curve from the sunrise to the sunset corner of a 200 × 80 box.
-const ARC = [
-  [14, 78],
-  [100, -12],
-  [186, 78],
-];
-const arcPoint = (f) => {
-  const u = 1 - f;
-  return [u * u * ARC[0][0] + 2 * u * f * ARC[1][0] + f * f * ARC[2][0], u * u * ARC[0][1] + 2 * u * f * ARC[1][1] + f * f * ARC[2][1]];
-};
-// The arc from its start to `f` (de Casteljau): the path the sun has already gone along.
-const arcTrail = (f) => {
-  const q = [ARC[0][0] + f * (ARC[1][0] - ARC[0][0]), ARC[0][1] + f * (ARC[1][1] - ARC[0][1])];
-  const p = arcPoint(f);
-  return `M14 78 Q${q[0].toFixed(1)} ${q[1].toFixed(1)} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-};
 
-// Where the sun or the moon is: day from sunrise to sunset, night from sunset to the next sunrise.
+// Day or night: day from sunrise to sunset, night from sunset to the next sunrise (`f`: the share of it gone).
 const skyAt = (min, sun) => {
   if (min >= sun.rise && min < sun.set) return { night: false, f: (min - sun.rise) / (sun.set - sun.rise) };
   const len = DAY - (sun.set - sun.rise);
   return { night: true, f: (((min - sun.set) % DAY) + DAY) % DAY / len };
 };
 
-const STARS = [
-  [8, 10, 0.6], [26, 22, 0.5], [44, 8, 0.7], [62, 30, 0.5], [78, 14, 0.6], [98, 6, 0.5], [112, 26, 0.6], [146, 10, 0.7],
-  [160, 24, 0.5], [178, 8, 0.6], [192, 18, 0.5], [124, 16, 0.4], [36, 36, 0.4], [86, 40, 0.4],
-];
+// The hours written under the timeline.
+const SCENE_HOURS = [0, 6, 12, 18, 24];
+const pctOf = (v) => ((v / DAY) * 100).toFixed(2);
 
-const sceneSvg = (sky) => {
-  const f = Math.max(0, Math.min(1, sky.f));
-  const [x, y] = arcPoint(f);
-  const pos = (n) => n.toFixed(1);
-  const rays = [0, 45, 90, 135, 180, 225, 270, 315]
-    .map((deg) => {
-      const r = (deg * Math.PI) / 180;
-      return `<line x1="${pos(Math.cos(r) * 11)}" y1="${pos(Math.sin(r) * 11)}" x2="${pos(Math.cos(r) * 14)}" y2="${pos(Math.sin(r) * 14)}"/>`;
+// One row of the illustration: a schedule's icon in its colour, its track, today's blocks (the one running now
+// pulses), dots for its one-off actions. `rows`: [{ icon, color, on, bits: [{ a, b, c, now } | { at, c }] }].
+const sceneHtml = (rows, nowMin) => {
+  const n = Math.max(1, rows.length);
+  // The rows centred in the 54 px between the top of the scene and the hours.
+  const top0 = 4 + (54 - (n * 18 - 10)) / 2;
+  const rowHtml = rows
+    .map((r, i) => {
+      const bits = r.bits
+        .map((b) =>
+          b.at !== undefined
+            ? `<i class="pt" style="left:${pctOf(b.at)}%;--c:${b.c}"></i>`
+            : `<i class="bk${b.now ? " on" : ""}" style="left:${pctOf(b.a)}%;width:${pctOf(b.b - b.a)}%;--c:${b.c}"></i>`,
+        )
+        .join("");
+      return `<div class="tr${r.on ? "" : " off"}" style="top:${(top0 + i * 18).toFixed(1)}px;--b:${r.color}">
+        <span class="ri"><ha-icon icon="${esc(r.icon)}"></ha-icon></span><span class="tk">${bits}</span></div>`;
     })
     .join("");
-  const body = sky.night
-    ? `<mask id="sc-moon"><rect x="-12" y="-12" width="24" height="24" fill="#fff"/><circle cx="3.6" cy="-2.6" r="6" fill="#000"/></mask>
-       <circle class="glow" r="11" fill="#f3eed2" opacity=".14"/>
-       <circle r="7" fill="#f3eed2" mask="url(#sc-moon)"/>`
-    : `<circle class="glow" r="13" fill="#ffd27a"/>
-       <circle r="8" fill="#ffb300" stroke="#e69500" stroke-width="1.6"/>
-       <g class="rays" stroke="#e69500" stroke-width="1.6" stroke-linecap="round">${rays}</g>`;
-  return `<svg class="scene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">
-    ${sky.night ? `<g class="stars">${STARS.map(([sx, sy, r], i) => `<circle class="${i % 3 === 0 ? "tw" : ""}" cx="${sx}" cy="${sy}" r="${r}"/>`).join("")}</g>` : ""}
-    <path class="cloud" d="M30 22a6 6 0 0 1 1-11.9A8.5 8.5 0 0 1 47 9a5.5 5.5 0 0 1-.6 13z"/>
-    <path class="arc flow" d="M14 78 Q100 -12 186 78"/>
-    <path class="trail" d="${arcTrail(f)}"/>
-    ${sky.night ? "" : `<path class="moon-day" d="M180 30a7 7 0 1 0 7 9a5.5 5.5 0 0 1-7-9z"/>`}
-    <g class="orb" transform="translate(${pos(x)} ${pos(y)})">${body}</g>
-  </svg>`;
+  return `<div class="scene" aria-hidden="true"><div class="in">
+      ${SCENE_HOURS.map((h) => `<span class="gl" style="left:${(h / 24) * 100}%"></span><span class="hr" style="left:${(h / 24) * 100}%">${String(h).padStart(2, "0")}h</span>`).join("")}
+      ${rowHtml}
+      <span class="cur" style="left:${pctOf(nowMin)}%"></span>
+    </div></div>`;
 };
 
 // ---------------------------------------------------------------------------
@@ -2573,61 +2628,94 @@ const STYLE = `
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c); flex: none; }
   .warning { padding: 16px; color: color-mix(in srgb, var(--sc-warn) 40%, var(--primary-text-color, #212121)); }
 
-  /* ── Illustrated header ── */
-  .banner { position: relative; height: var(--banner-h, 92px); overflow: hidden; --strip-h: 12px;
-            --sky-text: #0b3a3b; --sky-muted: #2f6061;
-            background: linear-gradient(90deg, #f1fbfb 0%, #def3f3 34%, #bfe6e7 70%, #a6dadb 100%); }
-  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.78);
-                  background: linear-gradient(90deg, #163a44 0%, #12323c 36%, #0d2832 72%, #091e27 100%); }
+  /* ── Illustrated header: 90 px, the title on the sky at the left, today's timeline at the right, a ruler strip ── */
+  .banner { position: relative; height: var(--banner-h, 90px); overflow: hidden; --strip-h: 10px;
+            --sky-text: #16263a; --sky-muted: #4a5a6e; --tk: #e3e9f0; --gl: #dbe2ea; --hr: #8e98a4; --ri: #ffffff;
+            background: linear-gradient(90deg, #f7f9fc 0%, #f1f4f8 40%, #e8eef5 100%); }
+  /* Evening: the last two hours before sunset, a warmer sky. */
+  .banner.evening { --sky-text: #3a2414; --sky-muted: #7a5236; --tk: #f1e2d4; --gl: #ecd9c6; --hr: #a08068;
+                    background: linear-gradient(90deg, #fcf6ef 0%, #f8ecdf 40%, #f2dcc7 100%); }
+  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.78); --tk: #252e3f; --gl: #2a3446; --hr: #7d8793; --ri: #2a3446;
+                  background: linear-gradient(90deg, #222a3a 0%, #1c2230 45%, #161b27 100%); }
   .banner .scene { position: absolute; right: 0; bottom: var(--strip-h); height: calc(100% - var(--strip-h));
-                   width: min(calc((var(--banner-h, 92px) - var(--strip-h)) * 2.5), var(--scene-max, 58%)); overflow: hidden; }
-  /* The bottom strip: today's slots of the enabled schedules, and a white "now" marker. */
-  .strip { position: absolute; left: 0; right: 0; bottom: 0; height: var(--strip-h); background: #8f9aa6; overflow: hidden;
-           box-shadow: inset 0 1px 0 #7a8591, inset 0 -1px 0 #7a8591; }
-  .night .strip { background: #2c3a44; box-shadow: inset 0 1px 0 #1f2a32, inset 0 -1px 0 #1f2a32; }
-  .strip .s { position: absolute; top: 4px; height: 4px; border-radius: 2px; background: var(--b); }
-  .strip .p { position: absolute; top: 3px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--b); }
-  .strip .now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #ffffff; }
+                   width: min(calc((var(--banner-h, 90px) - var(--strip-h)) * 2.5), var(--scene-max, 58%)); overflow: hidden; }
+  /* The timeline's tracks (0 to 24 h), the icons in a column at their left. */
+  .scene .in { position: absolute; top: 0; bottom: 0; right: var(--scene-right, 8px); width: 112px; }
+  .scene .gl { position: absolute; top: 6px; bottom: 12px; width: 1px; margin-left: -.5px; background: var(--gl); }
+  .scene .hr { position: absolute; bottom: 1px; transform: translateX(-50%); font-size: 8px; line-height: 10px; color: var(--hr); white-space: nowrap; }
+  .scene .hr:last-of-type { transform: translateX(-80%); }
+  .scene .tr { position: absolute; left: 0; right: 0; height: 8px; }
+  .scene .tk { position: absolute; inset: 0; border-radius: 4px; background: var(--tk); }
+  .scene .bk { position: absolute; top: 0; height: 8px; min-width: 4px; border-radius: 4px; background: var(--c, var(--b)); opacity: .45; }
+  .scene .bk.on { opacity: 1; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--c, var(--b)) 35%, transparent); }
+  .scene .pt { position: absolute; top: 1px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--c, var(--b)); opacity: .7; }
+  .scene .ri { position: absolute; left: -20px; top: -4px; width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%;
+               display: grid; place-items: center; color: var(--b); background: var(--ri); box-shadow: inset 0 0 0 1px var(--b); }
+  .scene .ri ha-icon { --mdc-icon-size: 9px; display: flex; }
+  .scene .tr.off { --b: #9aa3ae; }
+  .scene .tr.off .bk, .scene .tr.off .pt { --c: #9aa3ae; }
+  .scene .tr.off .ri { opacity: .7; }
+  .scene .cur { position: absolute; top: 6px; bottom: 11px; width: 1.5px; margin-left: -.75px; background: #e5484d; }
+  .scene .cur::before { content: ""; position: absolute; top: -2.5px; left: -2px; width: 5.5px; height: 5.5px; border-radius: 50%; background: #e5484d; }
+  /* The bottom strip: a ruler of the day, its hours ticked, under a blue line. */
+  .strip { position: absolute; left: 0; right: 0; bottom: 0; height: var(--strip-h); overflow: hidden; }
+  .g-timeline { background: #dfe5ee; background-image: repeating-linear-gradient(90deg, #8a95a5 0 1px, transparent 1px 8px),
+                repeating-linear-gradient(90deg, #5f6b7a 0 1.5px, transparent 1.5px 48px);
+                background-size: 100% 4px, 100% 7px; background-repeat: no-repeat; box-shadow: inset 0 2px 0 #2f80ed; }
+  .night .g-timeline { background-color: #2a3242; box-shadow: inset 0 2px 0 #2f80ed; }
+  .evening .g-timeline { background-color: #eadfd3; }
   .head { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--strip-h); box-sizing: border-box;
-          right: min(calc((var(--banner-h, 92px) - var(--strip-h)) * 2.5), var(--scene-max, 58%));
+          right: min(calc((var(--banner-h, 90px) - var(--strip-h)) * 2.5), var(--scene-max, 58%));
           display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; min-width: 0; color: var(--sky-text); }
-  .badge { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; color: var(--sc-accent);
-           background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px rgba(15,139,141,.2); }
-  .night .badge { background: rgba(255,255,255,.12); color: #7fd6d8; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  /* The header icon: its colour is the status (a schedule running now, idle, nothing to show). */
+  .badge { --st: var(--sc-accent); width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; color: var(--st);
+           background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--st) 22%, transparent); }
+  .badge.st-idle { --st: #7d8794; }
+  .badge.st-warn { --st: var(--sc-warn); }
+  .night .badge { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .night .badge.st-active { --st: #7fd6d8; }
+  .night .badge.st-idle { --st: #a3adba; }
   .badge .icon { width: 24px; height: 24px; }
-  .titles { flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .titles { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; }
+  .titles > * { flex: 1 0 100%; min-width: 0; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* The title, then its status pill 8 px after it, centred on it, while the whole title and the pill's whole label fit
+     on that row; otherwise (measured by the card, see _fitPill) the title takes its whole line and the pill goes under
+     the statistics (.below, kept to one line), its dot alone (.pill-dot) when even then the text would run into the
+     timeline strip. Its colour is the header icon's. */
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .name { flex: 0 1 auto; min-width: 0; }
+  .chip.status { flex: none; --c: var(--sc-accent); }
+  .chip.status.st-idle { --c: #7d8794; } .chip.status.st-warn { --c: var(--sc-warn); }
+  .night .chip.status.st-active { --c: #7fd6d8; } .night .chip.status.st-idle { --c: #a3adba; }
+  .banner .chip { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .chip { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .chip.status .dot { width: 7px; height: 7px; }
+  .titles.below .trow { display: contents; }
+  .titles.below .trow .name { flex: 1 0 100%; }
+  .titles.below > .stats { order: 1; max-height: 16px; }
+  .titles.below .chip.status { order: 2; margin-top: 2px; max-width: 100%; }
+  .titles.pill-dot .chip.status, .mhd.pill-dot .chip.status { padding: 5px; }
+  .titles.pill-dot .chip.status .txt, .mhd.pill-dot .chip.status .txt { display: none; }
+  /* Under 200 px only its dot shows (its text stays its tooltip and accessible name). */
+  @container (max-width: 200px) { .chip.status { padding: 5px; } .chip.status .txt { display: none; } }
   /* The statistics on two lines at most: a part that does not fit goes to a third line, clipped away; the "·" that
      starts a line sits in the negative margin, clipped too. */
   .stats { display: flex; flex-wrap: wrap; max-height: 32px; overflow: hidden; margin-left: -10px; font-size: 12px; line-height: 16px; color: var(--sky-muted); }
   .stats span { white-space: nowrap; }
   .stats span::before { content: "·"; display: inline-block; width: 10px; text-align: center; }
-  /* Scenery colours, day and night. */
-  .scene .cloud { fill: #ffffff; opacity: .9; }
-  .night .scene .cloud { opacity: .1; }
-  .scene .arc { fill: none; stroke: #5aa9aa; stroke-width: 1.6; stroke-dasharray: 2 5; }
-  .night .scene .arc { stroke: rgba(255,255,255,.32); }
-  .scene .trail { fill: none; stroke: var(--sc-accent); stroke-width: 2.2; stroke-linecap: round; }
-  .night .scene .trail { stroke: #7fd6d8; opacity: .7; }
-  .scene .moon-day { fill: #ffffff; stroke: #7a8794; stroke-width: 1.2; opacity: .8; }
-  .scene .stars { fill: #ffffff; opacity: .85; }
   /* ── Animations (each one a divisor of 12 s) ── */
-  .scene .flow { animation: sc-flow 2.4s linear infinite; }
-  .scene .glow { animation: sc-glow 3s ease-in-out infinite; }
-  .scene .cloud { animation: sc-drift 3s ease-in-out infinite alternate; }
-  .scene .stars .tw { animation: sc-twinkle 4s ease-in-out infinite; }
-  .scene .stars .tw:nth-child(2n) { animation-delay: -2s; }
-  @keyframes sc-flow { to { stroke-dashoffset: -14; } }
-  @keyframes sc-glow { 0%, 100% { opacity: .35; } 50% { opacity: .8; } }
-  @keyframes sc-drift { from { transform: translateX(0); } to { transform: translateX(8px); } }
-  @keyframes sc-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .scene .bk.on { animation: sc-pulse 2s ease-in-out infinite; }
+  .scene .cur::before { animation: sc-beat 2s ease-in-out infinite; }
+  @keyframes sc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .62; } }
+  @keyframes sc-beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
   /* Switching views: the new view slides in. */
   .view { animation: sc-in .3s ease-out; }
   @keyframes sc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .scene *, .view { animation: none !important; }
+    .scene *, .scene *::before, .view { animation: none !important; }
   }
-  /* A narrow card keeps the sky and the strip for its texts: no scenery. */
+  /* A narrow card keeps the sky and the strip for its texts: no timeline. */
   @container (max-width: 300px) {
     .banner .scene { display: none; }
     .head { right: 0; }
@@ -2635,7 +2723,7 @@ const STYLE = `
 
   /* ── Classic header (illustration: false) ── */
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 14px 8px; }
-  .header .badge { color: var(--sc-accent); background: color-mix(in srgb, var(--sc-accent) 16%, transparent); box-shadow: none; }
+  .header .badge { background: color-mix(in srgb, var(--st) 16%, transparent); box-shadow: none; }
   .header .stats { color: var(--secondary-text-color); }
 
   /* ── Chips line under the header ── */
@@ -2753,14 +2841,37 @@ const STYLE = `
   .mfoot .grow { flex: 1 1 auto; }
 `;
 
-// The mini card: badge, title, next action, detail button, then the next actions.
+// The mini card: the same 90 px banner (title and next action on the sky, today's timeline, the detail button at
+// the top right), then the next actions; without the illustration, badge, title, next action and detail button.
 const MINI_STYLE = `
   ha-card.mini-card { padding: 12px; }
+  ha-card.mini-card.illustrated { padding: 0; }
+  .illustrated .banner { --scene-right: 36px; }
+  .illustrated .nx { padding: 4px 12px 8px; }
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; color: #33506b; background: rgba(255,255,255,.55);
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); backdrop-filter: blur(4px); }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  /* No timeline on a narrow card: the texts end before the detail button. */
+  @container (max-width: 300px) { .illustrated .head { padding-right: 34px; } }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .mini { display: flex; align-items: flex-start; gap: 10px; }
-  .mini .badge { color: var(--sc-accent); background: color-mix(in srgb, var(--sc-accent) 16%, transparent); box-shadow: none; }
+  .mini .badge { background: color-mix(in srgb, var(--st) 16%, transparent); box-shadow: none; }
   .body { flex: 1; min-width: 0; min-height: 40px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
   .mhd { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
+  .mhd .chip.status { flex: 0 0 auto; }
+  .mhd .st { margin-left: auto; }
+  /* The whole title and the pill's whole label do not fit on one line (measured by the card, see _fitPill): the title
+     and the detail button keep the first line, the pill goes on a line of its own under the next action. */
+  .mhd.below { flex-wrap: wrap; row-gap: 2px; }
+  .mhd.below .title { flex: 1 1 0; }
+  .mhd.below .zoom { order: 1; }
+  .mhd.below .st { order: 2; flex: 1 0 100%; margin: 0; }
+  .mhd.below::after { content: ""; order: 3; flex: 1 0 100%; }
+  .mhd.below .chip.status { order: 4; max-width: 100%; }
+  /* Narrow: the next action goes under the title and its pill. */
+  @container (max-width: 260px) { .mhd { flex-wrap: wrap; row-gap: 2px; } .mhd .title { flex: 1 1 0; } .mhd .st { order: 3; flex: 1 0 100%; margin: 0; } }
+  .title { flex: 0 1 auto; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st { flex: 0 1 auto; min-width: 0; font-size: 11px; font-weight: 500; color: var(--sc-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .nx { display: flex; flex-direction: column; }
@@ -2781,12 +2892,16 @@ const MINI_STYLE = `
 // The zoomed mini card: the full card, with the detail button over its banner.
 const ZOOM_STYLE = `
   .zoom { all: unset; position: absolute; z-index: 2; top: 5px; right: 5px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%;
-          display: grid; place-items: center; color: #2f6061; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+          display: grid; place-items: center; color: #33506b; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+          backdrop-filter: blur(4px); }
+  .zoom:not(.plain):not(.on-night):hover { background: rgba(255,255,255,.75); }
+  .zoom.on-night:hover { background: rgba(255,255,255,.22); }
   .zoom.on-night { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .zoom.plain { color: var(--secondary-text-color); background: none; box-shadow: inset 0 0 0 1px var(--divider-color, rgba(127,127,127,.3)); top: 18px; right: 12px; }
   .zoom .icon { width: 16px; height: 16px; }
   .header { position: relative; padding-right: 48px; }
-  .scene .moon-day { display: none; }
+  /* The timeline steps aside for the detail button. */
+  .banner { --scene-right: 36px; }
 `;
 
 // ---------------------------------------------------------------------------
@@ -2876,12 +2991,26 @@ class SchedulerCard extends HTMLElement {
     clearInterval(this._timer);
     this._timer = setInterval(() => this._hass && this._config && (this.hass = this._hass), 30000);
     this._update();
+    // A new width (or the web font loaded): the status pill is fitted again, in the next frame.
+    if (typeof ResizeObserver === "function") {
+      this._resize ??= new ResizeObserver((entries) => {
+        const w = Math.round(entries.at(-1).contentRect.width);
+        if (w === this._fitWidth) return;
+        this._fitWidth = w;
+        cancelAnimationFrame(this._fitFrame);
+        this._fitFrame = requestAnimationFrame(() => this._fitPill());
+      });
+      this._resize.observe(this);
+    }
+    document.fonts?.ready?.then(() => this._fitPill());
   }
 
   disconnectedCallback() {
     this._outsideWatch?.off();
     window.removeEventListener("keydown", this._onKey);
     clearInterval(this._timer);
+    this._resize?.disconnect();
+    this._fitWidth = null;
     // Left (another view, a conditional card hidden): the popup closes without anything else, the weekly grid
     // folds back to today's timeline.
     this._edit = null;
@@ -2930,6 +3059,7 @@ class SchedulerCard extends HTMLElement {
       this._html = html;
       morph(this.shadowRoot, html);
     }
+    this._fitPill();
     // A switch keeps the state of the entity, even after a click the service did not follow.
     // Only an upgraded switch: a property set before would shadow its own setter.
     const Switch = customElements.get("ha-switch");
@@ -2953,19 +3083,20 @@ class SchedulerCard extends HTMLElement {
     return this._list;
   }
 
-  // Night illustration: forced by illustration_theme, else the sun below the horizon (sun.sun), else the hour.
+  // Night illustration: forced by illustration_theme, else Home Assistant's dark mode or the sun below the horizon
+  // (sun.sun), else the hour when sun.sun is missing. Evening: the last two hours before sunset, in automatic mode.
   _sky(now) {
-    const sky = skyAt(now.min, sunTimes(this._hass));
+    const sun = sunTimes(this._hass);
+    const sky = skyAt(now.min, sun);
     const mode = this._config.illustration_theme;
     const state = this._hass?.states?.["sun.sun"]?.state;
     let night = sky.night;
     if (mode === "night") night = true;
     else if (mode === "day") night = false;
-    else if (state === "below_horizon") night = true;
+    else if (this._hass?.themes?.darkMode || state === "below_horizon") night = true;
     else if (state === "above_horizon") night = false;
-    if (night === sky.night) return sky;
-    // Forced: the body stays where it would be, on the other half of the cycle.
-    return { night, f: night ? 0.5 : sky.f };
+    const evening = !night && mode !== "day" && now.min >= sun.set - 120 && now.min < sun.set + 60;
+    return { night, evening };
   }
 
   // A minute of the day in Home Assistant's 12/24 h setting.
@@ -3047,29 +3178,94 @@ class SchedulerCard extends HTMLElement {
 
   // ── Header ──
 
-  _banner(inner, now, strip) {
+  _banner(inner, now, rows) {
     const sky = this._sky(now);
-    return `<div class="banner${sky.night ? " night" : ""}">
-      ${sceneSvg(sky)}
-      <div class="strip">${strip}<span class="now" style="left:${((now.min / DAY) * 100).toFixed(2)}%"></span></div>
+    return `<div class="banner${sky.night ? " night" : sky.evening ? " evening" : ""}">
+      ${sceneHtml(rows, now.min)}
+      <div class="strip g-timeline"></div>
       ${inner}
     </div>`;
   }
 
-  _titleBlock(title, stats) {
-    return `<div class="badge">${svgIcon(ICONS.calendarClock)}</div>
+  // Today's spans of an enabled schedule that hold the current minute (its background value left out): what the
+  // illustration pulses, and what makes the header icon "active".
+  _runningNow(m, now) {
+    if (!m.enabled || !runsOn(m.weekdays, now.wd, this._hass, true)) return false;
+    return daySegments(m).spans.some((sp) => m.infos.get(sp.slot.i)?.key !== m.def && now.min >= sp.a && now.min < sp.b);
+  }
+
+  // The header icon's status: a schedule running now (accent), idle (grey), nothing to show (amber).
+  _status(models, now) {
+    if (!models.length) return "warn";
+    return models.some((m) => this._runningNow(m, now)) ? "active" : "idle";
+  }
+
+  // The status pill stays right after the title only while the whole title and the pill's whole label fit on that
+  // row; otherwise it takes a line of its own under the statistics or the next action (.below), and when even then
+  // the line is too narrow for it or (on the banner) the text would run into the timeline strip, it keeps its dot
+  // alone (.pill-dot). Measured in the real fonts, so that every language and title length gets its own answer.
+  _fitPill() {
+    for (const t of this.shadowRoot?.querySelectorAll?.(".titles, .mhd") || []) {
+      const pill = t.querySelector(".chip.status");
+      if (!pill?.getBoundingClientRect) continue;
+      t.classList.remove("below", "pill-dot");
+      const row = pill.parentElement;
+      const name = row.querySelector(":scope > .name, :scope > .title");
+      const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+      const shown = name && getComputedStyle(name).display !== "none";
+      const natural = pill.getBoundingClientRect().width;
+      // The banner's row holds the title and the pill alone; the classic mini card's line shares the title's room.
+      const have = row.classList.contains("trow") ? row.getBoundingClientRect().width : (shown ? name.getBoundingClientRect().width + gap : 0) + natural;
+      if ((shown ? textWidth(name) + gap : 0) + natural <= have) continue;
+      t.classList.add("below");
+      const r = t.getBoundingClientRect();
+      const banner = t.closest(".banner");
+      const box = banner?.getBoundingClientRect();
+      const floor = banner?.querySelector(".strip")?.getBoundingClientRect().top ?? box?.bottom;
+      if ((box && (r.bottom > floor + 0.5 || r.top < box.top - 0.5)) || natural > r.width + 0.5) t.classList.add("pill-dot");
+    }
+  }
+
+  // The status pill, in the header icon's colour: a schedule running now, idle, nothing to show.
+  _pill(status) {
+    const label = esc(this._t(`status_${status}`));
+    return `<span class="chip status st-${status}" title="${label}" aria-label="${label}"><span class="dot"></span><span class="txt">${label}</span></span>`;
+  }
+
+  // The header icon, then the title with its status pill right after it, the statistics under them.
+  _titleBlock(title, stats, status = "idle") {
+    return `<div class="badge st-${status}">${svgIcon(ICONS.calendarClock)}</div>
       <div class="titles">
-        <div class="name">${esc(title)}</div>
+        <div class="trow"><div class="name">${esc(title)}</div>${this._pill(status)}</div>
         ${stats.length ? `<div class="stats">${stats.map((s) => `<span>${esc(s)}</span>`).join("")}</div>` : ""}
       </div>`;
   }
 
-  _header(title, stats, now, strip = "") {
-    if (this._config.illustration === false) return `<div class="header">${this._titleBlock(title, stats)}${this._zoomButton("plain")}</div>`;
-    return this._banner(`<div class="head">${this._titleBlock(title, stats)}</div>${this._zoomButton(this._sky(now).night ? "on-night" : "")}`, now, strip);
+  _header(title, stats, now, rows = [], status = "idle") {
+    if (this._config.illustration === false) return `<div class="header">${this._titleBlock(title, stats, status)}${this._zoomButton("plain")}</div>`;
+    return this._banner(`<div class="head">${this._titleBlock(title, stats, status)}</div>${this._zoomButton(this._sky(now).night ? "on-night" : "")}`, now, rows);
   }
 
-  // Today's spans of schedules, for the banner strip and the timeline bars (`grey` for a disabled schedule).
+  // The illustration's rows: up to three schedules, the one shown first, then those running now, then the other
+  // enabled ones, then the disabled ones (greyed).
+  _sceneRows(models, now, first = null) {
+    const rank = (m) => (m === first ? 0 : this._runningNow(m, now) ? 1 : m.enabled ? 2 : 3);
+    return [...models]
+      .sort((a, b) => rank(a) - rank(b))
+      .slice(0, 3)
+      .map((m) => {
+        const bits = [];
+        const color = (slot) => m.colors.get(m.infos.get(slot.i)?.key) || m.base;
+        if (runsOn(m.weekdays, now.wd, this._hass, true)) {
+          const { spans, points } = daySegments(m);
+          for (const sp of spans) if (m.infos.get(sp.slot.i)?.key !== m.def) bits.push({ a: sp.a, b: sp.b, c: color(sp.slot), now: m.enabled && now.min >= sp.a && now.min < sp.b });
+          for (const p of points) bits.push({ at: p.at, c: color(p.slot) });
+        }
+        return { icon: m.icon, color: m.base, on: m.enabled, bits };
+      });
+  }
+
+  // Today's spans of a schedule, for its timeline bar (`grey` for a disabled schedule).
   _todayBits(m, now) {
     if (!runsOn(m.weekdays, now.wd, this._hass, true)) return "";
     const { spans, points } = daySegments(m);
@@ -3338,9 +3534,10 @@ class SchedulerCard extends HTMLElement {
     const now = this._now();
     const m = this._view ? models.find((x) => x.id === this._view) : null;
     if (this._view && !m) this._view = null;
-    const enabled = models.filter((x) => x.enabled);
-    const strip = m ? this._todayBits(m, now) : enabled.map((x) => this._todayBits(x, now)).join("");
-    const header = m ? this._header(m.name, this._weekStats(m, now), now, strip) : this._header(this._config.title || this._t("schedules"), this._timelineStats(models, now), now, strip);
+    const rows = this._sceneRows(models, now, m);
+    const header = m
+      ? this._header(m.name, this._weekStats(m, now), now, rows, this._status([m], now))
+      : this._header(this._config.title || this._t("schedules"), this._timelineStats(models, now), now, rows, this._status(models, now));
     return `<style>${STYLE}${this._extraStyle()}</style>
       <ha-card class="${this._edit ? "has-modal" : ""}">
         ${header}
@@ -3694,7 +3891,8 @@ class SchedulerMiniCard extends SchedulerCard {
   }
 
   getCardSize() {
-    return this._zoomed ? super.getCardSize() : 2;
+    if (this._zoomed) return super.getCardSize();
+    return this._config?.illustration === false ? 2 : 4;
   }
 
   getGridOptions() {
@@ -3752,12 +3950,22 @@ class SchedulerMiniCard extends SchedulerCard {
           .join("")
       : `<div class="none">${esc(this._t(models.length ? "no_upcoming" : "no_match"))}</div>`;
     const head = next[0] ? this._t("next_time", { time: this._when(next[0], now) }) : "";
+    if (this._config.illustration !== false) {
+      const stats = next[0] ? [head, next[0].m.name] : [this._t(models.length ? "no_upcoming" : "no_match")];
+      const banner = this._banner(
+        `<div class="head">${this._titleBlock(this._config.title || this._t("schedules"), stats, this._status(models, now))}</div>${this._zoomButton()}`,
+        now,
+        this._sceneRows(models, now),
+      );
+      return `<style>${STYLE}${MINI_STYLE}</style>
+      <ha-card class="mini-card illustrated">${banner}${next.length ? `<div class="nx">${rows}</div>` : ""}</ha-card>`;
+    }
     return `<style>${STYLE}${MINI_STYLE}</style>
       <ha-card class="mini-card">
         <div class="mini">
-          <div class="badge">${svgIcon(ICONS.calendarClock)}</div>
+          <div class="badge st-${this._status(models, now)}">${svgIcon(ICONS.calendarClock)}</div>
           <div class="body">
-            <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
+            <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${this._pill(this._status(models, now))}${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
             <div class="nx">${rows}</div>
           </div>
         </div>
@@ -3871,7 +4079,7 @@ for (const card of [
   {
     type: "scheduler-card",
     name: "Scheduler Card",
-    description: "Today's timeline and the weekly grid of the Scheduler component's schedules, under an illustrated sun that follows the time of day.",
+    description: "Today's timeline and the weekly grid of the Scheduler component's schedules, under an illustrated header whose cursor follows the time of day.",
   },
   {
     type: "scheduler-mini-card",

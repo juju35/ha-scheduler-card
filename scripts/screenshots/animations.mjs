@@ -66,8 +66,8 @@ for (const g of GIFS) {
   const dark = g.theme === "dark";
   const page = await openPage(browser, { theme: g.theme, width: FULL, label: g.file });
   const dir = mkdtempSync(join(tmpdir(), "sc-frames-"));
-  if (g.file.startsWith("sun-cycle")) {
-    // 48 frames, every half hour of the day: the sun rises, crosses its arc and sets, then the moon.
+  if (g.file.startsWith("day-cycle")) {
+    // 48 frames, every half hour of the day: the "now" cursor crosses the timeline, under the day, evening and night skies.
     await mountCard(page, { tag: "scheduler-card", config: {}, dark, now: at("00:00") });
     await page.waitForTimeout(300);
     const clip = await cardClip(page, FULL, { banner: true });

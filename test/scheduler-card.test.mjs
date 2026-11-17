@@ -405,7 +405,7 @@ test("timeline and weekly grid render", () => {
   assert.ok(!/data-slot=/.test(ro._render()) && !/New schedule/.test(card(sc.SchedulerCard, { editable: false })._render()));
 });
 
-test("the sun along its arc by day, the moon by night", () => {
+test("day and night: the share of the day or the night gone, a night banner", () => {
   const sun = { rise: 360, set: 1200 };
   eq(sc.skyAt(360, sun), { night: false, f: 0 });
   assert.equal(sc.skyAt(780, sun).f, 0.5);
@@ -415,6 +415,44 @@ test("the sun along its arc by day, the moon by night", () => {
   assert.match(el._render(), /class="banner night"/);
   assert.match(card(sc.SchedulerCard, { illustration_theme: "night" })._render(), /class="banner night"/);
   assert.ok(!/class="banner/.test(card(sc.SchedulerCard, { illustration: false })._render()));
+});
+
+test("the illustrated header: today's timeline, the slot running now, the status colour, day, evening and night", () => {
+  // Monday 17:40: the blinds are open and the living room heating runs its comfort slot: the first two rows, their blocks pulsing.
+  const html = card()._render();
+  assert.match(html, /class="banner"/);
+  assert.equal((html.match(/class="tr[ "]/g) || []).length, 3);
+  assert.match(html, /class="tr" style="[^"]*"[^>]*>\s*<span class="ri"><ha-icon icon="mdi:blinds"/);
+  assert.equal((html.match(/class="bk on"/g) || []).length, 2);
+  assert.match(html, /class="cur" style="left:73\.61%"/);
+  assert.match(html, /class="strip g-timeline"/);
+  assert.match(html, /class="badge st-active"/);
+  // The status pill right after the title, in the icon's colour.
+  assert.match(html, /<div class="trow"><div class="name">Schedules<\/div><span class="chip status st-active"[^>]*><span class="dot"><\/span><span class="txt">Running</);
+  // Nothing running at 01:30: an idle, grey icon.
+  const idle = card(sc.SchedulerCard, {}, hassWith({ now: at("01:30") }), at("01:30"))._render();
+  assert.ok(!/class="bk on"/.test(idle));
+  assert.match(idle, /class="badge st-idle"/);
+  assert.match(idle, /class="chip status st-idle"[^>]*><span class="dot"><\/span><span class="txt">Idle</);
+  // No schedule matching the filters: amber.
+  assert.match(card(sc.SchedulerCard, { tags: ["none"] })._render(), /class="badge st-warn"/);
+  // Two hours before sunset (21:56): the evening sky, unless forced to day.
+  assert.match(card(sc.SchedulerCard, {}, hassWith({ now: at("20:30") }), at("20:30"))._render(), /class="banner evening"/);
+  assert.match(card(sc.SchedulerCard, { illustration_theme: "day" }, hassWith({ now: at("20:30") }), at("20:30"))._render(), /class="banner"/);
+  // Without sun.sun, Home Assistant's dark mode makes it night.
+  const dark = hassWith();
+  delete dark.states["sun.sun"];
+  dark.themes = { darkMode: true };
+  assert.match(card(sc.SchedulerCard, {}, dark)._render(), /class="banner night"/);
+  // The dark mode makes it night while the sun is up too, unless forced to day.
+  const darkDay = hassWith();
+  darkDay.themes = { darkMode: true };
+  assert.match(card(sc.SchedulerCard, {}, darkDay)._render(), /class="banner night"/);
+  assert.match(card(sc.SchedulerCard, { illustration_theme: "day" }, darkDay)._render(), /class="banner"/);
+  // The mini card: the same banner, the next action on its sky, the status on its icon.
+  const mini = card(sc.SchedulerMiniCard)._render();
+  assert.match(mini, /class="mini-card illustrated"[\s\S]*class="banner"[\s\S]*class="badge st-active"/);
+  assert.ok(!/class="banner/.test(card(sc.SchedulerMiniCard, { illustration: false })._render()));
 });
 
 test("a click outside closes the popup first, then folds the weekly grid back; leaving the page resets both", async () => {
