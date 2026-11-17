@@ -8,6 +8,7 @@
 - The header icon (mdi:calendar-clock) shows the status by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the filters, on both cards, day and night.
 - The mini card gets the illustrated banner too, with the next action on its sky and its detail button at the top right, above its list of next actions.
 - The "now" hint reads « Red line = now », in every language.
+- A status pill right after the title, in the header icon's colour: *Running*, *Idle* or *No schedule* (under the statistics on a narrow card, only its dot below 200 px), on the full and mini cards, with or without the illustration. The mini card's detail button is the small frosted round button in the banner's top right corner.
 
 ## 1.0.0 - 2026-11-16
 

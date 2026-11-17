@@ -97,6 +97,9 @@ const STRINGS = {
     err_save: "Could not save: {error}",
     zoom_in: "Show the full card",
     zoom_out: "Back to the compact view",
+    status_active: "Running",
+    status_idle: "Idle",
+    status_warn: "No schedule",
     title: "Title",
     illustration: "Illustration",
     illustration_theme: "Illustration theme",
@@ -180,6 +183,9 @@ const STRINGS = {
     err_save: "Enregistrement impossible : {error}",
     zoom_in: "Afficher la carte complète",
     zoom_out: "Revenir à la vue compacte",
+    status_active: "En cours",
+    status_idle: "Au repos",
+    status_warn: "Aucune planification",
     title: "Titre",
     illustration: "Illustration",
     illustration_theme: "Thème de l'illustration",
@@ -263,6 +269,9 @@ const STRINGS = {
     err_save: "Speichern fehlgeschlagen: {error}",
     zoom_in: "Vollständige Karte anzeigen",
     zoom_out: "Zurück zur kompakten Ansicht",
+    status_active: "Läuft",
+    status_idle: "Inaktiv",
+    status_warn: "Kein Zeitplan",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Thema der Illustration",
@@ -346,6 +355,9 @@ const STRINGS = {
     err_save: "No se ha podido guardar: {error}",
     zoom_in: "Mostrar la tarjeta completa",
     zoom_out: "Volver a la vista compacta",
+    status_active: "En curso",
+    status_idle: "En reposo",
+    status_warn: "Sin programación",
     title: "Título",
     illustration: "Ilustración",
     illustration_theme: "Tema de la ilustración",
@@ -431,6 +443,9 @@ const STRINGS = {
     err_save: "Чување није успело: {error}",
     zoom_in: "Прикажи целу картицу",
     zoom_out: "Назад на компактни приказ",
+    status_active: "У току",
+    status_idle: "Мирује",
+    status_warn: "Нема распореда",
     title: "Наслов",
     illustration: "Илустрација",
     illustration_theme: "Тема илустрације",
@@ -516,6 +531,9 @@ const STRINGS = {
     err_save: "Čuvanje nije uspelo: {error}",
     zoom_in: "Prikaži celu karticu",
     zoom_out: "Nazad na kompaktni prikaz",
+    status_active: "U toku",
+    status_idle: "Miruje",
+    status_warn: "Nema rasporeda",
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
@@ -599,6 +617,9 @@ const STRINGS = {
     err_save: "Salvataggio non riuscito: {error}",
     zoom_in: "Mostra la scheda completa",
     zoom_out: "Torna alla vista compatta",
+    status_active: "In corso",
+    status_idle: "A riposo",
+    status_warn: "Nessuna pianificazione",
     title: "Titolo",
     illustration: "Illustrazione",
     illustration_theme: "Tema dell'illustrazione",
@@ -682,6 +703,9 @@ const STRINGS = {
     err_save: "Opslaan mislukt: {error}",
     zoom_in: "Volledige kaart tonen",
     zoom_out: "Terug naar de compacte weergave",
+    status_active: "Actief",
+    status_idle: "Inactief",
+    status_warn: "Geen schema",
     title: "Titel",
     illustration: "Illustratie",
     illustration_theme: "Thema van de illustratie",
@@ -765,6 +789,9 @@ const STRINGS = {
     err_save: "Não foi possível guardar: {error}",
     zoom_in: "Mostrar o cartão completo",
     zoom_out: "Voltar à vista compacta",
+    status_active: "Em curso",
+    status_idle: "Inativo",
+    status_warn: "Sem agendamento",
     title: "Título",
     illustration: "Ilustração",
     illustration_theme: "Tema da ilustração",
@@ -852,6 +879,9 @@ const STRINGS = {
     err_save: "Nie udało się zapisać: {error}",
     zoom_in: "Pokaż pełną kartę",
     zoom_out: "Wróć do widoku kompaktowego",
+    status_active: "W toku",
+    status_idle: "Bezczynny",
+    status_warn: "Brak harmonogramu",
     title: "Tytuł",
     illustration: "Ilustracja",
     illustration_theme: "Motyw ilustracji",
@@ -937,6 +967,9 @@ const STRINGS = {
     err_save: "Salvarea a eșuat: {error}",
     zoom_in: "Afișează cardul complet",
     zoom_out: "Înapoi la vizualizarea compactă",
+    status_active: "În curs",
+    status_idle: "Inactiv",
+    status_warn: "Niciun program",
     title: "Titlu",
     illustration: "Ilustrație",
     illustration_theme: "Tema ilustrației",
@@ -1020,6 +1053,9 @@ const STRINGS = {
     err_save: "Kunne ikke gemme: {error}",
     zoom_in: "Vis hele kortet",
     zoom_out: "Tilbage til kompakt visning",
+    status_active: "Kører",
+    status_idle: "Inaktiv",
+    status_warn: "Ingen tidsplan",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
@@ -1103,6 +1139,9 @@ const STRINGS = {
     err_save: "Kunde inte spara: {error}",
     zoom_in: "Visa hela kortet",
     zoom_out: "Tillbaka till kompakt vy",
+    status_active: "Pågår",
+    status_idle: "Vilande",
+    status_warn: "Inget schema",
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
@@ -1186,6 +1225,9 @@ const STRINGS = {
     err_save: "Неуспешно запазване: {error}",
     zoom_in: "Покажи цялата карта",
     zoom_out: "Назад към компактния изглед",
+    status_active: "Изпълнява се",
+    status_idle: "Неактивно",
+    status_warn: "Няма график",
     title: "Заглавие",
     illustration: "Илюстрация",
     illustration_theme: "Тема на илюстрацията",
@@ -1273,6 +1315,9 @@ const STRINGS = {
     err_save: "Не удалось сохранить: {error}",
     zoom_in: "Показать полную карточку",
     zoom_out: "Назад к компактному виду",
+    status_active: "Выполняется",
+    status_idle: "Неактивно",
+    status_warn: "Нет расписания",
     title: "Заголовок",
     illustration: "Иллюстрация",
     illustration_theme: "Тема иллюстрации",
@@ -1360,6 +1405,9 @@ const STRINGS = {
     err_save: "Не вдалося зберегти: {error}",
     zoom_in: "Показати повну картку",
     zoom_out: "Назад до компактного вигляду",
+    status_active: "Виконується",
+    status_idle: "Неактивно",
+    status_warn: "Немає розкладу",
     title: "Заголовок",
     illustration: "Ілюстрація",
     illustration_theme: "Тема ілюстрації",
@@ -1443,6 +1491,9 @@ const STRINGS = {
     err_save: "A mentés nem sikerült: {error}",
     zoom_in: "Teljes kártya megjelenítése",
     zoom_out: "Vissza a kompakt nézethez",
+    status_active: "Fut",
+    status_idle: "Tétlen",
+    status_warn: "Nincs ütemezés",
     title: "Cím",
     illustration: "Illusztráció",
     illustration_theme: "Az illusztráció témája",
@@ -1530,6 +1581,9 @@ const STRINGS = {
     err_save: "Uloženie zlyhalo: {error}",
     zoom_in: "Zobraziť celú kartu",
     zoom_out: "Späť na kompaktné zobrazenie",
+    status_active: "Prebieha",
+    status_idle: "Nečinné",
+    status_warn: "Žiadny plán",
     title: "Názov",
     illustration: "Ilustrácia",
     illustration_theme: "Téma ilustrácie",
@@ -1617,6 +1671,9 @@ const STRINGS = {
     err_save: "Uložení se nezdařilo: {error}",
     zoom_in: "Zobrazit celou kartu",
     zoom_out: "Zpět na kompaktní zobrazení",
+    status_active: "Probíhá",
+    status_idle: "Nečinné",
+    status_warn: "Žádný plán",
     title: "Název",
     illustration: "Ilustrace",
     illustration_theme: "Motiv ilustrace",
@@ -1704,6 +1761,9 @@ const STRINGS = {
     err_save: "Shranjevanje ni uspelo: {error}",
     zoom_in: "Prikaži celotno kartico",
     zoom_out: "Nazaj na strnjen prikaz",
+    status_active: "Poteka",
+    status_idle: "Nedejavno",
+    status_warn: "Ni urnika",
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
@@ -1789,6 +1849,9 @@ const STRINGS = {
     err_save: "Neizdevās saglabāt: {error}",
     zoom_in: "Rādīt pilno kartīti",
     zoom_out: "Atpakaļ uz kompakto skatu",
+    status_active: "Darbojas",
+    status_idle: "Dīkstāvē",
+    status_warn: "Nav grafika",
     title: "Virsraksts",
     illustration: "Ilustrācija",
     illustration_theme: "Ilustrācijas tēma",
@@ -1872,6 +1935,9 @@ const STRINGS = {
     err_save: "Η αποθήκευση απέτυχε: {error}",
     zoom_in: "Εμφάνιση πλήρους κάρτας",
     zoom_out: "Επιστροφή στη συμπαγή προβολή",
+    status_active: "Σε εξέλιξη",
+    status_idle: "Αδρανές",
+    status_warn: "Κανένα πρόγραμμα",
     title: "Τίτλος",
     illustration: "Εικονογράφηση",
     illustration_theme: "Θέμα εικονογράφησης",
@@ -2603,8 +2669,29 @@ const STYLE = `
   .night .badge.st-active { --st: #7fd6d8; }
   .night .badge.st-idle { --st: #a3adba; }
   .badge .icon { width: 24px; height: 24px; }
-  .titles { flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .titles { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; }
+  .titles > * { flex: 1 0 100%; min-width: 0; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* The title, then its status pill 8 px after it, centred on it: the title ellipsises first but keeps about 4
+     characters (48 px), the pill keeps its whole label when it can. Its colour is the header icon's. */
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .name { flex: 0 1000 auto; min-width: 48px; }
+  /* A long label (Greek, Hungarian…) on a short line: once the title is down to its 4 characters, the pill ellipsises. */
+  .chip.status { flex: 0 1 auto; --c: var(--sc-accent); }
+  .chip.status.st-idle { --c: #7d8794; } .chip.status.st-warn { --c: var(--sc-warn); }
+  .night .chip.status.st-active { --c: #7fd6d8; } .night .chip.status.st-idle { --c: #a3adba; }
+  .banner .chip { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .chip { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .chip.status .dot { width: 7px; height: 7px; }
+  /* A narrow card: the title takes its whole line, the pill goes under the statistics; under 200 px only its dot
+     shows, on the title line (its text stays its tooltip and accessible name). */
+  @container (min-width: 201px) and (max-width: 260px) {
+    .trow { display: contents; }
+    .trow .name { flex: 1 0 100%; }
+    .titles > .stats { order: 1; max-height: 16px; }
+    .titles .chip.status { order: 2; margin-top: 2px; }
+  }
+  @container (max-width: 200px) { .chip.status { padding: 5px; } .chip.status .txt { display: none; } }
   /* The statistics on two lines at most: a part that does not fit goes to a third line, clipped away; the "·" that
      starts a line sits in the negative margin, clipped too. */
   .stats { display: flex; flex-wrap: wrap; max-height: 32px; overflow: hidden; margin-left: -10px; font-size: 12px; line-height: 16px; color: var(--sky-muted); }
@@ -2754,15 +2841,22 @@ const MINI_STYLE = `
   ha-card.mini-card.illustrated { padding: 0; }
   .illustrated .banner { --scene-right: 36px; }
   .illustrated .nx { padding: 4px 12px 8px; }
-  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; color: #2f6061; background: rgba(255,255,255,.55);
-                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
-  .banner .zoom:hover { background: rgba(255,255,255,.8); }
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; color: #33506b; background: rgba(255,255,255,.55);
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); backdrop-filter: blur(4px); }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  /* No timeline on a narrow card: the texts end before the detail button. */
+  @container (max-width: 300px) { .illustrated .head { padding-right: 34px; } }
   .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .mini { display: flex; align-items: flex-start; gap: 10px; }
   .mini .badge { background: color-mix(in srgb, var(--st) 16%, transparent); box-shadow: none; }
   .body { flex: 1; min-width: 0; min-height: 40px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
   .mhd { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
+  .mhd .chip.status { flex: 0 0 auto; }
+  .mhd .st { margin-left: auto; }
+  /* Narrow: the next action goes under the title and its pill. */
+  @container (max-width: 260px) { .mhd { flex-wrap: wrap; row-gap: 2px; } .mhd .title { flex: 1 1 0; } .mhd .st { order: 3; flex: 1 0 100%; margin: 0; } }
+  .title { flex: 0 1 auto; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st { flex: 0 1 auto; min-width: 0; font-size: 11px; font-weight: 500; color: var(--sc-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .nx { display: flex; flex-direction: column; }
@@ -2783,7 +2877,10 @@ const MINI_STYLE = `
 // The zoomed mini card: the full card, with the detail button over its banner.
 const ZOOM_STYLE = `
   .zoom { all: unset; position: absolute; z-index: 2; top: 5px; right: 5px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%;
-          display: grid; place-items: center; color: #2f6061; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+          display: grid; place-items: center; color: #33506b; background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+          backdrop-filter: blur(4px); }
+  .zoom:not(.plain):not(.on-night):hover { background: rgba(255,255,255,.75); }
+  .zoom.on-night:hover { background: rgba(255,255,255,.22); }
   .zoom.on-night { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .zoom.plain { color: var(--secondary-text-color); background: none; box-shadow: inset 0 0 0 1px var(--divider-color, rgba(127,127,127,.3)); top: 18px; right: 12px; }
   .zoom .icon { width: 16px; height: 16px; }
@@ -3073,10 +3170,17 @@ class SchedulerCard extends HTMLElement {
     return models.some((m) => this._runningNow(m, now)) ? "active" : "idle";
   }
 
+  // The status pill, in the header icon's colour: a schedule running now, idle, nothing to show.
+  _pill(status) {
+    const label = esc(this._t(`status_${status}`));
+    return `<span class="chip status st-${status}" title="${label}" aria-label="${label}"><span class="dot"></span><span class="txt">${label}</span></span>`;
+  }
+
+  // The header icon, then the title with its status pill right after it, the statistics under them.
   _titleBlock(title, stats, status = "idle") {
     return `<div class="badge st-${status}">${svgIcon(ICONS.calendarClock)}</div>
       <div class="titles">
-        <div class="name">${esc(title)}</div>
+        <div class="trow"><div class="name">${esc(title)}</div>${this._pill(status)}</div>
         ${stats.length ? `<div class="stats">${stats.map((s) => `<span>${esc(s)}</span>`).join("")}</div>` : ""}
       </div>`;
   }
@@ -3805,7 +3909,7 @@ class SchedulerMiniCard extends SchedulerCard {
         <div class="mini">
           <div class="badge st-${this._status(models, now)}">${svgIcon(ICONS.calendarClock)}</div>
           <div class="body">
-            <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
+            <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${this._pill(this._status(models, now))}${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
             <div class="nx">${rows}</div>
           </div>
         </div>

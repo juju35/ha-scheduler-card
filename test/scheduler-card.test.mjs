@@ -421,16 +421,19 @@ test("the illustrated header: today's timeline, the slot running now, the status
   // Monday 17:40: the blinds are open and the living room heating runs its comfort slot: the first two rows, their blocks pulsing.
   const html = card()._render();
   assert.match(html, /class="banner"/);
-  assert.equal((html.match(/class="tr/g) || []).length, 3);
+  assert.equal((html.match(/class="tr[ "]/g) || []).length, 3);
   assert.match(html, /class="tr" style="[^"]*"[^>]*>\s*<span class="ri"><ha-icon icon="mdi:blinds"/);
   assert.equal((html.match(/class="bk on"/g) || []).length, 2);
   assert.match(html, /class="cur" style="left:73\.61%"/);
   assert.match(html, /class="strip g-timeline"/);
   assert.match(html, /class="badge st-active"/);
+  // The status pill right after the title, in the icon's colour.
+  assert.match(html, /<div class="trow"><div class="name">Schedules<\/div><span class="chip status st-active"[^>]*><span class="dot"><\/span><span class="txt">Running</);
   // Nothing running at 01:30: an idle, grey icon.
   const idle = card(sc.SchedulerCard, {}, hassWith({ now: at("01:30") }), at("01:30"))._render();
   assert.ok(!/class="bk on"/.test(idle));
   assert.match(idle, /class="badge st-idle"/);
+  assert.match(idle, /class="chip status st-idle"[^>]*><span class="dot"><\/span><span class="txt">Idle</);
   // No schedule matching the filters: amber.
   assert.match(card(sc.SchedulerCard, { tags: ["none"] })._render(), /class="badge st-warn"/);
   // Two hours before sunset (21:56): the evening sky, unless forced to day.
