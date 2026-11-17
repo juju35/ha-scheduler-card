@@ -14,10 +14,7 @@ const VERSION = "__VERSION__";
 
 // mdi icon paths drawn by the card itself (the schedules' own icons come from their entities, through <ha-icon>).
 const ICONS = {
-  // mdi:timer-outline: the header badge.
-  timer:
-    "M12,20A7,7 0 0,1 5,13A7,7 0 0,1 12,6A7,7 0 0,1 19,13A7,7 0 0,1 12,20M19.03,7.39L20.45,5.97C20,5.46 19.55,5 19.04,4.56L17.62,6C16.07,4.74 14.12,4 12,4A9,9 0 0,0 3,13A9,9 0 0,0 12,22C17,22 21,17.97 21,13C21,10.88 20.26,8.93 19.03,7.39M11,14H13V8H11M15,1H9V3H15V1Z",
-  // mdi:calendar-clock: the Scheduler component's icon, a schedule without an icon of its own.
+  // mdi:calendar-clock: the Scheduler component's icon, the header badge and a schedule without an icon of its own.
   calendarClock:
     "M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z",
   // mdi:arrow-expand and mdi:arrow-collapse: the mini card's detail button.
@@ -3078,7 +3075,7 @@ class SchedulerCard extends HTMLElement {
   }
 
   _titleBlock(title, stats, status = "idle") {
-    return `<div class="badge st-${status}">${svgIcon(ICONS.timer)}</div>
+    return `<div class="badge st-${status}">${svgIcon(ICONS.calendarClock)}</div>
       <div class="titles">
         <div class="name">${esc(title)}</div>
         ${stats.length ? `<div class="stats">${stats.map((s) => `<span>${esc(s)}</span>`).join("")}</div>` : ""}
@@ -3807,7 +3804,7 @@ class SchedulerMiniCard extends SchedulerCard {
     return `<style>${STYLE}${MINI_STYLE}</style>
       <ha-card class="mini-card">
         <div class="mini">
-          <div class="badge st-${this._status(models, now)}">${svgIcon(ICONS.timer)}</div>
+          <div class="badge st-${this._status(models, now)}">${svgIcon(ICONS.calendarClock)}</div>
           <div class="body">
             <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
             <div class="nx">${rows}</div>
