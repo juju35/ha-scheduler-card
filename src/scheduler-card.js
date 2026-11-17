@@ -103,7 +103,7 @@ const STRINGS = {
     title: "Title",
     illustration: "Illustration",
     illustration_theme: "Illustration theme",
-    theme_auto: "Automatic (sun or dark theme)",
+    theme_auto: "Automatic (follows the theme)",
     theme_day: "Day",
     theme_night: "Night",
     show_disabled: "Disabled schedules",
@@ -189,7 +189,7 @@ const STRINGS = {
     title: "Titre",
     illustration: "Illustration",
     illustration_theme: "Thème de l'illustration",
-    theme_auto: "Automatique (soleil ou thème sombre)",
+    theme_auto: "Automatique (suit le thème)",
     theme_day: "Jour",
     theme_night: "Nuit",
     show_disabled: "Plannings désactivés",
@@ -275,7 +275,7 @@ const STRINGS = {
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Thema der Illustration",
-    theme_auto: "Automatisch (Sonne oder dunkles Design)",
+    theme_auto: "Automatisch (folgt dem Design)",
     theme_day: "Tag",
     theme_night: "Nacht",
     show_disabled: "Deaktivierte Zeitpläne",
@@ -361,7 +361,7 @@ const STRINGS = {
     title: "Título",
     illustration: "Ilustración",
     illustration_theme: "Tema de la ilustración",
-    theme_auto: "Automático (sol o tema oscuro)",
+    theme_auto: "Automático (sigue el tema)",
     theme_day: "Día",
     theme_night: "Noche",
     show_disabled: "Programaciones desactivadas",
@@ -449,7 +449,7 @@ const STRINGS = {
     title: "Наслов",
     illustration: "Илустрација",
     illustration_theme: "Тема илустрације",
-    theme_auto: "Аутоматски (сунце или тамна тема)",
+    theme_auto: "Аутоматски (прати тему)",
     theme_day: "Дан",
     theme_night: "Ноћ",
     show_disabled: "Искључени распореди",
@@ -537,7 +537,7 @@ const STRINGS = {
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
-    theme_auto: "Automatski (sunce ili tamna tema)",
+    theme_auto: "Automatski (prati temu)",
     theme_day: "Dan",
     theme_night: "Noć",
     show_disabled: "Isključeni rasporedi",
@@ -623,7 +623,7 @@ const STRINGS = {
     title: "Titolo",
     illustration: "Illustrazione",
     illustration_theme: "Tema dell'illustrazione",
-    theme_auto: "Automatico (sole o tema scuro)",
+    theme_auto: "Automatico (segue il tema)",
     theme_day: "Giorno",
     theme_night: "Notte",
     show_disabled: "Programmazioni disattivate",
@@ -709,7 +709,7 @@ const STRINGS = {
     title: "Titel",
     illustration: "Illustratie",
     illustration_theme: "Thema van de illustratie",
-    theme_auto: "Automatisch (zon of donker thema)",
+    theme_auto: "Automatisch (volgt het thema)",
     theme_day: "Dag",
     theme_night: "Nacht",
     show_disabled: "Uitgeschakelde schema's",
@@ -795,7 +795,7 @@ const STRINGS = {
     title: "Título",
     illustration: "Ilustração",
     illustration_theme: "Tema da ilustração",
-    theme_auto: "Automático (sol ou tema escuro)",
+    theme_auto: "Automático (segue o tema)",
     theme_day: "Dia",
     theme_night: "Noite",
     show_disabled: "Agendamentos desativados",
@@ -885,7 +885,7 @@ const STRINGS = {
     title: "Tytuł",
     illustration: "Ilustracja",
     illustration_theme: "Motyw ilustracji",
-    theme_auto: "Automatycznie (słońce lub ciemny motyw)",
+    theme_auto: "Automatycznie (zgodnie z motywem)",
     theme_day: "Dzień",
     theme_night: "Noc",
     show_disabled: "Wyłączone harmonogramy",
@@ -973,7 +973,7 @@ const STRINGS = {
     title: "Titlu",
     illustration: "Ilustrație",
     illustration_theme: "Tema ilustrației",
-    theme_auto: "Automat (soare sau temă întunecată)",
+    theme_auto: "Automat (urmează tema)",
     theme_day: "Zi",
     theme_night: "Noapte",
     show_disabled: "Programări dezactivate",
@@ -1059,7 +1059,7 @@ const STRINGS = {
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
-    theme_auto: "Automatisk (sol eller mørkt tema)",
+    theme_auto: "Automatisk (følger temaet)",
     theme_day: "Dag",
     theme_night: "Nat",
     show_disabled: "Deaktiverede tidsplaner",
@@ -1145,7 +1145,7 @@ const STRINGS = {
     title: "Titel",
     illustration: "Illustration",
     illustration_theme: "Illustrationens tema",
-    theme_auto: "Automatiskt (sol eller mörkt tema)",
+    theme_auto: "Automatiskt (följer temat)",
     theme_day: "Dag",
     theme_night: "Natt",
     show_disabled: "Inaktiverade scheman",
@@ -1231,7 +1231,7 @@ const STRINGS = {
     title: "Заглавие",
     illustration: "Илюстрация",
     illustration_theme: "Тема на илюстрацията",
-    theme_auto: "Автоматично (слънце или тъмна тема)",
+    theme_auto: "Автоматично (следва темата)",
     theme_day: "Ден",
     theme_night: "Нощ",
     show_disabled: "Изключени графици",
@@ -1321,7 +1321,7 @@ const STRINGS = {
     title: "Заголовок",
     illustration: "Иллюстрация",
     illustration_theme: "Тема иллюстрации",
-    theme_auto: "Автоматически (солнце или тёмная тема)",
+    theme_auto: "Автоматически (по теме)",
     theme_day: "День",
     theme_night: "Ночь",
     show_disabled: "Отключённые расписания",
@@ -1411,7 +1411,7 @@ const STRINGS = {
     title: "Заголовок",
     illustration: "Ілюстрація",
     illustration_theme: "Тема ілюстрації",
-    theme_auto: "Автоматично (сонце або темна тема)",
+    theme_auto: "Автоматично (за темою)",
     theme_day: "День",
     theme_night: "Ніч",
     show_disabled: "Вимкнені розклади",
@@ -1497,7 +1497,7 @@ const STRINGS = {
     title: "Cím",
     illustration: "Illusztráció",
     illustration_theme: "Az illusztráció témája",
-    theme_auto: "Automatikus (nap vagy sötét téma)",
+    theme_auto: "Automatikus (a témát követi)",
     theme_day: "Nappal",
     theme_night: "Éjszaka",
     show_disabled: "Letiltott ütemezések",
@@ -1587,7 +1587,7 @@ const STRINGS = {
     title: "Názov",
     illustration: "Ilustrácia",
     illustration_theme: "Téma ilustrácie",
-    theme_auto: "Automaticky (slnko alebo tmavá téma)",
+    theme_auto: "Automaticky (podľa témy)",
     theme_day: "Deň",
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
@@ -1677,7 +1677,7 @@ const STRINGS = {
     title: "Název",
     illustration: "Ilustrace",
     illustration_theme: "Motiv ilustrace",
-    theme_auto: "Automaticky (slunce nebo tmavý motiv)",
+    theme_auto: "Automaticky (podle motivu)",
     theme_day: "Den",
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
@@ -1767,7 +1767,7 @@ const STRINGS = {
     title: "Naslov",
     illustration: "Ilustracija",
     illustration_theme: "Tema ilustracije",
-    theme_auto: "Samodejno (sonce ali temna tema)",
+    theme_auto: "Samodejno (sledi temi)",
     theme_day: "Dan",
     theme_night: "Noč",
     show_disabled: "Izklopljeni urniki",
@@ -1855,7 +1855,7 @@ const STRINGS = {
     title: "Virsraksts",
     illustration: "Ilustrācija",
     illustration_theme: "Ilustrācijas tēma",
-    theme_auto: "Automātiski (saule vai tumšā tēma)",
+    theme_auto: "Automātiski (atbilstoši tēmai)",
     theme_day: "Diena",
     theme_night: "Nakts",
     show_disabled: "Izslēgtie grafiki",
@@ -1941,7 +1941,7 @@ const STRINGS = {
     title: "Τίτλος",
     illustration: "Εικονογράφηση",
     illustration_theme: "Θέμα εικονογράφησης",
-    theme_auto: "Αυτόματο (ήλιος ή σκούρο θέμα)",
+    theme_auto: "Αυτόματο (ακολουθεί το θέμα)",
     theme_day: "Ημέρα",
     theme_night: "Νύχτα",
     show_disabled: "Απενεργοποιημένα προγράμματα",
@@ -2566,13 +2566,6 @@ const watchOutside = (card, handler) => {
 
 // Every animation of the illustration lasts a divisor of 12 s, so a recording of 12 s loops.
 
-// Day or night: day from sunrise to sunset, night from sunset to the next sunrise (`f`: the share of it gone).
-const skyAt = (min, sun) => {
-  if (min >= sun.rise && min < sun.set) return { night: false, f: (min - sun.rise) / (sun.set - sun.rise) };
-  const len = DAY - (sun.set - sun.rise);
-  return { night: true, f: (((min - sun.set) % DAY) + DAY) % DAY / len };
-};
-
 // The hours written under the timeline.
 const SCENE_HOURS = [0, 6, 12, 18, 24];
 const pctOf = (v) => ((v / DAY) * 100).toFixed(2);
@@ -3083,18 +3076,13 @@ class SchedulerCard extends HTMLElement {
     return this._list;
   }
 
-  // Night illustration: forced by illustration_theme, else Home Assistant's dark mode or the sun below the horizon
-  // (sun.sun), else the hour when sun.sun is missing. Evening: the last two hours before sunset, in automatic mode.
+  // Night illustration: forced by illustration_theme, else Home Assistant's dark mode alone (a light theme keeps the
+  // day picture after sunset). Evening: the last two hours before sunset (sun.sun's times), in automatic mode with a
+  // light theme.
   _sky(now) {
     const sun = sunTimes(this._hass);
-    const sky = skyAt(now.min, sun);
     const mode = this._config.illustration_theme;
-    const state = this._hass?.states?.["sun.sun"]?.state;
-    let night = sky.night;
-    if (mode === "night") night = true;
-    else if (mode === "day") night = false;
-    else if (this._hass?.themes?.darkMode || state === "below_horizon") night = true;
-    else if (state === "above_horizon") night = false;
+    const night = mode === "night" || (mode !== "day" && !!this._hass?.themes?.darkMode);
     const evening = !night && mode !== "day" && now.min >= sun.set - 120 && now.min < sun.set + 60;
     return { night, evening };
   }

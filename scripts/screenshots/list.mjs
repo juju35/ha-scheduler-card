@@ -19,8 +19,8 @@ export const SHOTS = [
   ...pair("card-edit", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]'], min: 520 }),
   // A new schedule.
   ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'] }),
-  // At night: the timeline under a night sky.
-  ...pair("card-night", { tag: "scheduler-card", config: {}, now: at("23:10") }),
+  // At night: the timeline under a night sky (forced: automatic follows the theme alone).
+  ...pair("card-night", { tag: "scheduler-card", config: { illustration_theme: "night" }, now: at("23:10") }),
   // Without the illustration.
   ...pair("card-classic", { tag: "scheduler-card", config: { illustration: false } }),
   // The mini card, and unfolded by its detail button.

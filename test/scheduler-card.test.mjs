@@ -18,7 +18,6 @@ const sc = load([
   "weekdaysPayload",
   "domainActions",
   "discover",
-  "skyAt",
   "zoned",
   "STRINGS",
   "SchedulerCard",
@@ -405,14 +404,12 @@ test("timeline and weekly grid render", () => {
   assert.ok(!/data-slot=/.test(ro._render()) && !/New schedule/.test(card(sc.SchedulerCard, { editable: false })._render()));
 });
 
-test("day and night: the share of the day or the night gone, a night banner", () => {
-  const sun = { rise: 360, set: 1200 };
-  eq(sc.skyAt(360, sun), { night: false, f: 0 });
-  assert.equal(sc.skyAt(780, sun).f, 0.5);
-  assert.equal(sc.skyAt(1200, sun).night, true);
-  assert.equal(sc.skyAt(1200 + 300, sun).f, 0.5);
-  const el = card(sc.SchedulerCard, {}, hassWith({ now: at("23:00") }), at("23:00"));
-  assert.match(el._render(), /class="banner night"/);
+test("day and night: the theme alone makes the night banner, the sun left aside", () => {
+  // After sunset, a light theme keeps the day picture; a dark theme shows the night one.
+  const late = hassWith({ now: at("23:00") });
+  assert.match(card(sc.SchedulerCard, {}, late, at("23:00"))._render(), /class="banner"/);
+  late.themes = { darkMode: true };
+  assert.match(card(sc.SchedulerCard, {}, late, at("23:00"))._render(), /class="banner night"/);
   assert.match(card(sc.SchedulerCard, { illustration_theme: "night" })._render(), /class="banner night"/);
   assert.ok(!/class="banner/.test(card(sc.SchedulerCard, { illustration: false })._render()));
 });
