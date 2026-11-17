@@ -19,7 +19,7 @@ export const SHOTS = [
   ...pair("card-edit", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]'], min: 520 }),
   // A new schedule.
   ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'] }),
-  // At night: the moon on its arc, a night sky.
+  // At night: the timeline under a night sky.
   ...pair("card-night", { tag: "scheduler-card", config: {}, now: at("23:10") }),
   // Without the illustration.
   ...pair("card-classic", { tag: "scheduler-card", config: { illustration: false } }),
@@ -29,8 +29,8 @@ export const SHOTS = [
 ];
 
 export const GIFS = [
-  // The sun along its arc through the day, then the moon through the night.
-  ...pair("sun-cycle"),
+  // The timeline through the day: its "now" cursor moving, the running slots pulsing, day, evening and night skies.
+  ...pair("day-cycle"),
   // Today's timeline → a schedule's weekly grid → another schedule's tab → back.
   ...pair("view-switch"),
 ];

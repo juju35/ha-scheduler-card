@@ -7,14 +7,17 @@
  * attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `next_slot`, `next_trigger`, `tags`),
  * enabled and disabled with `switch.turn_on` / `switch.turn_off`, edited with the `scheduler.add`, `scheduler.edit`
  * and `scheduler.remove` services from the full schedule returned by the `scheduler` and `scheduler/item` websocket
- * commands. Everything is drawn under an illustrated banner whose sun follows the time of day.
+ * commands. Everything is drawn under an illustrated banner showing today's timeline and a "now" cursor.
  */
 
 const VERSION = "__VERSION__";
 
 // mdi icon paths drawn by the card itself (the schedules' own icons come from their entities, through <ha-icon>).
 const ICONS = {
-  // mdi:calendar-clock: the Scheduler component's icon, the header badge.
+  // mdi:timer-outline: the header badge.
+  timer:
+    "M12,20A7,7 0 0,1 5,13A7,7 0 0,1 12,6A7,7 0 0,1 19,13A7,7 0 0,1 12,20M19.03,7.39L20.45,5.97C20,5.46 19.55,5 19.04,4.56L17.62,6C16.07,4.74 14.12,4 12,4A9,9 0 0,0 3,13A9,9 0 0,0 12,22C17,22 21,17.97 21,13C21,10.88 20.26,8.93 19.03,7.39M11,14H13V8H11M15,1H9V3H15V1Z",
+  // mdi:calendar-clock: the Scheduler component's icon, a schedule without an icon of its own.
   calendarClock:
     "M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z",
   // mdi:arrow-expand and mdi:arrow-collapse: the mini card's detail button.
@@ -33,7 +36,7 @@ const STRINGS = {
     enabled_other: "{n} enabled",
     disabled_one: "{n} disabled",
     disabled_other: "{n} disabled",
-    now_hint: "White line = now",
+    now_hint: "Red line = now",
     next_time: "Next {time}",
     new_schedule: "New schedule",
     state_disabled: "Disabled",
@@ -116,7 +119,7 @@ const STRINGS = {
     enabled_other: "{n} activés",
     disabled_one: "{n} désactivé",
     disabled_other: "{n} désactivés",
-    now_hint: "Trait blanc = maintenant",
+    now_hint: "Trait rouge = maintenant",
     next_time: "Prochain {time}",
     new_schedule: "Nouveau planning",
     state_disabled: "Désactivé",
@@ -199,7 +202,7 @@ const STRINGS = {
     enabled_other: "{n} aktiv",
     disabled_one: "{n} deaktiviert",
     disabled_other: "{n} deaktiviert",
-    now_hint: "Weiße Linie = jetzt",
+    now_hint: "Rote Linie = jetzt",
     next_time: "Nächste {time}",
     new_schedule: "Neuer Zeitplan",
     state_disabled: "Deaktiviert",
@@ -282,7 +285,7 @@ const STRINGS = {
     enabled_other: "{n} activadas",
     disabled_one: "{n} desactivada",
     disabled_other: "{n} desactivadas",
-    now_hint: "Línea blanca = ahora",
+    now_hint: "Línea roja = ahora",
     next_time: "Próxima {time}",
     new_schedule: "Nueva programación",
     state_disabled: "Desactivada",
@@ -367,7 +370,7 @@ const STRINGS = {
     disabled_one: "{n} искључен",
     disabled_few: "{n} искључена",
     disabled_other: "{n} искључених",
-    now_hint: "Бела линија = сада",
+    now_hint: "Црвена линија = сада",
     next_time: "Следеће {time}",
     new_schedule: "Нови распоред",
     state_disabled: "Искључен",
@@ -452,7 +455,7 @@ const STRINGS = {
     disabled_one: "{n} isključen",
     disabled_few: "{n} isključena",
     disabled_other: "{n} isključenih",
-    now_hint: "Bela linija = sada",
+    now_hint: "Crvena linija = sada",
     next_time: "Sledeće {time}",
     new_schedule: "Novi raspored",
     state_disabled: "Isključen",
@@ -535,7 +538,7 @@ const STRINGS = {
     enabled_other: "{n} attive",
     disabled_one: "{n} disattivata",
     disabled_other: "{n} disattivate",
-    now_hint: "Linea bianca = adesso",
+    now_hint: "Linea rossa = adesso",
     next_time: "Prossima {time}",
     new_schedule: "Nuova programmazione",
     state_disabled: "Disattivata",
@@ -618,7 +621,7 @@ const STRINGS = {
     enabled_other: "{n} actief",
     disabled_one: "{n} uitgeschakeld",
     disabled_other: "{n} uitgeschakeld",
-    now_hint: "Witte lijn = nu",
+    now_hint: "Rode lijn = nu",
     next_time: "Volgende {time}",
     new_schedule: "Nieuw schema",
     state_disabled: "Uitgeschakeld",
@@ -701,7 +704,7 @@ const STRINGS = {
     enabled_other: "{n} ativos",
     disabled_one: "{n} desativado",
     disabled_other: "{n} desativados",
-    now_hint: "Linha branca = agora",
+    now_hint: "Linha vermelha = agora",
     next_time: "Próximo {time}",
     new_schedule: "Novo agendamento",
     state_disabled: "Desativado",
@@ -788,7 +791,7 @@ const STRINGS = {
     disabled_few: "{n} wyłączone",
     disabled_many: "{n} wyłączonych",
     disabled_other: "{n} wyłączonego",
-    now_hint: "Biała linia = teraz",
+    now_hint: "Czerwona linia = teraz",
     next_time: "Następne {time}",
     new_schedule: "Nowy harmonogram",
     state_disabled: "Wyłączony",
@@ -873,7 +876,7 @@ const STRINGS = {
     disabled_one: "{n} dezactivată",
     disabled_few: "{n} dezactivate",
     disabled_other: "{n} de dezactivate",
-    now_hint: "Linia albă = acum",
+    now_hint: "Linia roșie = acum",
     next_time: "Următoarea {time}",
     new_schedule: "Programare nouă",
     state_disabled: "Dezactivată",
@@ -956,7 +959,7 @@ const STRINGS = {
     enabled_other: "{n} aktive",
     disabled_one: "{n} deaktiveret",
     disabled_other: "{n} deaktiverede",
-    now_hint: "Hvid streg = nu",
+    now_hint: "Rød streg = nu",
     next_time: "Næste {time}",
     new_schedule: "Ny tidsplan",
     state_disabled: "Deaktiveret",
@@ -1039,7 +1042,7 @@ const STRINGS = {
     enabled_other: "{n} aktiva",
     disabled_one: "{n} inaktiverat",
     disabled_other: "{n} inaktiverade",
-    now_hint: "Vit linje = nu",
+    now_hint: "Röd linje = nu",
     next_time: "Nästa {time}",
     new_schedule: "Nytt schema",
     state_disabled: "Inaktiverat",
@@ -1122,7 +1125,7 @@ const STRINGS = {
     enabled_other: "{n} активни",
     disabled_one: "{n} изключен",
     disabled_other: "{n} изключени",
-    now_hint: "Бяла линия = сега",
+    now_hint: "Червена линия = сега",
     next_time: "Следващо {time}",
     new_schedule: "Нов график",
     state_disabled: "Изключен",
@@ -1209,7 +1212,7 @@ const STRINGS = {
     disabled_few: "{n} отключено",
     disabled_many: "{n} отключено",
     disabled_other: "{n} отключено",
-    now_hint: "Белая линия = сейчас",
+    now_hint: "Красная линия = сейчас",
     next_time: "Следующее {time}",
     new_schedule: "Новое расписание",
     state_disabled: "Отключено",
@@ -1296,7 +1299,7 @@ const STRINGS = {
     disabled_few: "{n} вимкнено",
     disabled_many: "{n} вимкнено",
     disabled_other: "{n} вимкнено",
-    now_hint: "Біла лінія = зараз",
+    now_hint: "Червона лінія = зараз",
     next_time: "Наступне {time}",
     new_schedule: "Новий розклад",
     state_disabled: "Вимкнено",
@@ -1379,7 +1382,7 @@ const STRINGS = {
     enabled_other: "{n} engedélyezve",
     disabled_one: "{n} letiltva",
     disabled_other: "{n} letiltva",
-    now_hint: "Fehér vonal = most",
+    now_hint: "Piros vonal = most",
     next_time: "Következő {time}",
     new_schedule: "Új ütemezés",
     state_disabled: "Letiltva",
@@ -1466,7 +1469,7 @@ const STRINGS = {
     disabled_few: "{n} vypnuté",
     disabled_many: "{n} vypnutých",
     disabled_other: "{n} vypnutých",
-    now_hint: "Biela čiara = teraz",
+    now_hint: "Červená čiara = teraz",
     next_time: "Ďalšie {time}",
     new_schedule: "Nový plán",
     state_disabled: "Vypnutý",
@@ -1553,7 +1556,7 @@ const STRINGS = {
     disabled_few: "{n} vypnuté",
     disabled_many: "{n} vypnutých",
     disabled_other: "{n} vypnutých",
-    now_hint: "Bílá čára = teď",
+    now_hint: "Červená čára = teď",
     next_time: "Další {time}",
     new_schedule: "Nový plán",
     state_disabled: "Vypnutý",
@@ -1640,7 +1643,7 @@ const STRINGS = {
     disabled_two: "{n} izklopljena",
     disabled_few: "{n} izklopljeni",
     disabled_other: "{n} izklopljenih",
-    now_hint: "Bela črta = zdaj",
+    now_hint: "Rdeča črta = zdaj",
     next_time: "Naslednje {time}",
     new_schedule: "Nov urnik",
     state_disabled: "Izklopljen",
@@ -1725,7 +1728,7 @@ const STRINGS = {
     disabled_zero: "{n} izslēgti",
     disabled_one: "{n} izslēgts",
     disabled_other: "{n} izslēgti",
-    now_hint: "Baltā līnija = tagad",
+    now_hint: "Sarkanā līnija = tagad",
     next_time: "Nākamais {time}",
     new_schedule: "Jauns grafiks",
     state_disabled: "Izslēgts",
@@ -1808,7 +1811,7 @@ const STRINGS = {
     enabled_other: "{n} ενεργά",
     disabled_one: "{n} ανενεργό",
     disabled_other: "{n} ανενεργά",
-    now_hint: "Λευκή γραμμή = τώρα",
+    now_hint: "Κόκκινη γραμμή = τώρα",
     next_time: "Επόμενο {time}",
     new_schedule: "Νέο πρόγραμμα",
     state_disabled: "Απενεργοποιημένο",
@@ -2488,64 +2491,46 @@ const watchOutside = (card, handler) => {
 };
 
 // ---------------------------------------------------------------------------
-// The illustration: the sun (or the moon) on its arc, at the real time of day
+// The illustration: today's timeline of the schedules, with a "now" cursor
 // ---------------------------------------------------------------------------
 
 // Every animation of the illustration lasts a divisor of 12 s, so a recording of 12 s loops.
-// The arc, a quadratic curve from the sunrise to the sunset corner of a 200 × 80 box.
-const ARC = [
-  [14, 78],
-  [100, -12],
-  [186, 78],
-];
-const arcPoint = (f) => {
-  const u = 1 - f;
-  return [u * u * ARC[0][0] + 2 * u * f * ARC[1][0] + f * f * ARC[2][0], u * u * ARC[0][1] + 2 * u * f * ARC[1][1] + f * f * ARC[2][1]];
-};
-// The arc from its start to `f` (de Casteljau): the path the sun has already gone along.
-const arcTrail = (f) => {
-  const q = [ARC[0][0] + f * (ARC[1][0] - ARC[0][0]), ARC[0][1] + f * (ARC[1][1] - ARC[0][1])];
-  const p = arcPoint(f);
-  return `M14 78 Q${q[0].toFixed(1)} ${q[1].toFixed(1)} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-};
 
-// Where the sun or the moon is: day from sunrise to sunset, night from sunset to the next sunrise.
+// Day or night: day from sunrise to sunset, night from sunset to the next sunrise (`f`: the share of it gone).
 const skyAt = (min, sun) => {
   if (min >= sun.rise && min < sun.set) return { night: false, f: (min - sun.rise) / (sun.set - sun.rise) };
   const len = DAY - (sun.set - sun.rise);
   return { night: true, f: (((min - sun.set) % DAY) + DAY) % DAY / len };
 };
 
-const STARS = [
-  [8, 10, 0.6], [26, 22, 0.5], [44, 8, 0.7], [62, 30, 0.5], [78, 14, 0.6], [98, 6, 0.5], [112, 26, 0.6], [146, 10, 0.7],
-  [160, 24, 0.5], [178, 8, 0.6], [192, 18, 0.5], [124, 16, 0.4], [36, 36, 0.4], [86, 40, 0.4],
-];
+// The hours written under the timeline.
+const SCENE_HOURS = [0, 6, 12, 18, 24];
+const pctOf = (v) => ((v / DAY) * 100).toFixed(2);
 
-const sceneSvg = (sky) => {
-  const f = Math.max(0, Math.min(1, sky.f));
-  const [x, y] = arcPoint(f);
-  const pos = (n) => n.toFixed(1);
-  const rays = [0, 45, 90, 135, 180, 225, 270, 315]
-    .map((deg) => {
-      const r = (deg * Math.PI) / 180;
-      return `<line x1="${pos(Math.cos(r) * 11)}" y1="${pos(Math.sin(r) * 11)}" x2="${pos(Math.cos(r) * 14)}" y2="${pos(Math.sin(r) * 14)}"/>`;
+// One row of the illustration: a schedule's icon in its colour, its track, today's blocks (the one running now
+// pulses), dots for its one-off actions. `rows`: [{ icon, color, on, bits: [{ a, b, c, now } | { at, c }] }].
+const sceneHtml = (rows, nowMin) => {
+  const n = Math.max(1, rows.length);
+  // The rows centred in the 54 px between the top of the scene and the hours.
+  const top0 = 4 + (54 - (n * 18 - 10)) / 2;
+  const rowHtml = rows
+    .map((r, i) => {
+      const bits = r.bits
+        .map((b) =>
+          b.at !== undefined
+            ? `<i class="pt" style="left:${pctOf(b.at)}%;--c:${b.c}"></i>`
+            : `<i class="bk${b.now ? " on" : ""}" style="left:${pctOf(b.a)}%;width:${pctOf(b.b - b.a)}%;--c:${b.c}"></i>`,
+        )
+        .join("");
+      return `<div class="tr${r.on ? "" : " off"}" style="top:${(top0 + i * 18).toFixed(1)}px;--b:${r.color}">
+        <span class="ri"><ha-icon icon="${esc(r.icon)}"></ha-icon></span><span class="tk">${bits}</span></div>`;
     })
     .join("");
-  const body = sky.night
-    ? `<mask id="sc-moon"><rect x="-12" y="-12" width="24" height="24" fill="#fff"/><circle cx="3.6" cy="-2.6" r="6" fill="#000"/></mask>
-       <circle class="glow" r="11" fill="#f3eed2" opacity=".14"/>
-       <circle r="7" fill="#f3eed2" mask="url(#sc-moon)"/>`
-    : `<circle class="glow" r="13" fill="#ffd27a"/>
-       <circle r="8" fill="#ffb300" stroke="#e69500" stroke-width="1.6"/>
-       <g class="rays" stroke="#e69500" stroke-width="1.6" stroke-linecap="round">${rays}</g>`;
-  return `<svg class="scene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">
-    ${sky.night ? `<g class="stars">${STARS.map(([sx, sy, r], i) => `<circle class="${i % 3 === 0 ? "tw" : ""}" cx="${sx}" cy="${sy}" r="${r}"/>`).join("")}</g>` : ""}
-    <path class="cloud" d="M30 22a6 6 0 0 1 1-11.9A8.5 8.5 0 0 1 47 9a5.5 5.5 0 0 1-.6 13z"/>
-    <path class="arc flow" d="M14 78 Q100 -12 186 78"/>
-    <path class="trail" d="${arcTrail(f)}"/>
-    ${sky.night ? "" : `<path class="moon-day" d="M180 30a7 7 0 1 0 7 9a5.5 5.5 0 0 1-7-9z"/>`}
-    <g class="orb" transform="translate(${pos(x)} ${pos(y)})">${body}</g>
-  </svg>`;
+  return `<div class="scene" aria-hidden="true"><div class="in">
+      ${SCENE_HOURS.map((h) => `<span class="gl" style="left:${(h / 24) * 100}%"></span><span class="hr" style="left:${(h / 24) * 100}%">${String(h).padStart(2, "0")}h</span>`).join("")}
+      ${rowHtml}
+      <span class="cur" style="left:${pctOf(nowMin)}%"></span>
+    </div></div>`;
 };
 
 // ---------------------------------------------------------------------------
@@ -2573,27 +2558,53 @@ const STYLE = `
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c); flex: none; }
   .warning { padding: 16px; color: color-mix(in srgb, var(--sc-warn) 40%, var(--primary-text-color, #212121)); }
 
-  /* ── Illustrated header ── */
-  .banner { position: relative; height: var(--banner-h, 92px); overflow: hidden; --strip-h: 12px;
-            --sky-text: #0b3a3b; --sky-muted: #2f6061;
-            background: linear-gradient(90deg, #f1fbfb 0%, #def3f3 34%, #bfe6e7 70%, #a6dadb 100%); }
-  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.78);
-                  background: linear-gradient(90deg, #163a44 0%, #12323c 36%, #0d2832 72%, #091e27 100%); }
+  /* ── Illustrated header: 90 px, the title on the sky at the left, today's timeline at the right, a ruler strip ── */
+  .banner { position: relative; height: var(--banner-h, 90px); overflow: hidden; --strip-h: 10px;
+            --sky-text: #16263a; --sky-muted: #4a5a6e; --tk: #e3e9f0; --gl: #dbe2ea; --hr: #8e98a4; --ri: #ffffff;
+            background: linear-gradient(90deg, #f7f9fc 0%, #f1f4f8 40%, #e8eef5 100%); }
+  /* Evening: the last two hours before sunset, a warmer sky. */
+  .banner.evening { --sky-text: #3a2414; --sky-muted: #7a5236; --tk: #f1e2d4; --gl: #ecd9c6; --hr: #a08068;
+                    background: linear-gradient(90deg, #fcf6ef 0%, #f8ecdf 40%, #f2dcc7 100%); }
+  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.78); --tk: #252e3f; --gl: #2a3446; --hr: #7d8793; --ri: #2a3446;
+                  background: linear-gradient(90deg, #222a3a 0%, #1c2230 45%, #161b27 100%); }
   .banner .scene { position: absolute; right: 0; bottom: var(--strip-h); height: calc(100% - var(--strip-h));
-                   width: min(calc((var(--banner-h, 92px) - var(--strip-h)) * 2.5), var(--scene-max, 58%)); overflow: hidden; }
-  /* The bottom strip: today's slots of the enabled schedules, and a white "now" marker. */
-  .strip { position: absolute; left: 0; right: 0; bottom: 0; height: var(--strip-h); background: #8f9aa6; overflow: hidden;
-           box-shadow: inset 0 1px 0 #7a8591, inset 0 -1px 0 #7a8591; }
-  .night .strip { background: #2c3a44; box-shadow: inset 0 1px 0 #1f2a32, inset 0 -1px 0 #1f2a32; }
-  .strip .s { position: absolute; top: 4px; height: 4px; border-radius: 2px; background: var(--b); }
-  .strip .p { position: absolute; top: 3px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--b); }
-  .strip .now { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #ffffff; }
+                   width: min(calc((var(--banner-h, 90px) - var(--strip-h)) * 2.5), var(--scene-max, 58%)); overflow: hidden; }
+  /* The timeline's tracks (0 to 24 h), the icons in a column at their left. */
+  .scene .in { position: absolute; top: 0; bottom: 0; right: var(--scene-right, 8px); width: 112px; }
+  .scene .gl { position: absolute; top: 6px; bottom: 12px; width: 1px; margin-left: -.5px; background: var(--gl); }
+  .scene .hr { position: absolute; bottom: 1px; transform: translateX(-50%); font-size: 8px; line-height: 10px; color: var(--hr); white-space: nowrap; }
+  .scene .hr:last-of-type { transform: translateX(-80%); }
+  .scene .tr { position: absolute; left: 0; right: 0; height: 8px; }
+  .scene .tk { position: absolute; inset: 0; border-radius: 4px; background: var(--tk); }
+  .scene .bk { position: absolute; top: 0; height: 8px; min-width: 4px; border-radius: 4px; background: var(--c, var(--b)); opacity: .45; }
+  .scene .bk.on { opacity: 1; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--c, var(--b)) 35%, transparent); }
+  .scene .pt { position: absolute; top: 1px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--c, var(--b)); opacity: .7; }
+  .scene .ri { position: absolute; left: -20px; top: -4px; width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%;
+               display: grid; place-items: center; color: var(--b); background: var(--ri); box-shadow: inset 0 0 0 1px var(--b); }
+  .scene .ri ha-icon { --mdc-icon-size: 9px; display: flex; }
+  .scene .tr.off { --b: #9aa3ae; }
+  .scene .tr.off .bk, .scene .tr.off .pt { --c: #9aa3ae; }
+  .scene .tr.off .ri { opacity: .7; }
+  .scene .cur { position: absolute; top: 6px; bottom: 11px; width: 1.5px; margin-left: -.75px; background: #e5484d; }
+  .scene .cur::before { content: ""; position: absolute; top: -2.5px; left: -2px; width: 5.5px; height: 5.5px; border-radius: 50%; background: #e5484d; }
+  /* The bottom strip: a ruler of the day, its hours ticked, under a blue line. */
+  .strip { position: absolute; left: 0; right: 0; bottom: 0; height: var(--strip-h); overflow: hidden; }
+  .g-timeline { background: #dfe5ee; background-image: repeating-linear-gradient(90deg, #8a95a5 0 1px, transparent 1px 8px),
+                repeating-linear-gradient(90deg, #5f6b7a 0 1.5px, transparent 1.5px 48px);
+                background-size: 100% 4px, 100% 7px; background-repeat: no-repeat; box-shadow: inset 0 2px 0 #2f80ed; }
+  .night .g-timeline { background-color: #2a3242; box-shadow: inset 0 2px 0 #2f80ed; }
+  .evening .g-timeline { background-color: #eadfd3; }
   .head { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--strip-h); box-sizing: border-box;
-          right: min(calc((var(--banner-h, 92px) - var(--strip-h)) * 2.5), var(--scene-max, 58%));
+          right: min(calc((var(--banner-h, 90px) - var(--strip-h)) * 2.5), var(--scene-max, 58%));
           display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; min-width: 0; color: var(--sky-text); }
-  .badge { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; color: var(--sc-accent);
-           background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px rgba(15,139,141,.2); }
-  .night .badge { background: rgba(255,255,255,.12); color: #7fd6d8; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  /* The header icon: its colour is the status (a schedule running now, idle, nothing to show). */
+  .badge { --st: var(--sc-accent); width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; color: var(--st);
+           background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--st) 22%, transparent); }
+  .badge.st-idle { --st: #7d8794; }
+  .badge.st-warn { --st: var(--sc-warn); }
+  .night .badge { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .night .badge.st-active { --st: #7fd6d8; }
+  .night .badge.st-idle { --st: #a3adba; }
   .badge .icon { width: 24px; height: 24px; }
   .titles { flex: 1 1 0; min-width: 0; overflow: hidden; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2602,32 +2613,18 @@ const STYLE = `
   .stats { display: flex; flex-wrap: wrap; max-height: 32px; overflow: hidden; margin-left: -10px; font-size: 12px; line-height: 16px; color: var(--sky-muted); }
   .stats span { white-space: nowrap; }
   .stats span::before { content: "·"; display: inline-block; width: 10px; text-align: center; }
-  /* Scenery colours, day and night. */
-  .scene .cloud { fill: #ffffff; opacity: .9; }
-  .night .scene .cloud { opacity: .1; }
-  .scene .arc { fill: none; stroke: #5aa9aa; stroke-width: 1.6; stroke-dasharray: 2 5; }
-  .night .scene .arc { stroke: rgba(255,255,255,.32); }
-  .scene .trail { fill: none; stroke: var(--sc-accent); stroke-width: 2.2; stroke-linecap: round; }
-  .night .scene .trail { stroke: #7fd6d8; opacity: .7; }
-  .scene .moon-day { fill: #ffffff; stroke: #7a8794; stroke-width: 1.2; opacity: .8; }
-  .scene .stars { fill: #ffffff; opacity: .85; }
   /* ── Animations (each one a divisor of 12 s) ── */
-  .scene .flow { animation: sc-flow 2.4s linear infinite; }
-  .scene .glow { animation: sc-glow 3s ease-in-out infinite; }
-  .scene .cloud { animation: sc-drift 3s ease-in-out infinite alternate; }
-  .scene .stars .tw { animation: sc-twinkle 4s ease-in-out infinite; }
-  .scene .stars .tw:nth-child(2n) { animation-delay: -2s; }
-  @keyframes sc-flow { to { stroke-dashoffset: -14; } }
-  @keyframes sc-glow { 0%, 100% { opacity: .35; } 50% { opacity: .8; } }
-  @keyframes sc-drift { from { transform: translateX(0); } to { transform: translateX(8px); } }
-  @keyframes sc-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .scene .bk.on { animation: sc-pulse 2s ease-in-out infinite; }
+  .scene .cur::before { animation: sc-beat 2s ease-in-out infinite; }
+  @keyframes sc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .62; } }
+  @keyframes sc-beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
   /* Switching views: the new view slides in. */
   .view { animation: sc-in .3s ease-out; }
   @keyframes sc-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .scene *, .view { animation: none !important; }
+    .scene *, .scene *::before, .view { animation: none !important; }
   }
-  /* A narrow card keeps the sky and the strip for its texts: no scenery. */
+  /* A narrow card keeps the sky and the strip for its texts: no timeline. */
   @container (max-width: 300px) {
     .banner .scene { display: none; }
     .head { right: 0; }
@@ -2635,7 +2632,7 @@ const STYLE = `
 
   /* ── Classic header (illustration: false) ── */
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 14px 8px; }
-  .header .badge { color: var(--sc-accent); background: color-mix(in srgb, var(--sc-accent) 16%, transparent); box-shadow: none; }
+  .header .badge { background: color-mix(in srgb, var(--st) 16%, transparent); box-shadow: none; }
   .header .stats { color: var(--secondary-text-color); }
 
   /* ── Chips line under the header ── */
@@ -2753,11 +2750,19 @@ const STYLE = `
   .mfoot .grow { flex: 1 1 auto; }
 `;
 
-// The mini card: badge, title, next action, detail button, then the next actions.
+// The mini card: the same 90 px banner (title and next action on the sky, today's timeline, the detail button at
+// the top right), then the next actions; without the illustration, badge, title, next action and detail button.
 const MINI_STYLE = `
   ha-card.mini-card { padding: 12px; }
+  ha-card.mini-card.illustrated { padding: 0; }
+  .illustrated .banner { --scene-right: 36px; }
+  .illustrated .nx { padding: 4px 12px 8px; }
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; color: #2f6061; background: rgba(255,255,255,.55);
+                  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); }
+  .banner .zoom:hover { background: rgba(255,255,255,.8); }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .mini { display: flex; align-items: flex-start; gap: 10px; }
-  .mini .badge { color: var(--sc-accent); background: color-mix(in srgb, var(--sc-accent) 16%, transparent); box-shadow: none; }
+  .mini .badge { background: color-mix(in srgb, var(--st) 16%, transparent); box-shadow: none; }
   .body { flex: 1; min-width: 0; min-height: 40px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
   .mhd { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
@@ -2786,7 +2791,8 @@ const ZOOM_STYLE = `
   .zoom.plain { color: var(--secondary-text-color); background: none; box-shadow: inset 0 0 0 1px var(--divider-color, rgba(127,127,127,.3)); top: 18px; right: 12px; }
   .zoom .icon { width: 16px; height: 16px; }
   .header { position: relative; padding-right: 48px; }
-  .scene .moon-day { display: none; }
+  /* The timeline steps aside for the detail button. */
+  .banner { --scene-right: 36px; }
 `;
 
 // ---------------------------------------------------------------------------
@@ -2953,9 +2959,11 @@ class SchedulerCard extends HTMLElement {
     return this._list;
   }
 
-  // Night illustration: forced by illustration_theme, else the sun below the horizon (sun.sun), else the hour.
+  // Night illustration: forced by illustration_theme, else the sun below the horizon (sun.sun), else Home Assistant's
+  // dark mode, else the hour. Evening: the last two hours before sunset, in automatic mode.
   _sky(now) {
-    const sky = skyAt(now.min, sunTimes(this._hass));
+    const sun = sunTimes(this._hass);
+    const sky = skyAt(now.min, sun);
     const mode = this._config.illustration_theme;
     const state = this._hass?.states?.["sun.sun"]?.state;
     let night = sky.night;
@@ -2963,9 +2971,9 @@ class SchedulerCard extends HTMLElement {
     else if (mode === "day") night = false;
     else if (state === "below_horizon") night = true;
     else if (state === "above_horizon") night = false;
-    if (night === sky.night) return sky;
-    // Forced: the body stays where it would be, on the other half of the cycle.
-    return { night, f: night ? 0.5 : sky.f };
+    else if (this._hass?.themes?.darkMode) night = true;
+    const evening = !night && mode !== "day" && now.min >= sun.set - 120 && now.min < sun.set + 60;
+    return { night, evening };
   }
 
   // A minute of the day in Home Assistant's 12/24 h setting.
@@ -3047,29 +3055,61 @@ class SchedulerCard extends HTMLElement {
 
   // ── Header ──
 
-  _banner(inner, now, strip) {
+  _banner(inner, now, rows) {
     const sky = this._sky(now);
-    return `<div class="banner${sky.night ? " night" : ""}">
-      ${sceneSvg(sky)}
-      <div class="strip">${strip}<span class="now" style="left:${((now.min / DAY) * 100).toFixed(2)}%"></span></div>
+    return `<div class="banner${sky.night ? " night" : sky.evening ? " evening" : ""}">
+      ${sceneHtml(rows, now.min)}
+      <div class="strip g-timeline"></div>
       ${inner}
     </div>`;
   }
 
-  _titleBlock(title, stats) {
-    return `<div class="badge">${svgIcon(ICONS.calendarClock)}</div>
+  // Today's spans of an enabled schedule that hold the current minute (its background value left out): what the
+  // illustration pulses, and what makes the header icon "active".
+  _runningNow(m, now) {
+    if (!m.enabled || !runsOn(m.weekdays, now.wd, this._hass, true)) return false;
+    return daySegments(m).spans.some((sp) => m.infos.get(sp.slot.i)?.key !== m.def && now.min >= sp.a && now.min < sp.b);
+  }
+
+  // The header icon's status: a schedule running now (accent), idle (grey), nothing to show (amber).
+  _status(models, now) {
+    if (!models.length) return "warn";
+    return models.some((m) => this._runningNow(m, now)) ? "active" : "idle";
+  }
+
+  _titleBlock(title, stats, status = "idle") {
+    return `<div class="badge st-${status}">${svgIcon(ICONS.timer)}</div>
       <div class="titles">
         <div class="name">${esc(title)}</div>
         ${stats.length ? `<div class="stats">${stats.map((s) => `<span>${esc(s)}</span>`).join("")}</div>` : ""}
       </div>`;
   }
 
-  _header(title, stats, now, strip = "") {
-    if (this._config.illustration === false) return `<div class="header">${this._titleBlock(title, stats)}${this._zoomButton("plain")}</div>`;
-    return this._banner(`<div class="head">${this._titleBlock(title, stats)}</div>${this._zoomButton(this._sky(now).night ? "on-night" : "")}`, now, strip);
+  _header(title, stats, now, rows = [], status = "idle") {
+    if (this._config.illustration === false) return `<div class="header">${this._titleBlock(title, stats, status)}${this._zoomButton("plain")}</div>`;
+    return this._banner(`<div class="head">${this._titleBlock(title, stats, status)}</div>${this._zoomButton(this._sky(now).night ? "on-night" : "")}`, now, rows);
   }
 
-  // Today's spans of schedules, for the banner strip and the timeline bars (`grey` for a disabled schedule).
+  // The illustration's rows: up to three schedules, the one shown first, then those running now, then the other
+  // enabled ones, then the disabled ones (greyed).
+  _sceneRows(models, now, first = null) {
+    const rank = (m) => (m === first ? 0 : this._runningNow(m, now) ? 1 : m.enabled ? 2 : 3);
+    return [...models]
+      .sort((a, b) => rank(a) - rank(b))
+      .slice(0, 3)
+      .map((m) => {
+        const bits = [];
+        const color = (slot) => m.colors.get(m.infos.get(slot.i)?.key) || m.base;
+        if (runsOn(m.weekdays, now.wd, this._hass, true)) {
+          const { spans, points } = daySegments(m);
+          for (const sp of spans) if (m.infos.get(sp.slot.i)?.key !== m.def) bits.push({ a: sp.a, b: sp.b, c: color(sp.slot), now: m.enabled && now.min >= sp.a && now.min < sp.b });
+          for (const p of points) bits.push({ at: p.at, c: color(p.slot) });
+        }
+        return { icon: m.icon, color: m.base, on: m.enabled, bits };
+      });
+  }
+
+  // Today's spans of a schedule, for its timeline bar (`grey` for a disabled schedule).
   _todayBits(m, now) {
     if (!runsOn(m.weekdays, now.wd, this._hass, true)) return "";
     const { spans, points } = daySegments(m);
@@ -3338,9 +3378,10 @@ class SchedulerCard extends HTMLElement {
     const now = this._now();
     const m = this._view ? models.find((x) => x.id === this._view) : null;
     if (this._view && !m) this._view = null;
-    const enabled = models.filter((x) => x.enabled);
-    const strip = m ? this._todayBits(m, now) : enabled.map((x) => this._todayBits(x, now)).join("");
-    const header = m ? this._header(m.name, this._weekStats(m, now), now, strip) : this._header(this._config.title || this._t("schedules"), this._timelineStats(models, now), now, strip);
+    const rows = this._sceneRows(models, now, m);
+    const header = m
+      ? this._header(m.name, this._weekStats(m, now), now, rows, this._status([m], now))
+      : this._header(this._config.title || this._t("schedules"), this._timelineStats(models, now), now, rows, this._status(models, now));
     return `<style>${STYLE}${this._extraStyle()}</style>
       <ha-card class="${this._edit ? "has-modal" : ""}">
         ${header}
@@ -3694,7 +3735,8 @@ class SchedulerMiniCard extends SchedulerCard {
   }
 
   getCardSize() {
-    return this._zoomed ? super.getCardSize() : 2;
+    if (this._zoomed) return super.getCardSize();
+    return this._config?.illustration === false ? 2 : 4;
   }
 
   getGridOptions() {
@@ -3752,10 +3794,20 @@ class SchedulerMiniCard extends SchedulerCard {
           .join("")
       : `<div class="none">${esc(this._t(models.length ? "no_upcoming" : "no_match"))}</div>`;
     const head = next[0] ? this._t("next_time", { time: this._when(next[0], now) }) : "";
+    if (this._config.illustration !== false) {
+      const stats = next[0] ? [head, next[0].m.name] : [this._t(models.length ? "no_upcoming" : "no_match")];
+      const banner = this._banner(
+        `<div class="head">${this._titleBlock(this._config.title || this._t("schedules"), stats, this._status(models, now))}</div>${this._zoomButton()}`,
+        now,
+        this._sceneRows(models, now),
+      );
+      return `<style>${STYLE}${MINI_STYLE}</style>
+      <ha-card class="mini-card illustrated">${banner}${next.length ? `<div class="nx">${rows}</div>` : ""}</ha-card>`;
+    }
     return `<style>${STYLE}${MINI_STYLE}</style>
       <ha-card class="mini-card">
         <div class="mini">
-          <div class="badge">${svgIcon(ICONS.calendarClock)}</div>
+          <div class="badge st-${this._status(models, now)}">${svgIcon(ICONS.timer)}</div>
           <div class="body">
             <div class="mhd"><span class="title">${esc(this._config.title || this._t("schedules"))}</span>${head ? `<span class="st">${esc(head)}</span>` : ""}${this._zoomButton()}</div>
             <div class="nx">${rows}</div>
@@ -3871,7 +3923,7 @@ for (const card of [
   {
     type: "scheduler-card",
     name: "Scheduler Card",
-    description: "Today's timeline and the weekly grid of the Scheduler component's schedules, under an illustrated sun that follows the time of day.",
+    description: "Today's timeline and the weekly grid of the Scheduler component's schedules, under an illustrated header whose cursor follows the time of day.",
   },
   {
     type: "scheduler-mini-card",

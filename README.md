@@ -10,7 +10,7 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/images/icon.svg" alt="Scheduler Card" width="120"></p>
 
-**Today's timeline and the weekly grid** of your schedules, for Home Assistant, under an illustrated sky whose sun follows the real time of day: what runs now, what comes next, and every slot of the week at a glance, editable in place.
+**Today's timeline and the weekly grid** of your schedules, for Home Assistant, under an illustrated header that draws today's timeline with a "now" cursor: what runs now, what comes next, and every slot of the week at a glance, editable in place.
 
 The cards are built on top of the [Scheduler component](https://github.com/nielsfaber/scheduler-component) by nielsfaber: create your schedules there (or right from the card), add the card, and its `switch.schedule_*` entities are **discovered automatically**.
 
@@ -24,8 +24,9 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 ## Features
 
 - Two cards: a full **Scheduler Card** and a compact **Scheduler Mini Card**, of type `custom:scheduler-card` and `custom:scheduler-mini-card`
-- The illustration is the header: a teal sky, a drifting cloud, and a **sun that moves along its arc with the real time of day**, from sunrise to sunset (`sun.sun`), its path already travelled drawn behind it; after sunset, the **moon** follows the same arc under a night sky with twinkling stars
-- The header's bottom strip shows **today's slots** of every enabled schedule, in their colours, with a white "now" marker
+- The illustration is the header (90 px, on both cards): the title on the sky at the left, and at the right **today's timeline** of up to three schedules (the ones running now first): their icons, their slots as blocks in their colours over 0–24 h, the **slot running now pulsing**, and a red **"now" cursor** that follows the clock; a ruler strip of the day runs along the bottom
+- The sky follows the time of day: **day**, a warmer **evening** in the two hours before sunset, and **night** after sunset (`sun.sun`, else Home Assistant's dark mode)
+- The round header icon shows the **status** by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the card's filters
 - **Today's timeline**: enabled / disabled chips, then one tile per schedule with
   - the icon of the entity it acts on, coloured only while one of its slots is running, and a green (enabled) or grey (disabled) dot
   - its name and a state line: « 20 °C now · 17 °C at 22:30 », « Off · on at 18:00 », « Open · close at 18:45 », « Done today · next 02:00 », « Disabled »
@@ -34,14 +35,14 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - A tinted **New schedule** button: name, entity, action, times and days, created with `scheduler.add`
 - Click a schedule for its **weekly grid**: text tabs to switch schedule, rows Monday to Sunday with the slots as **blocks labelled with their value**, today highlighted with a "now" marker, the value that covers the rest of the day drawn as the background (« 17 °C (default) »), a legend and the **weekly total** (« 20 °C 35 h / week »)
 - **Slot editor** in a popup at the top of the card: start, end, action and days, saved with `scheduler.edit`; click an empty spot of the grid (or **Add slot**) to add a slot at that hour; overlapping slots are refused, conditions and dates of the schedule are kept, the last slot's deletion removes the schedule after a confirmation
-- Mini card: the next actions of all your schedules (time, coloured icon, name, action), the next one on the right of the title, and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
+- Mini card: the same illustrated header (the next action on its sky), then the next actions of all your schedules (time, coloured icon, name, action), and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
 - Filters by `tags` and `entities`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
 - `illustration: false` for a classic header with a round icon, as on the other cards
 - Visual editor for both cards; options left at their default are kept out of the YAML
 - Light and dark themes, `prefers-reduced-motion` honoured
 - English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek; weekday names from your locale
-- Single file, no external dependency: the illustration is drawn in SVG
+- Single file, no external dependency: the illustration is drawn in HTML and CSS
 
 ## Supported integrations
 
@@ -136,8 +137,8 @@ zoom: true
 | `names` | both | Entity name | **YAML only.** A name per schedule entity: `switch.schedule_living_room_heating: Living room` |
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
 | `editable` | both | `true` | The **New schedule** button, the slot editor and the clickable grid; `false` for a read-only card (the switches still work) |
-| `illustration` | both | `true` | The illustrated sky as header; `false` for a classic header with a round icon |
-| `illustration_theme` | both | `auto` | `auto` (night when `sun.sun` is below the horizon), `day` or `night` |
+| `illustration` | both | `true` | The illustrated header with today's timeline; `false` for a classic header with a round icon |
+| `illustration_theme` | both | `auto` | `auto` (night when `sun.sun` is below the horizon, else with Home Assistant's dark mode; evening in the two hours before sunset), `day` or `night` |
 | `next_actions` | mini | `3` | Number of upcoming actions listed (1 to 10) |
 | `zoom` | mini | `true` | Detail button at the top right: unfolds the full card and back (`false` removes it). The full card's options above apply to the unfolded view and are also set in the mini card's visual editor |
 | `language` | both | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
@@ -146,13 +147,13 @@ zoom: true
 
 ### Animations
 
-The sun moves along its arc with the real time of day (here, a whole day in a few seconds): it rises at sunrise, crosses the sky and sets at sunset; then the moon takes its place under the stars, and the white marker of the bottom strip follows the clock. The sun glows, the dashed arc flows and the cloud drifts, in a 12-second loop. With `prefers-reduced-motion`, everything stays still.
+The "now" cursor crosses today's timeline with the real time of day (here, a whole day in a few seconds), under the day, evening and night skies; the slot running now pulses, in a 12-second loop. With `prefers-reduced-motion`, everything stays still.
 
 Day cycle:
 
 | Light | Dark |
 |---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/sun-cycle.gif" alt="sun day cycle animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/sun-cycle-dark.gif" alt="sun day cycle animation, dark theme" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/day-cycle.gif" alt="timeline day cycle animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/day-cycle-dark.gif" alt="timeline day cycle animation, dark theme" width="400"> |
 
 Switching views: a click on a schedule opens its weekly grid, the tabs switch schedule, the arrow goes back to today's timeline; each new view slides in:
 
@@ -230,7 +231,7 @@ Before editing, the card reads the full schedule (actions with their entities an
 
 ### Illustration
 
-The banner is drawn in SVG and CSS, with no picture: the sun's place on its arc is the share of the day gone between sunrise and sunset; at night the moon's is the share of the night gone. It follows the clock (checked every 30 seconds). Every animation lasts a divisor of 12 seconds. The scenery is left out on a very narrow card (below about 300 px), where the sky and the strip stay.
+The banner is drawn in HTML and CSS, with no picture: each schedule's row shows today's slots on a 0–24 h track (the background value of a schedule covering the whole day left out), a red cursor marks the current minute, and the slot it falls in pulses. It follows the clock (checked every 30 seconds). Every animation lasts a divisor of 12 seconds. The timeline is left out on a very narrow card (below about 300 px), where the sky and the strip stay.
 
 ### Narrow cards
 

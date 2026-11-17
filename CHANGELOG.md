@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 - 2026-11-17
+
+### Features
+- New illustrated header, 90 px on the full card and the mini card: the title on the sky at the left, and at the right today's timeline of up to three schedules (those running now first) with their icons, their slots as coloured blocks over 0–24 h, the slot running now pulsing and a red "now" cursor following the clock; a ruler strip of the day runs along the bottom. It replaces the sun on its arc.
+- Day, evening (the two hours before sunset) and night skies: night follows `sun.sun`, else Home Assistant's dark mode; `illustration_theme: day | night` forces it, `illustration: false` keeps the classic header.
+- The header icon (mdi:timer-outline) shows the status by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the filters, on both cards, day and night.
+- The mini card gets the illustrated banner too, with the next action on its sky and its detail button at the top right, above its list of next actions.
+- The "now" hint reads « Red line = now », in every language.
+
 ## 1.0.0 - 2026-11-16
 
 ### Features
