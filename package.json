@@ -1,0 +1,27 @@
+{
+  "name": "ha-scheduler-card",
+  "version": "1.0.0",
+  "description": "Today's timeline and weekly grid of the Scheduler component's schedules for Home Assistant, under an illustrated sun that follows the time of day.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juju35/ha-scheduler-card.git"
+  },
+  "bugs": {
+    "url": "https://github.com/juju35/ha-scheduler-card/issues"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs && node --check dist/scheduler-card.js",
+    "test": "node --test test/*.test.mjs",
+    "screenshots": "npm run build && node scripts/screenshots/stills.mjs && node scripts/screenshots/animations.mjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@mdi/js": "^7.4.47",
+    "acorn": "^8.19.0",
+    "css-tree": "^3.2.1",
+    "playwright": "^1.65.0"
+  }
+}

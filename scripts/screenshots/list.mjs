@@ -1,0 +1,38 @@
+// The captures of the README, shared by the screenshot scripts and the test that flags orphan files.
+import { at } from "./mock.mjs";
+
+const pair = (file, extra = {}) => [
+  { file, theme: "light", ...extra },
+  { file: `${file}-dark`, theme: "dark", ...extra },
+];
+const HEATING = '.row[data-open="switch.schedule_living_room_heating"]';
+
+export const FULL = 460;
+export const MINI = 380;
+
+export const SHOTS = [
+  // Today's timeline, Monday 17:40: the heating in its comfort slot, the garden lights due at 18:00.
+  ...pair("card", { tag: "scheduler-card", config: {} }),
+  // The weekly grid of a schedule, opened by a click on its row.
+  ...pair("card-week", { tag: "scheduler-card", config: {}, clicks: [HEATING] }),
+  // The slot editor, at the top of the card.
+  ...pair("card-edit", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]'], min: 520 }),
+  // A new schedule.
+  ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'] }),
+  // At night: the moon on its arc, a night sky.
+  ...pair("card-night", { tag: "scheduler-card", config: {}, now: at("23:10") }),
+  // Without the illustration.
+  ...pair("card-classic", { tag: "scheduler-card", config: { illustration: false } }),
+  // The mini card, and unfolded by its detail button.
+  ...pair("mini-card", { tag: "scheduler-mini-card", config: {}, width: MINI }),
+  ...pair("mini-card-zoom", { tag: "scheduler-mini-card", config: {}, clicks: [".zoom"] }),
+];
+
+export const GIFS = [
+  // The sun along its arc through the day, then the moon through the night.
+  ...pair("sun-cycle"),
+  // Today's timeline → a schedule's weekly grid → another schedule's tab → back.
+  ...pair("view-switch"),
+];
+
+export const FILES = [...SHOTS.map((s) => `${s.file}.png`), ...GIFS.map((g) => `${g.file}.gif`)];
