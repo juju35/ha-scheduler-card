@@ -5,9 +5,10 @@
  * Today's timeline and the weekly grid of the schedules of the Scheduler component
  * (https://github.com/nielsfaber/scheduler-component): its `switch.schedule_*` entities, read from their
  * attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `next_slot`, `next_trigger`, `tags`),
- * enabled and disabled with `switch.turn_on` / `switch.turn_off`, edited with the `scheduler.add`, `scheduler.edit`
- * and `scheduler.remove` services from the full schedule returned by the `scheduler` and `scheduler/item` websocket
- * commands. Everything is drawn under an illustrated banner showing today's timeline and a "now" cursor.
+ * enabled and disabled with `switch.turn_on` / `switch.turn_off`, edited with the `scheduler.add`, `scheduler.edit`,
+ * `scheduler.copy` and `scheduler.remove` services from the full schedules returned by the `scheduler` and
+ * `scheduler/item` websocket commands (conditions, dates, repetition; read again on its `scheduler_updated`
+ * subscription). Everything is drawn under an illustrated banner showing today's timeline and a "now" cursor.
  */
 
 const VERSION = "__VERSION__";
@@ -77,7 +78,6 @@ const STRINGS = {
     action: "Action",
     days: "Days",
     days_note: "The days apply to the whole schedule.",
-    sun_kept: "Sunrise and sunset times are kept unless you change them.",
     name: "Name",
     entity: "Entity",
     save: "Save",
@@ -112,6 +112,73 @@ const STRINGS = {
     zoom: "Detail button",
     language: "Language",
     lang_auto: "Automatic",
+    starts_on: "Starts {date}",
+    period_range: "{from} → {to}",
+    period_until: "Until {date}",
+    period_from: "From {date}",
+    schedule_options: "Options",
+    tab_slot: "Slot",
+    tab_schedule: "Schedule",
+    tab_options: "Options",
+    mode_time: "Time",
+    at_time: "At",
+    sunrise: "Sunrise",
+    sunset: "Sunset",
+    before: "Before",
+    after: "After",
+    offset: "Offset",
+    approx_today: "≈ {time} today",
+    days_daily: "Every day",
+    days_workday: "Workdays",
+    days_weekend: "Weekend",
+    days_custom: "Custom",
+    days_workday_note: "Workdays follow the Workday sensor: holidays are skipped.",
+    remove: "Remove",
+    tags: "Tags",
+    add_tag: "Add a tag",
+    conditions: "Conditions",
+    cond_all: "All",
+    cond_any: "Any",
+    add_condition: "Add condition",
+    match_is: "is",
+    match_not: "is not",
+    match_below: "below",
+    match_above: "above",
+    cond_is: "{entity} is {value}",
+    cond_not: "{entity} is not {value}",
+    cond_below: "{entity} below {value}",
+    cond_above: "{entity} above {value}",
+    track_conditions: "Run the action as soon as they pass",
+    period: "Period",
+    period_hint: "Only between two dates",
+    date_from: "From",
+    date_to: "To",
+    after_last: "After the last slot",
+    repeat_repeat: "Repeat",
+    repeat_stop: "Stop",
+    repeat_delete: "Delete",
+    repeat_hint: "Stop disables the schedule, Delete removes it, once its last slot has run.",
+    repeat_pause_badge: "Once · then stop",
+    repeat_single_badge: "Once · then delete",
+    duplicate: "Duplicate",
+    copy_name: "{name} (copy)",
+    split: "Split",
+    merge_next: "Merge with next",
+    kind: "Kind",
+    kind_slots: "Time slots",
+    kind_single: "Single time",
+    kind_slots_hint: "A start and an end: the action holds over the slot.",
+    kind_single_hint: "One action at a set time, e.g. turn off at 23:00.",
+    entities: "Entities",
+    add_entity: "Add an entity of the same kind",
+    err_condition: "Complete or remove each condition.",
+    err_dates: "The end date must come after the start date.",
+    show_badges: "Badges",
+    sort_by: "Sort",
+    sort_name: "Name",
+    sort_next: "Next action",
+    sort_state: "Running first",
+    time_step: "Time step",
   },
   fr: {
     schedules: "Plannings",
@@ -163,7 +230,6 @@ const STRINGS = {
     action: "Action",
     days: "Jours",
     days_note: "Les jours s'appliquent à tout le planning.",
-    sun_kept: "Les heures liées au lever et au coucher du soleil sont conservées tant que vous ne les changez pas.",
     name: "Nom",
     entity: "Entité",
     save: "Enregistrer",
@@ -198,6 +264,73 @@ const STRINGS = {
     zoom: "Bouton détail",
     language: "Langue",
     lang_auto: "Automatique",
+    starts_on: "Commence le {date}",
+    period_range: "{from} → {to}",
+    period_until: "Jusqu’au {date}",
+    period_from: "À partir du {date}",
+    schedule_options: "Options",
+    tab_slot: "Créneau",
+    tab_schedule: "Planning",
+    tab_options: "Options",
+    mode_time: "Heure",
+    at_time: "À",
+    sunrise: "Lever du soleil",
+    sunset: "Coucher du soleil",
+    before: "Avant",
+    after: "Après",
+    offset: "Décalage",
+    approx_today: "≈ {time} aujourd’hui",
+    days_daily: "Tous les jours",
+    days_workday: "Jours ouvrés",
+    days_weekend: "Week-end",
+    days_custom: "Personnalisé",
+    days_workday_note: "Les jours ouvrés suivent le capteur Workday : les jours fériés sont sautés.",
+    remove: "Retirer",
+    tags: "Tags",
+    add_tag: "Ajouter un tag",
+    conditions: "Conditions",
+    cond_all: "Toutes",
+    cond_any: "Au moins une",
+    add_condition: "Ajouter une condition",
+    match_is: "est",
+    match_not: "n’est pas",
+    match_below: "inférieur à",
+    match_above: "supérieur à",
+    cond_is: "{entity} est {value}",
+    cond_not: "{entity} n’est pas {value}",
+    cond_below: "{entity} inférieur à {value}",
+    cond_above: "{entity} supérieur à {value}",
+    track_conditions: "Exécuter l’action dès qu’elles sont remplies",
+    period: "Période",
+    period_hint: "Seulement entre deux dates",
+    date_from: "Du",
+    date_to: "Au",
+    after_last: "Après le dernier créneau",
+    repeat_repeat: "Répéter",
+    repeat_stop: "Arrêter",
+    repeat_delete: "Supprimer",
+    repeat_hint: "Arrêter désactive le planning, Supprimer l’efface, une fois son dernier créneau passé.",
+    repeat_pause_badge: "Une fois · puis arrêt",
+    repeat_single_badge: "Une fois · puis suppression",
+    duplicate: "Dupliquer",
+    copy_name: "{name} (copie)",
+    split: "Scinder",
+    merge_next: "Fusionner avec le suivant",
+    kind: "Type",
+    kind_slots: "Créneaux",
+    kind_single: "Heure unique",
+    kind_slots_hint: "Un début et une fin : l’action vaut pendant le créneau.",
+    kind_single_hint: "Une action à une heure donnée, par ex. éteindre à 23:00.",
+    entities: "Entités",
+    add_entity: "Ajouter une entité du même type",
+    err_condition: "Complétez ou retirez chaque condition.",
+    err_dates: "La date de fin doit suivre la date de début.",
+    show_badges: "Pastilles",
+    sort_by: "Tri",
+    sort_name: "Nom",
+    sort_next: "Prochaine action",
+    sort_state: "En cours d’abord",
+    time_step: "Pas de temps",
   },
   de: {
     schedules: "Zeitpläne",
@@ -249,7 +382,6 @@ const STRINGS = {
     action: "Aktion",
     days: "Tage",
     days_note: "Die Tage gelten für den ganzen Zeitplan.",
-    sun_kept: "Zeiten nach Sonnenauf- und -untergang bleiben erhalten, solange du sie nicht änderst.",
     name: "Name",
     entity: "Entität",
     save: "Speichern",
@@ -284,6 +416,73 @@ const STRINGS = {
     zoom: "Detail-Schaltfläche",
     language: "Sprache",
     lang_auto: "Automatisch",
+    starts_on: "Beginnt am {date}",
+    period_range: "{from} → {to}",
+    period_until: "Bis {date}",
+    period_from: "Ab {date}",
+    schedule_options: "Optionen",
+    tab_slot: "Zeitfenster",
+    tab_schedule: "Zeitplan",
+    tab_options: "Optionen",
+    mode_time: "Uhrzeit",
+    at_time: "Um",
+    sunrise: "Sonnenaufgang",
+    sunset: "Sonnenuntergang",
+    before: "Vor",
+    after: "Nach",
+    offset: "Versatz",
+    approx_today: "≈ {time} heute",
+    days_daily: "Jeden Tag",
+    days_workday: "Werktage",
+    days_weekend: "Wochenende",
+    days_custom: "Benutzerdefiniert",
+    days_workday_note: "Werktage folgen dem Workday-Sensor: Feiertage werden übersprungen.",
+    remove: "Entfernen",
+    tags: "Tags",
+    add_tag: "Tag hinzufügen",
+    conditions: "Bedingungen",
+    cond_all: "Alle",
+    cond_any: "Mindestens eine",
+    add_condition: "Bedingung hinzufügen",
+    match_is: "ist",
+    match_not: "ist nicht",
+    match_below: "unter",
+    match_above: "über",
+    cond_is: "{entity} ist {value}",
+    cond_not: "{entity} ist nicht {value}",
+    cond_below: "{entity} unter {value}",
+    cond_above: "{entity} über {value}",
+    track_conditions: "Aktion ausführen, sobald sie erfüllt sind",
+    period: "Zeitraum",
+    period_hint: "Nur zwischen zwei Daten",
+    date_from: "Von",
+    date_to: "Bis",
+    after_last: "Nach dem letzten Zeitfenster",
+    repeat_repeat: "Wiederholen",
+    repeat_stop: "Stoppen",
+    repeat_delete: "Löschen",
+    repeat_hint: "Stoppen deaktiviert den Zeitplan, Löschen entfernt ihn, sobald sein letztes Zeitfenster vorbei ist.",
+    repeat_pause_badge: "Einmalig · dann Stopp",
+    repeat_single_badge: "Einmalig · dann Löschen",
+    duplicate: "Duplizieren",
+    copy_name: "{name} (Kopie)",
+    split: "Teilen",
+    merge_next: "Mit nächstem zusammenführen",
+    kind: "Art",
+    kind_slots: "Zeitfenster",
+    kind_single: "Einzelne Uhrzeit",
+    kind_slots_hint: "Ein Beginn und ein Ende: die Aktion gilt im Zeitfenster.",
+    kind_single_hint: "Eine Aktion zu einer festen Uhrzeit, z. B. um 23:00 ausschalten.",
+    entities: "Entitäten",
+    add_entity: "Entität derselben Art hinzufügen",
+    err_condition: "Jede Bedingung ausfüllen oder entfernen.",
+    err_dates: "Das Enddatum muss nach dem Startdatum liegen.",
+    show_badges: "Plaketten",
+    sort_by: "Sortierung",
+    sort_name: "Name",
+    sort_next: "Nächste Aktion",
+    sort_state: "Laufende zuerst",
+    time_step: "Zeitschritt",
   },
   es: {
     schedules: "Programaciones",
@@ -335,7 +534,6 @@ const STRINGS = {
     action: "Acción",
     days: "Días",
     days_note: "Los días se aplican a toda la programación.",
-    sun_kept: "Las horas relativas al amanecer y al atardecer se conservan mientras no las cambies.",
     name: "Nombre",
     entity: "Entidad",
     save: "Guardar",
@@ -370,6 +568,73 @@ const STRINGS = {
     zoom: "Botón de detalle",
     language: "Idioma",
     lang_auto: "Automático",
+    starts_on: "Empieza el {date}",
+    period_range: "{from} → {to}",
+    period_until: "Hasta el {date}",
+    period_from: "Desde el {date}",
+    schedule_options: "Opciones",
+    tab_slot: "Franja",
+    tab_schedule: "Programa",
+    tab_options: "Opciones",
+    mode_time: "Hora",
+    at_time: "A las",
+    sunrise: "Amanecer",
+    sunset: "Atardecer",
+    before: "Antes",
+    after: "Después",
+    offset: "Desfase",
+    approx_today: "≈ {time} hoy",
+    days_daily: "Todos los días",
+    days_workday: "Laborables",
+    days_weekend: "Fin de semana",
+    days_custom: "Personalizado",
+    days_workday_note: "Los laborables siguen el sensor Workday: los festivos se omiten.",
+    remove: "Quitar",
+    tags: "Etiquetas",
+    add_tag: "Añadir una etiqueta",
+    conditions: "Condiciones",
+    cond_all: "Todas",
+    cond_any: "Alguna",
+    add_condition: "Añadir condición",
+    match_is: "es",
+    match_not: "no es",
+    match_below: "por debajo de",
+    match_above: "por encima de",
+    cond_is: "{entity} es {value}",
+    cond_not: "{entity} no es {value}",
+    cond_below: "{entity} por debajo de {value}",
+    cond_above: "{entity} por encima de {value}",
+    track_conditions: "Ejecutar la acción en cuanto se cumplan",
+    period: "Periodo",
+    period_hint: "Solo entre dos fechas",
+    date_from: "Desde",
+    date_to: "Hasta",
+    after_last: "Tras la última franja",
+    repeat_repeat: "Repetir",
+    repeat_stop: "Detener",
+    repeat_delete: "Eliminar",
+    repeat_hint: "Detener desactiva el programa, Eliminar lo borra, una vez pasada su última franja.",
+    repeat_pause_badge: "Una vez · luego se detiene",
+    repeat_single_badge: "Una vez · luego se elimina",
+    duplicate: "Duplicar",
+    copy_name: "{name} (copia)",
+    split: "Dividir",
+    merge_next: "Unir con la siguiente",
+    kind: "Tipo",
+    kind_slots: "Franjas horarias",
+    kind_single: "Hora única",
+    kind_slots_hint: "Un inicio y un fin: la acción dura toda la franja.",
+    kind_single_hint: "Una acción a una hora fija, p. ej. apagar a las 23:00.",
+    entities: "Entidades",
+    add_entity: "Añadir una entidad del mismo tipo",
+    err_condition: "Completa o quita cada condición.",
+    err_dates: "La fecha de fin debe ser posterior a la de inicio.",
+    show_badges: "Insignias",
+    sort_by: "Orden",
+    sort_name: "Nombre",
+    sort_next: "Próxima acción",
+    sort_state: "En curso primero",
+    time_step: "Paso de tiempo",
   },
   sr: {
     schedules: "Распореди",
@@ -423,7 +688,6 @@ const STRINGS = {
     action: "Радња",
     days: "Дани",
     days_note: "Дани важе за цео распоред.",
-    sun_kept: "Времена везана за излазак и залазак сунца остају док их не промените.",
     name: "Назив",
     entity: "Ентитет",
     save: "Сачувај",
@@ -458,6 +722,73 @@ const STRINGS = {
     zoom: "Дугме за детаље",
     language: "Језик",
     lang_auto: "Аутоматски",
+    starts_on: "Почиње {date}",
+    period_range: "{from} → {to}",
+    period_until: "До {date}",
+    period_from: "Од {date}",
+    schedule_options: "Опције",
+    tab_slot: "Термин",
+    tab_schedule: "Распоред",
+    tab_options: "Опције",
+    mode_time: "Време",
+    at_time: "У",
+    sunrise: "Излазак сунца",
+    sunset: "Залазак сунца",
+    before: "Пре",
+    after: "После",
+    offset: "Померај",
+    approx_today: "≈ {time} данас",
+    days_daily: "Сваког дана",
+    days_workday: "Радни дани",
+    days_weekend: "Викенд",
+    days_custom: "Прилагођено",
+    days_workday_note: "Радни дани прате Workday сензор: празници се прескачу.",
+    remove: "Уклони",
+    tags: "Ознаке",
+    add_tag: "Додај ознаку",
+    conditions: "Услови",
+    cond_all: "Сви",
+    cond_any: "Бар један",
+    add_condition: "Додај услов",
+    match_is: "је",
+    match_not: "није",
+    match_below: "испод",
+    match_above: "изнад",
+    cond_is: "{entity} је {value}",
+    cond_not: "{entity} није {value}",
+    cond_below: "{entity} испод {value}",
+    cond_above: "{entity} изнад {value}",
+    track_conditions: "Изврши радњу чим су испуњени",
+    period: "Период",
+    period_hint: "Само између два датума",
+    date_from: "Од",
+    date_to: "До",
+    after_last: "После последњег термина",
+    repeat_repeat: "Понављај",
+    repeat_stop: "Заустави",
+    repeat_delete: "Обриши",
+    repeat_hint: "Заустави искључује распоред, Обриши га брише, након последњег термина.",
+    repeat_pause_badge: "Једном · па стоп",
+    repeat_single_badge: "Једном · па брисање",
+    duplicate: "Дуплирај",
+    copy_name: "{name} (копија)",
+    split: "Подели",
+    merge_next: "Спој са следећим",
+    kind: "Врста",
+    kind_slots: "Термини",
+    kind_single: "Једно време",
+    kind_slots_hint: "Почетак и крај: радња траје током термина.",
+    kind_single_hint: "Једна радња у задато време, нпр. искључи у 23:00.",
+    entities: "Ентитети",
+    add_entity: "Додај ентитет исте врсте",
+    err_condition: "Попуните или уклоните сваки услов.",
+    err_dates: "Датум краја мора бити после датума почетка.",
+    show_badges: "Значке",
+    sort_by: "Редослед",
+    sort_name: "Назив",
+    sort_next: "Следећа радња",
+    sort_state: "Активни прво",
+    time_step: "Корак времена",
   },
   "sr-Latn": {
     schedules: "Rasporedi",
@@ -511,7 +842,6 @@ const STRINGS = {
     action: "Radnja",
     days: "Dani",
     days_note: "Dani važe za ceo raspored.",
-    sun_kept: "Vremena vezana za izlazak i zalazak sunca ostaju dok ih ne promenite.",
     name: "Naziv",
     entity: "Entitet",
     save: "Sačuvaj",
@@ -546,6 +876,73 @@ const STRINGS = {
     zoom: "Dugme za detalje",
     language: "Jezik",
     lang_auto: "Automatski",
+    starts_on: "Počinje {date}",
+    period_range: "{from} → {to}",
+    period_until: "Do {date}",
+    period_from: "Od {date}",
+    schedule_options: "Opcije",
+    tab_slot: "Termin",
+    tab_schedule: "Raspored",
+    tab_options: "Opcije",
+    mode_time: "Vreme",
+    at_time: "U",
+    sunrise: "Izlazak sunca",
+    sunset: "Zalazak sunca",
+    before: "Pre",
+    after: "Posle",
+    offset: "Pomeraj",
+    approx_today: "≈ {time} danas",
+    days_daily: "Svakog dana",
+    days_workday: "Radni dani",
+    days_weekend: "Vikend",
+    days_custom: "Prilagođeno",
+    days_workday_note: "Radni dani prate Workday senzor: praznici se preskaču.",
+    remove: "Ukloni",
+    tags: "Oznake",
+    add_tag: "Dodaj oznaku",
+    conditions: "Uslovi",
+    cond_all: "Svi",
+    cond_any: "Bar jedan",
+    add_condition: "Dodaj uslov",
+    match_is: "je",
+    match_not: "nije",
+    match_below: "ispod",
+    match_above: "iznad",
+    cond_is: "{entity} je {value}",
+    cond_not: "{entity} nije {value}",
+    cond_below: "{entity} ispod {value}",
+    cond_above: "{entity} iznad {value}",
+    track_conditions: "Izvrši radnju čim su ispunjeni",
+    period: "Period",
+    period_hint: "Samo između dva datuma",
+    date_from: "Od",
+    date_to: "Do",
+    after_last: "Posle poslednjeg termina",
+    repeat_repeat: "Ponavljaj",
+    repeat_stop: "Zaustavi",
+    repeat_delete: "Obriši",
+    repeat_hint: "Zaustavi isključuje raspored, Obriši ga briše, nakon poslednjeg termina.",
+    repeat_pause_badge: "Jednom · pa stop",
+    repeat_single_badge: "Jednom · pa brisanje",
+    duplicate: "Dupliraj",
+    copy_name: "{name} (kopija)",
+    split: "Podeli",
+    merge_next: "Spoji sa sledećim",
+    kind: "Vrsta",
+    kind_slots: "Termini",
+    kind_single: "Jedno vreme",
+    kind_slots_hint: "Početak i kraj: radnja traje tokom termina.",
+    kind_single_hint: "Jedna radnja u zadato vreme, npr. isključi u 23:00.",
+    entities: "Entiteti",
+    add_entity: "Dodaj entitet iste vrste",
+    err_condition: "Popunite ili uklonite svaki uslov.",
+    err_dates: "Datum kraja mora biti posle datuma početka.",
+    show_badges: "Značke",
+    sort_by: "Redosled",
+    sort_name: "Naziv",
+    sort_next: "Sledeća radnja",
+    sort_state: "Aktivni prvo",
+    time_step: "Korak vremena",
   },
   it: {
     schedules: "Programmazioni",
@@ -597,7 +994,6 @@ const STRINGS = {
     action: "Azione",
     days: "Giorni",
     days_note: "I giorni valgono per tutta la programmazione.",
-    sun_kept: "Gli orari legati ad alba e tramonto restano invariati finché non li modifichi.",
     name: "Nome",
     entity: "Entità",
     save: "Salva",
@@ -632,6 +1028,73 @@ const STRINGS = {
     zoom: "Pulsante dettagli",
     language: "Lingua",
     lang_auto: "Automatica",
+    starts_on: "Inizia il {date}",
+    period_range: "{from} → {to}",
+    period_until: "Fino al {date}",
+    period_from: "Dal {date}",
+    schedule_options: "Opzioni",
+    tab_slot: "Fascia",
+    tab_schedule: "Programma",
+    tab_options: "Opzioni",
+    mode_time: "Ora",
+    at_time: "Alle",
+    sunrise: "Alba",
+    sunset: "Tramonto",
+    before: "Prima",
+    after: "Dopo",
+    offset: "Scostamento",
+    approx_today: "≈ {time} oggi",
+    days_daily: "Ogni giorno",
+    days_workday: "Giorni feriali",
+    days_weekend: "Fine settimana",
+    days_custom: "Personalizzato",
+    days_workday_note: "I giorni feriali seguono il sensore Workday: i festivi vengono saltati.",
+    remove: "Rimuovi",
+    tags: "Tag",
+    add_tag: "Aggiungi un tag",
+    conditions: "Condizioni",
+    cond_all: "Tutte",
+    cond_any: "Almeno una",
+    add_condition: "Aggiungi condizione",
+    match_is: "è",
+    match_not: "non è",
+    match_below: "sotto",
+    match_above: "sopra",
+    cond_is: "{entity} è {value}",
+    cond_not: "{entity} non è {value}",
+    cond_below: "{entity} sotto {value}",
+    cond_above: "{entity} sopra {value}",
+    track_conditions: "Esegui l’azione appena sono soddisfatte",
+    period: "Periodo",
+    period_hint: "Solo tra due date",
+    date_from: "Dal",
+    date_to: "Al",
+    after_last: "Dopo l’ultima fascia",
+    repeat_repeat: "Ripeti",
+    repeat_stop: "Ferma",
+    repeat_delete: "Elimina",
+    repeat_hint: "Ferma disattiva il programma, Elimina lo cancella, dopo la sua ultima fascia.",
+    repeat_pause_badge: "Una volta · poi stop",
+    repeat_single_badge: "Una volta · poi eliminato",
+    duplicate: "Duplica",
+    copy_name: "{name} (copia)",
+    split: "Dividi",
+    merge_next: "Unisci con la successiva",
+    kind: "Tipo",
+    kind_slots: "Fasce orarie",
+    kind_single: "Ora singola",
+    kind_slots_hint: "Un inizio e una fine: l’azione vale per tutta la fascia.",
+    kind_single_hint: "Un’azione a un’ora fissa, es. spegnere alle 23:00.",
+    entities: "Entità",
+    add_entity: "Aggiungi un’entità dello stesso tipo",
+    err_condition: "Completa o rimuovi ogni condizione.",
+    err_dates: "La data di fine deve seguire quella di inizio.",
+    show_badges: "Badge",
+    sort_by: "Ordine",
+    sort_name: "Nome",
+    sort_next: "Prossima azione",
+    sort_state: "In corso prima",
+    time_step: "Passo orario",
   },
   nl: {
     schedules: "Schema's",
@@ -683,7 +1146,6 @@ const STRINGS = {
     action: "Actie",
     days: "Dagen",
     days_note: "De dagen gelden voor het hele schema.",
-    sun_kept: "Tijden ten opzichte van zonsopkomst en zonsondergang blijven behouden zolang je ze niet wijzigt.",
     name: "Naam",
     entity: "Entiteit",
     save: "Opslaan",
@@ -718,6 +1180,73 @@ const STRINGS = {
     zoom: "Detailknop",
     language: "Taal",
     lang_auto: "Automatisch",
+    starts_on: "Begint op {date}",
+    period_range: "{from} → {to}",
+    period_until: "Tot {date}",
+    period_from: "Vanaf {date}",
+    schedule_options: "Opties",
+    tab_slot: "Tijdvak",
+    tab_schedule: "Schema",
+    tab_options: "Opties",
+    mode_time: "Tijd",
+    at_time: "Om",
+    sunrise: "Zonsopkomst",
+    sunset: "Zonsondergang",
+    before: "Voor",
+    after: "Na",
+    offset: "Verschuiving",
+    approx_today: "≈ {time} vandaag",
+    days_daily: "Elke dag",
+    days_workday: "Werkdagen",
+    days_weekend: "Weekend",
+    days_custom: "Aangepast",
+    days_workday_note: "Werkdagen volgen de Workday-sensor: feestdagen worden overgeslagen.",
+    remove: "Verwijderen",
+    tags: "Tags",
+    add_tag: "Tag toevoegen",
+    conditions: "Voorwaarden",
+    cond_all: "Alle",
+    cond_any: "Minstens één",
+    add_condition: "Voorwaarde toevoegen",
+    match_is: "is",
+    match_not: "is niet",
+    match_below: "onder",
+    match_above: "boven",
+    cond_is: "{entity} is {value}",
+    cond_not: "{entity} is niet {value}",
+    cond_below: "{entity} onder {value}",
+    cond_above: "{entity} boven {value}",
+    track_conditions: "Actie uitvoeren zodra ze kloppen",
+    period: "Periode",
+    period_hint: "Alleen tussen twee datums",
+    date_from: "Van",
+    date_to: "Tot",
+    after_last: "Na het laatste tijdvak",
+    repeat_repeat: "Herhalen",
+    repeat_stop: "Stoppen",
+    repeat_delete: "Verwijderen",
+    repeat_hint: "Stoppen schakelt het schema uit, Verwijderen wist het, zodra het laatste tijdvak voorbij is.",
+    repeat_pause_badge: "Eenmalig · dan stop",
+    repeat_single_badge: "Eenmalig · dan verwijderd",
+    duplicate: "Dupliceren",
+    copy_name: "{name} (kopie)",
+    split: "Splitsen",
+    merge_next: "Samenvoegen met volgende",
+    kind: "Soort",
+    kind_slots: "Tijdvakken",
+    kind_single: "Eén tijdstip",
+    kind_slots_hint: "Een begin en een einde: de actie geldt tijdens het tijdvak.",
+    kind_single_hint: "Eén actie op een vast tijdstip, bijv. uitschakelen om 23:00.",
+    entities: "Entiteiten",
+    add_entity: "Entiteit van dezelfde soort toevoegen",
+    err_condition: "Vul elke voorwaarde in of verwijder ze.",
+    err_dates: "De einddatum moet na de begindatum liggen.",
+    show_badges: "Badges",
+    sort_by: "Sorteren",
+    sort_name: "Naam",
+    sort_next: "Volgende actie",
+    sort_state: "Actief eerst",
+    time_step: "Tijdstap",
   },
   pt: {
     schedules: "Agendamentos",
@@ -769,7 +1298,6 @@ const STRINGS = {
     action: "Ação",
     days: "Dias",
     days_note: "Os dias aplicam-se a todo o agendamento.",
-    sun_kept: "As horas relativas ao nascer e ao pôr do sol mantêm-se enquanto não as alterar.",
     name: "Nome",
     entity: "Entidade",
     save: "Guardar",
@@ -804,6 +1332,73 @@ const STRINGS = {
     zoom: "Botão de detalhe",
     language: "Idioma",
     lang_auto: "Automático",
+    starts_on: "Começa a {date}",
+    period_range: "{from} → {to}",
+    period_until: "Até {date}",
+    period_from: "A partir de {date}",
+    schedule_options: "Opções",
+    tab_slot: "Intervalo",
+    tab_schedule: "Agendamento",
+    tab_options: "Opções",
+    mode_time: "Hora",
+    at_time: "Às",
+    sunrise: "Nascer do sol",
+    sunset: "Pôr do sol",
+    before: "Antes",
+    after: "Depois",
+    offset: "Desvio",
+    approx_today: "≈ {time} hoje",
+    days_daily: "Todos os dias",
+    days_workday: "Dias úteis",
+    days_weekend: "Fim de semana",
+    days_custom: "Personalizado",
+    days_workday_note: "Os dias úteis seguem o sensor Workday: os feriados são saltados.",
+    remove: "Remover",
+    tags: "Etiquetas",
+    add_tag: "Adicionar etiqueta",
+    conditions: "Condições",
+    cond_all: "Todas",
+    cond_any: "Pelo menos uma",
+    add_condition: "Adicionar condição",
+    match_is: "é",
+    match_not: "não é",
+    match_below: "abaixo de",
+    match_above: "acima de",
+    cond_is: "{entity} é {value}",
+    cond_not: "{entity} não é {value}",
+    cond_below: "{entity} abaixo de {value}",
+    cond_above: "{entity} acima de {value}",
+    track_conditions: "Executar a ação assim que se cumprirem",
+    period: "Período",
+    period_hint: "Apenas entre duas datas",
+    date_from: "De",
+    date_to: "Até",
+    after_last: "Após o último intervalo",
+    repeat_repeat: "Repetir",
+    repeat_stop: "Parar",
+    repeat_delete: "Eliminar",
+    repeat_hint: "Parar desativa o agendamento, Eliminar apaga-o, depois do seu último intervalo.",
+    repeat_pause_badge: "Uma vez · depois para",
+    repeat_single_badge: "Uma vez · depois eliminado",
+    duplicate: "Duplicar",
+    copy_name: "{name} (cópia)",
+    split: "Dividir",
+    merge_next: "Juntar com o seguinte",
+    kind: "Tipo",
+    kind_slots: "Intervalos",
+    kind_single: "Hora única",
+    kind_slots_hint: "Um início e um fim: a ação vale durante o intervalo.",
+    kind_single_hint: "Uma ação a uma hora fixa, p. ex. desligar às 23:00.",
+    entities: "Entidades",
+    add_entity: "Adicionar entidade do mesmo tipo",
+    err_condition: "Preencha ou remova cada condição.",
+    err_dates: "A data de fim deve ser posterior à de início.",
+    show_badges: "Distintivos",
+    sort_by: "Ordenação",
+    sort_name: "Nome",
+    sort_next: "Próxima ação",
+    sort_state: "Em curso primeiro",
+    time_step: "Passo de tempo",
   },
   pl: {
     schedules: "Harmonogramy",
@@ -859,7 +1454,6 @@ const STRINGS = {
     action: "Akcja",
     days: "Dni",
     days_note: "Dni dotyczą całego harmonogramu.",
-    sun_kept: "Godziny względem wschodu i zachodu słońca pozostają bez zmian, dopóki ich nie zmienisz.",
     name: "Nazwa",
     entity: "Encja",
     save: "Zapisz",
@@ -894,6 +1488,73 @@ const STRINGS = {
     zoom: "Przycisk szczegółów",
     language: "Język",
     lang_auto: "Automatycznie",
+    starts_on: "Zaczyna się {date}",
+    period_range: "{from} → {to}",
+    period_until: "Do {date}",
+    period_from: "Od {date}",
+    schedule_options: "Opcje",
+    tab_slot: "Przedział",
+    tab_schedule: "Harmonogram",
+    tab_options: "Opcje",
+    mode_time: "Godzina",
+    at_time: "O",
+    sunrise: "Wschód słońca",
+    sunset: "Zachód słońca",
+    before: "Przed",
+    after: "Po",
+    offset: "Przesunięcie",
+    approx_today: "≈ {time} dziś",
+    days_daily: "Codziennie",
+    days_workday: "Dni robocze",
+    days_weekend: "Weekend",
+    days_custom: "Własne",
+    days_workday_note: "Dni robocze wynikają z czujnika Workday: święta są pomijane.",
+    remove: "Usuń",
+    tags: "Tagi",
+    add_tag: "Dodaj tag",
+    conditions: "Warunki",
+    cond_all: "Wszystkie",
+    cond_any: "Którykolwiek",
+    add_condition: "Dodaj warunek",
+    match_is: "jest",
+    match_not: "nie jest",
+    match_below: "poniżej",
+    match_above: "powyżej",
+    cond_is: "{entity} jest {value}",
+    cond_not: "{entity} nie jest {value}",
+    cond_below: "{entity} poniżej {value}",
+    cond_above: "{entity} powyżej {value}",
+    track_conditions: "Wykonaj akcję, gdy tylko zostaną spełnione",
+    period: "Okres",
+    period_hint: "Tylko między dwiema datami",
+    date_from: "Od",
+    date_to: "Do",
+    after_last: "Po ostatnim przedziale",
+    repeat_repeat: "Powtarzaj",
+    repeat_stop: "Zatrzymaj",
+    repeat_delete: "Usuń",
+    repeat_hint: "Zatrzymaj wyłącza harmonogram, Usuń kasuje go po ostatnim przedziale.",
+    repeat_pause_badge: "Raz · potem stop",
+    repeat_single_badge: "Raz · potem usunięcie",
+    duplicate: "Duplikuj",
+    copy_name: "{name} (kopia)",
+    split: "Podziel",
+    merge_next: "Połącz z następnym",
+    kind: "Rodzaj",
+    kind_slots: "Przedziały czasu",
+    kind_single: "Jedna godzina",
+    kind_slots_hint: "Początek i koniec: akcja trwa przez przedział.",
+    kind_single_hint: "Jedna akcja o stałej godzinie, np. wyłącz o 23:00.",
+    entities: "Encje",
+    add_entity: "Dodaj encję tego samego rodzaju",
+    err_condition: "Uzupełnij lub usuń każdy warunek.",
+    err_dates: "Data końcowa musi być po dacie początkowej.",
+    show_badges: "Plakietki",
+    sort_by: "Sortowanie",
+    sort_name: "Nazwa",
+    sort_next: "Następna akcja",
+    sort_state: "Aktywne najpierw",
+    time_step: "Krok czasu",
   },
   ro: {
     schedules: "Programări",
@@ -947,7 +1608,6 @@ const STRINGS = {
     action: "Acțiune",
     days: "Zile",
     days_note: "Zilele se aplică întregii programări.",
-    sun_kept: "Orele raportate la răsărit și apus se păstrează cât timp nu le modificați.",
     name: "Nume",
     entity: "Entitate",
     save: "Salvează",
@@ -982,6 +1642,73 @@ const STRINGS = {
     zoom: "Buton de detalii",
     language: "Limbă",
     lang_auto: "Automat",
+    starts_on: "Începe pe {date}",
+    period_range: "{from} → {to}",
+    period_until: "Până pe {date}",
+    period_from: "Din {date}",
+    schedule_options: "Opțiuni",
+    tab_slot: "Interval",
+    tab_schedule: "Program",
+    tab_options: "Opțiuni",
+    mode_time: "Oră",
+    at_time: "La",
+    sunrise: "Răsărit",
+    sunset: "Apus",
+    before: "Înainte",
+    after: "După",
+    offset: "Decalaj",
+    approx_today: "≈ {time} azi",
+    days_daily: "Zilnic",
+    days_workday: "Zile lucrătoare",
+    days_weekend: "Weekend",
+    days_custom: "Personalizat",
+    days_workday_note: "Zilele lucrătoare urmează senzorul Workday: sărbătorile sunt sărite.",
+    remove: "Elimină",
+    tags: "Etichete",
+    add_tag: "Adaugă o etichetă",
+    conditions: "Condiții",
+    cond_all: "Toate",
+    cond_any: "Oricare",
+    add_condition: "Adaugă condiție",
+    match_is: "este",
+    match_not: "nu este",
+    match_below: "sub",
+    match_above: "peste",
+    cond_is: "{entity} este {value}",
+    cond_not: "{entity} nu este {value}",
+    cond_below: "{entity} sub {value}",
+    cond_above: "{entity} peste {value}",
+    track_conditions: "Rulează acțiunea imediat ce sunt îndeplinite",
+    period: "Perioadă",
+    period_hint: "Doar între două date",
+    date_from: "De la",
+    date_to: "Până la",
+    after_last: "După ultimul interval",
+    repeat_repeat: "Repetă",
+    repeat_stop: "Oprește",
+    repeat_delete: "Șterge",
+    repeat_hint: "Oprește dezactivează programul, Șterge îl elimină, după ultimul interval.",
+    repeat_pause_badge: "O dată · apoi oprire",
+    repeat_single_badge: "O dată · apoi ștergere",
+    duplicate: "Duplică",
+    copy_name: "{name} (copie)",
+    split: "Împarte",
+    merge_next: "Unește cu următorul",
+    kind: "Tip",
+    kind_slots: "Intervale orare",
+    kind_single: "O singură oră",
+    kind_slots_hint: "Un început și un sfârșit: acțiunea ține pe tot intervalul.",
+    kind_single_hint: "O acțiune la o oră fixă, de ex. oprire la 23:00.",
+    entities: "Entități",
+    add_entity: "Adaugă o entitate de același tip",
+    err_condition: "Completează sau elimină fiecare condiție.",
+    err_dates: "Data de sfârșit trebuie să fie după data de început.",
+    show_badges: "Insigne",
+    sort_by: "Sortare",
+    sort_name: "Nume",
+    sort_next: "Următoarea acțiune",
+    sort_state: "Active întâi",
+    time_step: "Pas de timp",
   },
   da: {
     schedules: "Tidsplaner",
@@ -1033,7 +1760,6 @@ const STRINGS = {
     action: "Handling",
     days: "Dage",
     days_note: "Dagene gælder for hele tidsplanen.",
-    sun_kept: "Tider i forhold til solopgang og solnedgang bevares, så længe du ikke ændrer dem.",
     name: "Navn",
     entity: "Entitet",
     save: "Gem",
@@ -1068,6 +1794,73 @@ const STRINGS = {
     zoom: "Detaljeknap",
     language: "Sprog",
     lang_auto: "Automatisk",
+    starts_on: "Starter {date}",
+    period_range: "{from} → {to}",
+    period_until: "Indtil {date}",
+    period_from: "Fra {date}",
+    schedule_options: "Indstillinger",
+    tab_slot: "Tidsrum",
+    tab_schedule: "Tidsplan",
+    tab_options: "Indstillinger",
+    mode_time: "Tid",
+    at_time: "Kl.",
+    sunrise: "Solopgang",
+    sunset: "Solnedgang",
+    before: "Før",
+    after: "Efter",
+    offset: "Forskydning",
+    approx_today: "≈ {time} i dag",
+    days_daily: "Hver dag",
+    days_workday: "Arbejdsdage",
+    days_weekend: "Weekend",
+    days_custom: "Tilpasset",
+    days_workday_note: "Arbejdsdage følger Workday-sensoren: helligdage springes over.",
+    remove: "Fjern",
+    tags: "Tags",
+    add_tag: "Tilføj et tag",
+    conditions: "Betingelser",
+    cond_all: "Alle",
+    cond_any: "Mindst én",
+    add_condition: "Tilføj betingelse",
+    match_is: "er",
+    match_not: "er ikke",
+    match_below: "under",
+    match_above: "over",
+    cond_is: "{entity} er {value}",
+    cond_not: "{entity} er ikke {value}",
+    cond_below: "{entity} under {value}",
+    cond_above: "{entity} over {value}",
+    track_conditions: "Udfør handlingen så snart de er opfyldt",
+    period: "Periode",
+    period_hint: "Kun mellem to datoer",
+    date_from: "Fra",
+    date_to: "Til",
+    after_last: "Efter det sidste tidsrum",
+    repeat_repeat: "Gentag",
+    repeat_stop: "Stop",
+    repeat_delete: "Slet",
+    repeat_hint: "Stop deaktiverer tidsplanen, Slet fjerner den, når det sidste tidsrum er kørt.",
+    repeat_pause_badge: "Én gang · så stop",
+    repeat_single_badge: "Én gang · så slettet",
+    duplicate: "Dupliker",
+    copy_name: "{name} (kopi)",
+    split: "Del",
+    merge_next: "Flet med næste",
+    kind: "Type",
+    kind_slots: "Tidsrum",
+    kind_single: "Ét tidspunkt",
+    kind_slots_hint: "En start og en slutning: handlingen gælder i tidsrummet.",
+    kind_single_hint: "Én handling på et fast tidspunkt, f.eks. sluk kl. 23:00.",
+    entities: "Enheder",
+    add_entity: "Tilføj en enhed af samme type",
+    err_condition: "Udfyld eller fjern hver betingelse.",
+    err_dates: "Slutdatoen skal ligge efter startdatoen.",
+    show_badges: "Mærker",
+    sort_by: "Sortering",
+    sort_name: "Navn",
+    sort_next: "Næste handling",
+    sort_state: "Aktive først",
+    time_step: "Tidstrin",
   },
   sv: {
     schedules: "Scheman",
@@ -1119,7 +1912,6 @@ const STRINGS = {
     action: "Åtgärd",
     days: "Dagar",
     days_note: "Dagarna gäller hela schemat.",
-    sun_kept: "Tider i förhållande till soluppgång och solnedgång behålls så länge du inte ändrar dem.",
     name: "Namn",
     entity: "Entitet",
     save: "Spara",
@@ -1154,6 +1946,73 @@ const STRINGS = {
     zoom: "Detaljknapp",
     language: "Språk",
     lang_auto: "Automatiskt",
+    starts_on: "Börjar {date}",
+    period_range: "{from} → {to}",
+    period_until: "Till {date}",
+    period_from: "Från {date}",
+    schedule_options: "Alternativ",
+    tab_slot: "Tidsfönster",
+    tab_schedule: "Schema",
+    tab_options: "Alternativ",
+    mode_time: "Tid",
+    at_time: "Kl.",
+    sunrise: "Soluppgång",
+    sunset: "Solnedgång",
+    before: "Före",
+    after: "Efter",
+    offset: "Förskjutning",
+    approx_today: "≈ {time} i dag",
+    days_daily: "Varje dag",
+    days_workday: "Arbetsdagar",
+    days_weekend: "Helg",
+    days_custom: "Anpassat",
+    days_workday_note: "Arbetsdagar följer Workday-sensorn: helgdagar hoppas över.",
+    remove: "Ta bort",
+    tags: "Taggar",
+    add_tag: "Lägg till en tagg",
+    conditions: "Villkor",
+    cond_all: "Alla",
+    cond_any: "Minst ett",
+    add_condition: "Lägg till villkor",
+    match_is: "är",
+    match_not: "är inte",
+    match_below: "under",
+    match_above: "över",
+    cond_is: "{entity} är {value}",
+    cond_not: "{entity} är inte {value}",
+    cond_below: "{entity} under {value}",
+    cond_above: "{entity} över {value}",
+    track_conditions: "Kör åtgärden så snart de uppfylls",
+    period: "Period",
+    period_hint: "Endast mellan två datum",
+    date_from: "Från",
+    date_to: "Till",
+    after_last: "Efter sista tidsfönstret",
+    repeat_repeat: "Upprepa",
+    repeat_stop: "Stoppa",
+    repeat_delete: "Radera",
+    repeat_hint: "Stoppa inaktiverar schemat, Radera tar bort det, när sista tidsfönstret har körts.",
+    repeat_pause_badge: "En gång · sedan stopp",
+    repeat_single_badge: "En gång · sedan raderat",
+    duplicate: "Duplicera",
+    copy_name: "{name} (kopia)",
+    split: "Dela",
+    merge_next: "Slå ihop med nästa",
+    kind: "Typ",
+    kind_slots: "Tidsfönster",
+    kind_single: "En tidpunkt",
+    kind_slots_hint: "En start och ett slut: åtgärden gäller under tidsfönstret.",
+    kind_single_hint: "En åtgärd vid en fast tid, t.ex. stäng av kl. 23:00.",
+    entities: "Entiteter",
+    add_entity: "Lägg till en entitet av samma typ",
+    err_condition: "Fyll i eller ta bort varje villkor.",
+    err_dates: "Slutdatumet måste ligga efter startdatumet.",
+    show_badges: "Märken",
+    sort_by: "Sortering",
+    sort_name: "Namn",
+    sort_next: "Nästa åtgärd",
+    sort_state: "Pågående först",
+    time_step: "Tidssteg",
   },
   bg: {
     schedules: "Графици",
@@ -1205,7 +2064,6 @@ const STRINGS = {
     action: "Действие",
     days: "Дни",
     days_note: "Дните важат за целия график.",
-    sun_kept: "Часовете спрямо изгрева и залеза се запазват, докато не ги промените.",
     name: "Име",
     entity: "Обект",
     save: "Запази",
@@ -1240,6 +2098,73 @@ const STRINGS = {
     zoom: "Бутон за детайли",
     language: "Език",
     lang_auto: "Автоматично",
+    starts_on: "Започва на {date}",
+    period_range: "{from} → {to}",
+    period_until: "До {date}",
+    period_from: "От {date}",
+    schedule_options: "Опции",
+    tab_slot: "Интервал",
+    tab_schedule: "График",
+    tab_options: "Опции",
+    mode_time: "Час",
+    at_time: "В",
+    sunrise: "Изгрев",
+    sunset: "Залез",
+    before: "Преди",
+    after: "След",
+    offset: "Отместване",
+    approx_today: "≈ {time} днес",
+    days_daily: "Всеки ден",
+    days_workday: "Работни дни",
+    days_weekend: "Уикенд",
+    days_custom: "Персонализирано",
+    days_workday_note: "Работните дни следват сензора Workday: празниците се пропускат.",
+    remove: "Премахни",
+    tags: "Етикети",
+    add_tag: "Добави етикет",
+    conditions: "Условия",
+    cond_all: "Всички",
+    cond_any: "Поне едно",
+    add_condition: "Добави условие",
+    match_is: "е",
+    match_not: "не е",
+    match_below: "под",
+    match_above: "над",
+    cond_is: "{entity} е {value}",
+    cond_not: "{entity} не е {value}",
+    cond_below: "{entity} под {value}",
+    cond_above: "{entity} над {value}",
+    track_conditions: "Изпълни действието веднага щом са изпълнени",
+    period: "Период",
+    period_hint: "Само между две дати",
+    date_from: "От",
+    date_to: "До",
+    after_last: "След последния интервал",
+    repeat_repeat: "Повтаряй",
+    repeat_stop: "Спри",
+    repeat_delete: "Изтрий",
+    repeat_hint: "Спри изключва графика, Изтрий го премахва, след последния му интервал.",
+    repeat_pause_badge: "Веднъж · после спира",
+    repeat_single_badge: "Веднъж · после се изтрива",
+    duplicate: "Дублирай",
+    copy_name: "{name} (копие)",
+    split: "Раздели",
+    merge_next: "Слей със следващия",
+    kind: "Вид",
+    kind_slots: "Интервали",
+    kind_single: "Един час",
+    kind_slots_hint: "Начало и край: действието важи през интервала.",
+    kind_single_hint: "Едно действие в определен час, напр. изключване в 23:00.",
+    entities: "Обекти",
+    add_entity: "Добави обект от същия вид",
+    err_condition: "Попълнете или премахнете всяко условие.",
+    err_dates: "Крайната дата трябва да е след началната.",
+    show_badges: "Значки",
+    sort_by: "Подреждане",
+    sort_name: "Име",
+    sort_next: "Следващо действие",
+    sort_state: "Активните първо",
+    time_step: "Стъпка на времето",
   },
   ru: {
     schedules: "Расписания",
@@ -1295,7 +2220,6 @@ const STRINGS = {
     action: "Действие",
     days: "Дни",
     days_note: "Дни применяются ко всему расписанию.",
-    sun_kept: "Время относительно восхода и заката сохраняется, пока вы его не измените.",
     name: "Название",
     entity: "Объект",
     save: "Сохранить",
@@ -1330,6 +2254,73 @@ const STRINGS = {
     zoom: "Кнопка подробностей",
     language: "Язык",
     lang_auto: "Автоматически",
+    starts_on: "Начнётся {date}",
+    period_range: "{from} → {to}",
+    period_until: "До {date}",
+    period_from: "С {date}",
+    schedule_options: "Параметры",
+    tab_slot: "Интервал",
+    tab_schedule: "Расписание",
+    tab_options: "Параметры",
+    mode_time: "Время",
+    at_time: "В",
+    sunrise: "Восход",
+    sunset: "Закат",
+    before: "До",
+    after: "После",
+    offset: "Смещение",
+    approx_today: "≈ {time} сегодня",
+    days_daily: "Каждый день",
+    days_workday: "Рабочие дни",
+    days_weekend: "Выходные",
+    days_custom: "Свои дни",
+    days_workday_note: "Рабочие дни берутся из датчика Workday: праздники пропускаются.",
+    remove: "Удалить",
+    tags: "Теги",
+    add_tag: "Добавить тег",
+    conditions: "Условия",
+    cond_all: "Все",
+    cond_any: "Любое",
+    add_condition: "Добавить условие",
+    match_is: "равно",
+    match_not: "не равно",
+    match_below: "ниже",
+    match_above: "выше",
+    cond_is: "{entity} равно {value}",
+    cond_not: "{entity} не равно {value}",
+    cond_below: "{entity} ниже {value}",
+    cond_above: "{entity} выше {value}",
+    track_conditions: "Выполнить действие, как только они выполнятся",
+    period: "Период",
+    period_hint: "Только между двумя датами",
+    date_from: "С",
+    date_to: "По",
+    after_last: "После последнего интервала",
+    repeat_repeat: "Повторять",
+    repeat_stop: "Остановить",
+    repeat_delete: "Удалить",
+    repeat_hint: "«Остановить» отключает расписание, «Удалить» удаляет его после последнего интервала.",
+    repeat_pause_badge: "Один раз · затем стоп",
+    repeat_single_badge: "Один раз · затем удаление",
+    duplicate: "Дублировать",
+    copy_name: "{name} (копия)",
+    split: "Разделить",
+    merge_next: "Объединить со следующим",
+    kind: "Тип",
+    kind_slots: "Интервалы",
+    kind_single: "Одно время",
+    kind_slots_hint: "Начало и конец: действие держится весь интервал.",
+    kind_single_hint: "Одно действие в заданное время, напр. выключить в 23:00.",
+    entities: "Объекты",
+    add_entity: "Добавить объект того же типа",
+    err_condition: "Заполните или удалите каждое условие.",
+    err_dates: "Дата окончания должна быть позже даты начала.",
+    show_badges: "Значки",
+    sort_by: "Сортировка",
+    sort_name: "Название",
+    sort_next: "Следующее действие",
+    sort_state: "Активные сначала",
+    time_step: "Шаг времени",
   },
   uk: {
     schedules: "Розклади",
@@ -1385,7 +2376,6 @@ const STRINGS = {
     action: "Дія",
     days: "Дні",
     days_note: "Дні застосовуються до всього розкладу.",
-    sun_kept: "Час відносно сходу й заходу сонця зберігається, доки ви його не зміните.",
     name: "Назва",
     entity: "Об'єкт",
     save: "Зберегти",
@@ -1420,6 +2410,73 @@ const STRINGS = {
     zoom: "Кнопка деталей",
     language: "Мова",
     lang_auto: "Автоматично",
+    starts_on: "Почнеться {date}",
+    period_range: "{from} → {to}",
+    period_until: "До {date}",
+    period_from: "З {date}",
+    schedule_options: "Параметри",
+    tab_slot: "Інтервал",
+    tab_schedule: "Розклад",
+    tab_options: "Параметри",
+    mode_time: "Час",
+    at_time: "О",
+    sunrise: "Схід сонця",
+    sunset: "Захід сонця",
+    before: "До",
+    after: "Після",
+    offset: "Зсув",
+    approx_today: "≈ {time} сьогодні",
+    days_daily: "Щодня",
+    days_workday: "Робочі дні",
+    days_weekend: "Вихідні",
+    days_custom: "Власні дні",
+    days_workday_note: "Робочі дні беруться з датчика Workday: свята пропускаються.",
+    remove: "Видалити",
+    tags: "Теги",
+    add_tag: "Додати тег",
+    conditions: "Умови",
+    cond_all: "Усі",
+    cond_any: "Будь-яка",
+    add_condition: "Додати умову",
+    match_is: "дорівнює",
+    match_not: "не дорівнює",
+    match_below: "нижче",
+    match_above: "вище",
+    cond_is: "{entity} дорівнює {value}",
+    cond_not: "{entity} не дорівнює {value}",
+    cond_below: "{entity} нижче {value}",
+    cond_above: "{entity} вище {value}",
+    track_conditions: "Виконати дію, щойно їх буде виконано",
+    period: "Період",
+    period_hint: "Лише між двома датами",
+    date_from: "З",
+    date_to: "По",
+    after_last: "Після останнього інтервалу",
+    repeat_repeat: "Повторювати",
+    repeat_stop: "Зупинити",
+    repeat_delete: "Видалити",
+    repeat_hint: "«Зупинити» вимикає розклад, «Видалити» видаляє його після останнього інтервалу.",
+    repeat_pause_badge: "Один раз · потім стоп",
+    repeat_single_badge: "Один раз · потім видалення",
+    duplicate: "Дублювати",
+    copy_name: "{name} (копія)",
+    split: "Розділити",
+    merge_next: "Об’єднати з наступним",
+    kind: "Тип",
+    kind_slots: "Інтервали",
+    kind_single: "Один час",
+    kind_slots_hint: "Початок і кінець: дія триває весь інтервал.",
+    kind_single_hint: "Одна дія в заданий час, напр. вимкнути о 23:00.",
+    entities: "Об’єкти",
+    add_entity: "Додати об’єкт того ж типу",
+    err_condition: "Заповніть або видаліть кожну умову.",
+    err_dates: "Дата завершення має бути пізніше дати початку.",
+    show_badges: "Значки",
+    sort_by: "Сортування",
+    sort_name: "Назва",
+    sort_next: "Наступна дія",
+    sort_state: "Активні спершу",
+    time_step: "Крок часу",
   },
   hu: {
     schedules: "Ütemezések",
@@ -1471,7 +2528,6 @@ const STRINGS = {
     action: "Művelet",
     days: "Napok",
     days_note: "A napok a teljes ütemezésre vonatkoznak.",
-    sun_kept: "A napkeltéhez és napnyugtához kötött időpontok megmaradnak, amíg nem módosítja őket.",
     name: "Név",
     entity: "Entitás",
     save: "Mentés",
@@ -1506,6 +2562,73 @@ const STRINGS = {
     zoom: "Részletek gomb",
     language: "Nyelv",
     lang_auto: "Automatikus",
+    starts_on: "Kezdés: {date}",
+    period_range: "{from} → {to}",
+    period_until: "Eddig: {date}",
+    period_from: "Ettől: {date}",
+    schedule_options: "Beállítások",
+    tab_slot: "Idősáv",
+    tab_schedule: "Ütemezés",
+    tab_options: "Beállítások",
+    mode_time: "Idő",
+    at_time: "Ekkor",
+    sunrise: "Napkelte",
+    sunset: "Napnyugta",
+    before: "Előtte",
+    after: "Utána",
+    offset: "Eltolás",
+    approx_today: "≈ {time} ma",
+    days_daily: "Minden nap",
+    days_workday: "Munkanapok",
+    days_weekend: "Hétvége",
+    days_custom: "Egyéni",
+    days_workday_note: "A munkanapok a Workday érzékelőt követik: az ünnepnapok kimaradnak.",
+    remove: "Eltávolítás",
+    tags: "Címkék",
+    add_tag: "Címke hozzáadása",
+    conditions: "Feltételek",
+    cond_all: "Mind",
+    cond_any: "Bármelyik",
+    add_condition: "Feltétel hozzáadása",
+    match_is: "egyenlő",
+    match_not: "nem egyenlő",
+    match_below: "alatt",
+    match_above: "felett",
+    cond_is: "{entity} egyenlő: {value}",
+    cond_not: "{entity} nem egyenlő: {value}",
+    cond_below: "{entity} {value} alatt",
+    cond_above: "{entity} {value} felett",
+    track_conditions: "A művelet futtatása, amint teljesülnek",
+    period: "Időszak",
+    period_hint: "Csak két dátum között",
+    date_from: "Ettől",
+    date_to: "Eddig",
+    after_last: "Az utolsó idősáv után",
+    repeat_repeat: "Ismétlés",
+    repeat_stop: "Leállítás",
+    repeat_delete: "Törlés",
+    repeat_hint: "A Leállítás kikapcsolja az ütemezést, a Törlés eltávolítja, az utolsó idősáv után.",
+    repeat_pause_badge: "Egyszer · aztán leáll",
+    repeat_single_badge: "Egyszer · aztán törlődik",
+    duplicate: "Másolat",
+    copy_name: "{name} (másolat)",
+    split: "Felosztás",
+    merge_next: "Összevonás a következővel",
+    kind: "Fajta",
+    kind_slots: "Idősávok",
+    kind_single: "Egy időpont",
+    kind_slots_hint: "Kezdet és vég: a művelet az idősáv alatt érvényes.",
+    kind_single_hint: "Egy művelet adott időben, pl. kikapcsolás 23:00-kor.",
+    entities: "Entitások",
+    add_entity: "Azonos fajtájú entitás hozzáadása",
+    err_condition: "Töltsön ki vagy távolítson el minden feltételt.",
+    err_dates: "A záró dátumnak a kezdő dátum után kell lennie.",
+    show_badges: "Jelvények",
+    sort_by: "Rendezés",
+    sort_name: "Név",
+    sort_next: "Következő művelet",
+    sort_state: "Futók elöl",
+    time_step: "Időlépés",
   },
   sk: {
     schedules: "Plány",
@@ -1561,7 +2684,6 @@ const STRINGS = {
     action: "Akcia",
     days: "Dni",
     days_note: "Dni platia pre celý plán.",
-    sun_kept: "Časy vzhľadom na východ a západ slnka zostanú zachované, kým ich nezmeníte.",
     name: "Názov",
     entity: "Entita",
     save: "Uložiť",
@@ -1596,6 +2718,73 @@ const STRINGS = {
     zoom: "Tlačidlo podrobností",
     language: "Jazyk",
     lang_auto: "Automaticky",
+    starts_on: "Začína {date}",
+    period_range: "{from} → {to}",
+    period_until: "Do {date}",
+    period_from: "Od {date}",
+    schedule_options: "Možnosti",
+    tab_slot: "Interval",
+    tab_schedule: "Plán",
+    tab_options: "Možnosti",
+    mode_time: "Čas",
+    at_time: "O",
+    sunrise: "Východ slnka",
+    sunset: "Západ slnka",
+    before: "Pred",
+    after: "Po",
+    offset: "Posun",
+    approx_today: "≈ {time} dnes",
+    days_daily: "Každý deň",
+    days_workday: "Pracovné dni",
+    days_weekend: "Víkend",
+    days_custom: "Vlastné",
+    days_workday_note: "Pracovné dni sa riadia senzorom Workday: sviatky sa preskakujú.",
+    remove: "Odstrániť",
+    tags: "Štítky",
+    add_tag: "Pridať štítok",
+    conditions: "Podmienky",
+    cond_all: "Všetky",
+    cond_any: "Ktorákoľvek",
+    add_condition: "Pridať podmienku",
+    match_is: "je",
+    match_not: "nie je",
+    match_below: "pod",
+    match_above: "nad",
+    cond_is: "{entity} je {value}",
+    cond_not: "{entity} nie je {value}",
+    cond_below: "{entity} pod {value}",
+    cond_above: "{entity} nad {value}",
+    track_conditions: "Spustiť akciu hneď, ako sú splnené",
+    period: "Obdobie",
+    period_hint: "Len medzi dvoma dátumami",
+    date_from: "Od",
+    date_to: "Do",
+    after_last: "Po poslednom intervale",
+    repeat_repeat: "Opakovať",
+    repeat_stop: "Zastaviť",
+    repeat_delete: "Odstrániť",
+    repeat_hint: "Zastaviť vypne plán, Odstrániť ho zmaže, po jeho poslednom intervale.",
+    repeat_pause_badge: "Raz · potom stop",
+    repeat_single_badge: "Raz · potom zmazanie",
+    duplicate: "Duplikovať",
+    copy_name: "{name} (kópia)",
+    split: "Rozdeliť",
+    merge_next: "Zlúčiť s ďalším",
+    kind: "Druh",
+    kind_slots: "Časové intervaly",
+    kind_single: "Jeden čas",
+    kind_slots_hint: "Začiatok a koniec: akcia platí počas intervalu.",
+    kind_single_hint: "Jedna akcia v pevnom čase, napr. vypnúť o 23:00.",
+    entities: "Entity",
+    add_entity: "Pridať entitu rovnakého druhu",
+    err_condition: "Vyplňte alebo odstráňte každú podmienku.",
+    err_dates: "Dátum konca musí byť po dátume začiatku.",
+    show_badges: "Odznaky",
+    sort_by: "Zoradenie",
+    sort_name: "Názov",
+    sort_next: "Ďalšia akcia",
+    sort_state: "Bežiace najprv",
+    time_step: "Časový krok",
   },
   cs: {
     schedules: "Plány",
@@ -1651,7 +2840,6 @@ const STRINGS = {
     action: "Akce",
     days: "Dny",
     days_note: "Dny platí pro celý plán.",
-    sun_kept: "Časy vztažené k východu a západu slunce zůstanou zachovány, dokud je nezměníte.",
     name: "Název",
     entity: "Entita",
     save: "Uložit",
@@ -1686,6 +2874,73 @@ const STRINGS = {
     zoom: "Tlačítko podrobností",
     language: "Jazyk",
     lang_auto: "Automaticky",
+    starts_on: "Začíná {date}",
+    period_range: "{from} → {to}",
+    period_until: "Do {date}",
+    period_from: "Od {date}",
+    schedule_options: "Možnosti",
+    tab_slot: "Interval",
+    tab_schedule: "Plán",
+    tab_options: "Možnosti",
+    mode_time: "Čas",
+    at_time: "V",
+    sunrise: "Východ slunce",
+    sunset: "Západ slunce",
+    before: "Před",
+    after: "Po",
+    offset: "Posun",
+    approx_today: "≈ {time} dnes",
+    days_daily: "Každý den",
+    days_workday: "Pracovní dny",
+    days_weekend: "Víkend",
+    days_custom: "Vlastní",
+    days_workday_note: "Pracovní dny se řídí senzorem Workday: svátky se přeskakují.",
+    remove: "Odebrat",
+    tags: "Štítky",
+    add_tag: "Přidat štítek",
+    conditions: "Podmínky",
+    cond_all: "Všechny",
+    cond_any: "Kterákoli",
+    add_condition: "Přidat podmínku",
+    match_is: "je",
+    match_not: "není",
+    match_below: "pod",
+    match_above: "nad",
+    cond_is: "{entity} je {value}",
+    cond_not: "{entity} není {value}",
+    cond_below: "{entity} pod {value}",
+    cond_above: "{entity} nad {value}",
+    track_conditions: "Spustit akci, jakmile jsou splněny",
+    period: "Období",
+    period_hint: "Jen mezi dvěma daty",
+    date_from: "Od",
+    date_to: "Do",
+    after_last: "Po posledním intervalu",
+    repeat_repeat: "Opakovat",
+    repeat_stop: "Zastavit",
+    repeat_delete: "Smazat",
+    repeat_hint: "Zastavit vypne plán, Smazat ho odstraní, po jeho posledním intervalu.",
+    repeat_pause_badge: "Jednou · pak stop",
+    repeat_single_badge: "Jednou · pak smazání",
+    duplicate: "Duplikovat",
+    copy_name: "{name} (kopie)",
+    split: "Rozdělit",
+    merge_next: "Sloučit s dalším",
+    kind: "Druh",
+    kind_slots: "Časové intervaly",
+    kind_single: "Jeden čas",
+    kind_slots_hint: "Začátek a konec: akce platí po celý interval.",
+    kind_single_hint: "Jedna akce v pevný čas, např. vypnout ve 23:00.",
+    entities: "Entity",
+    add_entity: "Přidat entitu stejného druhu",
+    err_condition: "Vyplňte nebo odeberte každou podmínku.",
+    err_dates: "Datum konce musí být po datu začátku.",
+    show_badges: "Odznaky",
+    sort_by: "Řazení",
+    sort_name: "Název",
+    sort_next: "Další akce",
+    sort_state: "Běžící nejdřív",
+    time_step: "Časový krok",
   },
   sl: {
     schedules: "Urniki",
@@ -1741,7 +2996,6 @@ const STRINGS = {
     action: "Dejanje",
     days: "Dnevi",
     days_note: "Dnevi veljajo za celoten urnik.",
-    sun_kept: "Časi glede na sončni vzhod in zahod se ohranijo, dokler jih ne spremenite.",
     name: "Ime",
     entity: "Entiteta",
     save: "Shrani",
@@ -1776,6 +3030,73 @@ const STRINGS = {
     zoom: "Gumb za podrobnosti",
     language: "Jezik",
     lang_auto: "Samodejno",
+    starts_on: "Začne se {date}",
+    period_range: "{from} → {to}",
+    period_until: "Do {date}",
+    period_from: "Od {date}",
+    schedule_options: "Možnosti",
+    tab_slot: "Termin",
+    tab_schedule: "Urnik",
+    tab_options: "Možnosti",
+    mode_time: "Čas",
+    at_time: "Ob",
+    sunrise: "Sončni vzhod",
+    sunset: "Sončni zahod",
+    before: "Pred",
+    after: "Po",
+    offset: "Zamik",
+    approx_today: "≈ {time} danes",
+    days_daily: "Vsak dan",
+    days_workday: "Delovni dnevi",
+    days_weekend: "Vikend",
+    days_custom: "Po meri",
+    days_workday_note: "Delovni dnevi sledijo senzorju Workday: prazniki se preskočijo.",
+    remove: "Odstrani",
+    tags: "Oznake",
+    add_tag: "Dodaj oznako",
+    conditions: "Pogoji",
+    cond_all: "Vsi",
+    cond_any: "Kateri koli",
+    add_condition: "Dodaj pogoj",
+    match_is: "je",
+    match_not: "ni",
+    match_below: "pod",
+    match_above: "nad",
+    cond_is: "{entity} je {value}",
+    cond_not: "{entity} ni {value}",
+    cond_below: "{entity} pod {value}",
+    cond_above: "{entity} nad {value}",
+    track_conditions: "Izvedi dejanje takoj, ko so izpolnjeni",
+    period: "Obdobje",
+    period_hint: "Samo med dvema datumoma",
+    date_from: "Od",
+    date_to: "Do",
+    after_last: "Po zadnjem terminu",
+    repeat_repeat: "Ponavljaj",
+    repeat_stop: "Ustavi",
+    repeat_delete: "Izbriši",
+    repeat_hint: "Ustavi onemogoči urnik, Izbriši ga odstrani, po zadnjem terminu.",
+    repeat_pause_badge: "Enkrat · nato ustavitev",
+    repeat_single_badge: "Enkrat · nato izbris",
+    duplicate: "Podvoji",
+    copy_name: "{name} (kopija)",
+    split: "Razdeli",
+    merge_next: "Združi z naslednjim",
+    kind: "Vrsta",
+    kind_slots: "Termini",
+    kind_single: "En čas",
+    kind_slots_hint: "Začetek in konec: dejanje velja ves termin.",
+    kind_single_hint: "Eno dejanje ob določenem času, npr. izklop ob 23:00.",
+    entities: "Entitete",
+    add_entity: "Dodaj entiteto iste vrste",
+    err_condition: "Izpolnite ali odstranite vsak pogoj.",
+    err_dates: "Končni datum mora biti po začetnem.",
+    show_badges: "Značke",
+    sort_by: "Razvrščanje",
+    sort_name: "Ime",
+    sort_next: "Naslednje dejanje",
+    sort_state: "Aktivni najprej",
+    time_step: "Časovni korak",
   },
   lv: {
     schedules: "Grafiki",
@@ -1829,7 +3150,6 @@ const STRINGS = {
     action: "Darbība",
     days: "Dienas",
     days_note: "Dienas attiecas uz visu grafiku.",
-    sun_kept: "Laiki attiecībā pret saullēktu un saulrietu tiek saglabāti, kamēr tos nemaināt.",
     name: "Nosaukums",
     entity: "Entītija",
     save: "Saglabāt",
@@ -1864,6 +3184,73 @@ const STRINGS = {
     zoom: "Detaļu poga",
     language: "Valoda",
     lang_auto: "Automātiski",
+    starts_on: "Sākas {date}",
+    period_range: "{from} → {to}",
+    period_until: "Līdz {date}",
+    period_from: "No {date}",
+    schedule_options: "Opcijas",
+    tab_slot: "Intervāls",
+    tab_schedule: "Grafiks",
+    tab_options: "Opcijas",
+    mode_time: "Laiks",
+    at_time: "Plkst.",
+    sunrise: "Saullēkts",
+    sunset: "Saulriets",
+    before: "Pirms",
+    after: "Pēc",
+    offset: "Nobīde",
+    approx_today: "≈ {time} šodien",
+    days_daily: "Katru dienu",
+    days_workday: "Darba dienas",
+    days_weekend: "Nedēļas nogale",
+    days_custom: "Pielāgots",
+    days_workday_note: "Darba dienas seko Workday sensoram: svētku dienas tiek izlaistas.",
+    remove: "Noņemt",
+    tags: "Birkas",
+    add_tag: "Pievienot birku",
+    conditions: "Nosacījumi",
+    cond_all: "Visi",
+    cond_any: "Jebkurš",
+    add_condition: "Pievienot nosacījumu",
+    match_is: "ir",
+    match_not: "nav",
+    match_below: "zem",
+    match_above: "virs",
+    cond_is: "{entity} ir {value}",
+    cond_not: "{entity} nav {value}",
+    cond_below: "{entity} zem {value}",
+    cond_above: "{entity} virs {value}",
+    track_conditions: "Izpildīt darbību, tiklīdz tie ir izpildīti",
+    period: "Periods",
+    period_hint: "Tikai starp diviem datumiem",
+    date_from: "No",
+    date_to: "Līdz",
+    after_last: "Pēc pēdējā intervāla",
+    repeat_repeat: "Atkārtot",
+    repeat_stop: "Apturēt",
+    repeat_delete: "Dzēst",
+    repeat_hint: "Apturēt izslēdz grafiku, Dzēst to izdzēš pēc pēdējā intervāla.",
+    repeat_pause_badge: "Vienreiz · tad stop",
+    repeat_single_badge: "Vienreiz · tad dzēšana",
+    duplicate: "Dublēt",
+    copy_name: "{name} (kopija)",
+    split: "Sadalīt",
+    merge_next: "Apvienot ar nākamo",
+    kind: "Veids",
+    kind_slots: "Laika intervāli",
+    kind_single: "Viens laiks",
+    kind_slots_hint: "Sākums un beigas: darbība ilgst visu intervālu.",
+    kind_single_hint: "Viena darbība noteiktā laikā, piem., izslēgt 23:00.",
+    entities: "Entītijas",
+    add_entity: "Pievienot tāda paša veida entītiju",
+    err_condition: "Aizpildiet vai noņemiet katru nosacījumu.",
+    err_dates: "Beigu datumam jābūt pēc sākuma datuma.",
+    show_badges: "Žetoni",
+    sort_by: "Kārtošana",
+    sort_name: "Nosaukums",
+    sort_next: "Nākamā darbība",
+    sort_state: "Aktīvie vispirms",
+    time_step: "Laika solis",
   },
   el: {
     schedules: "Προγράμματα",
@@ -1915,7 +3302,6 @@ const STRINGS = {
     action: "Ενέργεια",
     days: "Ημέρες",
     days_note: "Οι ημέρες ισχύουν για όλο το πρόγραμμα.",
-    sun_kept: "Οι ώρες σε σχέση με την ανατολή και τη δύση του ηλίου διατηρούνται όσο δεν τις αλλάζετε.",
     name: "Όνομα",
     entity: "Οντότητα",
     save: "Αποθήκευση",
@@ -1950,6 +3336,73 @@ const STRINGS = {
     zoom: "Κουμπί λεπτομερειών",
     language: "Γλώσσα",
     lang_auto: "Αυτόματα",
+    starts_on: "Ξεκινά {date}",
+    period_range: "{from} → {to}",
+    period_until: "Έως {date}",
+    period_from: "Από {date}",
+    schedule_options: "Επιλογές",
+    tab_slot: "Διάστημα",
+    tab_schedule: "Πρόγραμμα",
+    tab_options: "Επιλογές",
+    mode_time: "Ώρα",
+    at_time: "Στις",
+    sunrise: "Ανατολή",
+    sunset: "Δύση",
+    before: "Πριν",
+    after: "Μετά",
+    offset: "Μετατόπιση",
+    approx_today: "≈ {time} σήμερα",
+    days_daily: "Κάθε μέρα",
+    days_workday: "Εργάσιμες",
+    days_weekend: "Σαββατοκύριακο",
+    days_custom: "Προσαρμογή",
+    days_workday_note: "Οι εργάσιμες ακολουθούν τον αισθητήρα Workday: οι αργίες παραλείπονται.",
+    remove: "Αφαίρεση",
+    tags: "Ετικέτες",
+    add_tag: "Προσθήκη ετικέτας",
+    conditions: "Συνθήκες",
+    cond_all: "Όλες",
+    cond_any: "Οποιαδήποτε",
+    add_condition: "Προσθήκη συνθήκης",
+    match_is: "είναι",
+    match_not: "δεν είναι",
+    match_below: "κάτω από",
+    match_above: "πάνω από",
+    cond_is: "{entity} είναι {value}",
+    cond_not: "{entity} δεν είναι {value}",
+    cond_below: "{entity} κάτω από {value}",
+    cond_above: "{entity} πάνω από {value}",
+    track_conditions: "Εκτέλεση της ενέργειας μόλις ισχύσουν",
+    period: "Περίοδος",
+    period_hint: "Μόνο μεταξύ δύο ημερομηνιών",
+    date_from: "Από",
+    date_to: "Έως",
+    after_last: "Μετά το τελευταίο διάστημα",
+    repeat_repeat: "Επανάληψη",
+    repeat_stop: "Διακοπή",
+    repeat_delete: "Διαγραφή",
+    repeat_hint: "Η Διακοπή απενεργοποιεί το πρόγραμμα, η Διαγραφή το αφαιρεί, μετά το τελευταίο διάστημα.",
+    repeat_pause_badge: "Μία φορά · μετά διακοπή",
+    repeat_single_badge: "Μία φορά · μετά διαγραφή",
+    duplicate: "Αντίγραφο",
+    copy_name: "{name} (αντίγραφο)",
+    split: "Διαίρεση",
+    merge_next: "Συγχώνευση με το επόμενο",
+    kind: "Είδος",
+    kind_slots: "Χρονικά διαστήματα",
+    kind_single: "Μία ώρα",
+    kind_slots_hint: "Αρχή και τέλος: η ενέργεια ισχύει όλο το διάστημα.",
+    kind_single_hint: "Μία ενέργεια σε σταθερή ώρα, π.χ. απενεργοποίηση στις 23:00.",
+    entities: "Οντότητες",
+    add_entity: "Προσθήκη οντότητας ίδιου είδους",
+    err_condition: "Συμπληρώστε ή αφαιρέστε κάθε συνθήκη.",
+    err_dates: "Η ημερομηνία λήξης πρέπει να είναι μετά την έναρξη.",
+    show_badges: "Σήματα",
+    sort_by: "Ταξινόμηση",
+    sort_name: "Όνομα",
+    sort_next: "Επόμενη ενέργεια",
+    sort_state: "Ενεργά πρώτα",
+    time_step: "Βήμα χρόνου",
   },
 };
 
@@ -2327,8 +3780,9 @@ const defaultValue = (slots, infos) => {
   return [...total.entries()].sort((a, b) => b[1] - a[1])[0][0];
 };
 
-// The card's view of a schedule entity.
-const scheduleModel = (hass, config, id, tr, loc) => {
+// The card's view of a schedule entity (`item`: its full schedule from the `scheduler` websocket command, for its
+// conditions, dates and repetition).
+const scheduleModel = (hass, config, id, tr, loc, item = null) => {
   const st = hass.states[id];
   const a = st.attributes || {};
   const sun = sunTimes(hass);
@@ -2359,20 +3813,36 @@ const scheduleModel = (hass, config, id, tr, loc) => {
     icon: ts?.attributes?.icon || DOMAIN_ICONS[domain] || "mdi:calendar-clock",
     current: num(a.current_slot),
     tags: Array.isArray(a.tags) ? a.tags : [],
+    opts: item ? optionsOf(item) : null,
+    from: item?.start_date || null,
+    to: item?.end_date || null,
   };
 };
 
 // The schedules shown: those of the card's `tags` (any of them) and `entities` (schedule entities or the entities
 // they act on), disabled ones last unless `show_disabled: false`, by name.
-const pickSchedules = (models, config = {}) => {
-  const tags = Array.isArray(config.tags) ? config.tags.map(String) : config.tags ? [String(config.tags)] : [];
+// `tags` also takes `none` (schedules without a tag), `enabled` and `disabled`; `exclude_tags` hides schedules
+// carrying one of its tags. `sort_by`: `name` (default), `next` (soonest next action first) or `state` (running first).
+const SPECIAL_TAGS = ["none", "enabled", "disabled"];
+const listOf = (v) => (Array.isArray(v) ? v.map(String) : v !== undefined && v !== null && v !== "" ? [String(v)] : []);
+const pickSchedules = (models, config = {}, rank = null) => {
+  const tags = listOf(config.tags);
+  const out = listOf(config.exclude_tags);
   const ents = Array.isArray(config.entities) ? config.entities.map((e) => (typeof e === "string" ? e : e?.entity)).filter(Boolean) : [];
+  const tagged = (m) =>
+    tags.some((x) => (x === "none" ? !m.tags.length : x === "enabled" ? m.enabled : x === "disabled" ? !m.enabled : m.tags.includes(x)));
+  const byName = (x, y) => x.name.localeCompare(y.name);
+  const sort = config.sort_by === "next" || config.sort_by === "state" ? config.sort_by : "name";
   return models
-    .filter((m) => !tags.length || m.tags.some((x) => tags.includes(x)))
+    .filter((m) => !tags.length || tagged(m))
+    .filter((m) => !m.tags.some((x) => out.includes(x)))
     .filter((m) => !ents.length || ents.includes(m.id) || m.entities.some((e) => ents.includes(e)))
     .filter((m) => config.show_disabled !== false || m.state !== "off")
-    .sort((x, y) => (x.state === "off") - (y.state === "off") || x.name.localeCompare(y.name));
+    .sort((x, y) => (x.state === "off") - (y.state === "off") || (sort !== "name" && rank ? rank(x, sort) - rank(y, sort) : 0) || byName(x, y));
 };
+
+// The tags a new schedule gets from the card: its own, the special values left out.
+const cardTags = (config = {}) => listOf(config.tags).filter((x) => !SPECIAL_TAGS.includes(x));
 
 // The next starts of a schedule's slots, from `now` ({ wd, min }) over the next `days` days.
 const occurrences = (m, now, hass, days = 8) => {
@@ -2380,6 +3850,9 @@ const occurrences = (m, now, hass, days = 8) => {
   for (let d = 0; d < days; d++) {
     const wd = (now.wd + d) % 7;
     if (!runsOn(m.weekdays, wd, hass, d === 0)) continue;
+    // Outside the schedule's dates: nothing that day.
+    const date = now.date && (m.from || m.to) ? addDays(now.date, d) : null;
+    if (date && ((m.from && date < m.from) || (m.to && date > m.to))) continue;
     for (const s of m.slots) if (d > 0 || s.start > now.min) out.push({ day: d, at: d * DAY + s.start, slot: s, m });
   }
   return out.sort((a, b) => a.at - b.at);
@@ -2435,6 +3908,29 @@ const cleanSlot = (s) => {
   return out;
 };
 
+// A timeslot's start and end (minutes; an end at midnight closes the day; null without an end).
+const slotRange = (s, sun) => {
+  const a = parseTime(s.start, sun)?.min ?? 0;
+  const b = s.stop ? (parseTime(s.stop, sun)?.min ?? a) : null;
+  return [a, b === null ? null : b === 0 && a > 0 ? DAY : b];
+};
+
+// Does timeslot `k` run into another one (same start, or ranges crossing, over midnight too)?
+const slotsClash = (slots, k, sun) => {
+  const [a1, b1] = slotRange(slots[k], sun);
+  const covers = (a, b, x) => (b > a ? x >= a && x < b : x >= a || x < b);
+  return slots.some((o, j) => {
+    if (j === k) return false;
+    const [a2, b2] = slotRange(o, sun);
+    return (
+      a1 === a2 ||
+      (b1 !== null && b2 !== null && (covers(a1, b1, a2) || covers(a2, b2, a1))) ||
+      (b1 !== null && b2 === null && covers(a1, b1, a2)) ||
+      (b1 === null && b2 !== null && covers(a2, b2, a1))
+    );
+  });
+};
+
 // Weekdays for the services: every day → daily; workday / weekend kept when the days are theirs.
 const weekdaysPayload = (days, original, hass) => {
   const set = [...days].sort((a, b) => a - b);
@@ -2444,6 +3940,107 @@ const weekdaysPayload = (days, original, hass) => {
   if (original?.length === 1 && original[0] === "workday" && same(work)) return ["workday"];
   if (original?.length === 1 && original[0] === "weekend" && same([0, 1, 2, 3, 4, 5, 6].filter((d) => !work.includes(d)))) return ["weekend"];
   return set.map((d) => WEEKDAYS[d]);
+};
+
+// A time of the component split for the editor: "sunset-00:30:00" → { mode: "sunset", sign: "-", off: "00:30" };
+// a fixed time → { mode: "time", time: "07:30" }.
+const splitTime = (raw, sun) => {
+  const str = String(raw ?? "").trim();
+  const r = /^(sunrise|sunset)([+-])(\d{1,2}):(\d{2})/.exec(str);
+  if (r) return { mode: r[1], sign: r[2], off: `${r[3].padStart(2, "0")}:${r[4]}`, time: hm(parseTime(str, sun).min) };
+  const p = str ? parseTime(str, sun) : null;
+  return { mode: "time", sign: "-", off: "00:00", time: p ? hm(p.min) : "" };
+};
+
+// The time the component stores: "07:30:00", or "sunset-00:30:00" relative to the sun ("" when no fixed time).
+const joinTime = (mode, time, sign, off) => {
+  if (mode === "sunrise" || mode === "sunset") {
+    const o = /^(\d{1,2}):(\d{2})$/.exec(String(off || "").trim());
+    return `${mode}${sign === "+" ? "+" : "-"}${o ? `${o[1].padStart(2, "0")}:${o[2]}` : "00:00"}:00`;
+  }
+  return time ? `${time}:00` : "";
+};
+
+// The editable options of a schedule (the same for all its slots): name, tags, conditions (from its first slot),
+// the dates it runs between and what it does after its last slot.
+const MATCH_TYPES = ["is", "not", "below", "above"];
+const REPEAT_TYPES = ["repeat", "pause", "single"];
+const optionsOf = (item = {}) => {
+  const first = (Array.isArray(item.timeslots) ? item.timeslots : [])[0] || {};
+  const conds = (Array.isArray(first.conditions) ? first.conditions : []).map((c) => ({
+    entity: String(c.entity_id || ""),
+    match: MATCH_TYPES.includes(c.match_type) ? c.match_type : "is",
+    value: c.value === null || c.value === undefined ? "" : String(c.value),
+    ...(c.attribute ? { attribute: c.attribute } : {}),
+  }));
+  return {
+    name: String(item.name || ""),
+    tags: Array.isArray(item.tags) ? item.tags.map(String) : [],
+    condType: first.condition_type === "or" ? "or" : "and",
+    conds,
+    track: !!first.track_conditions,
+    period: !!(item.start_date || item.end_date),
+    from: item.start_date || "",
+    to: item.end_date || "",
+    repeat: REPEAT_TYPES.includes(item.repeat_type) ? item.repeat_type : "repeat",
+  };
+};
+
+// The conditions of the options for the services (numbers kept as numbers), or an error key.
+const conditionsPayload = (o) => {
+  const out = [];
+  for (const c of o.conds) {
+    const entity = String(c.entity || "").trim();
+    const value = String(c.value ?? "").trim();
+    if (!entity || value === "") return { error: "err_condition" };
+    const n = num(value);
+    const v = (c.match === "below" || c.match === "above") && n !== null ? n : n !== null && /^-?\d+(\.\d+)?$/.test(value) ? n : value;
+    out.push({ entity_id: entity, value: v, match_type: c.match, ...(c.attribute ? { attribute: c.attribute } : {}) });
+  }
+  return { conds: out };
+};
+
+// The slots with the options' conditions put on every one of them (none: removed from all).
+const withConditions = (slots, o, conds) =>
+  slots.map((s) => {
+    const out = { ...s };
+    delete out.conditions;
+    delete out.condition_type;
+    delete out.track_conditions;
+    if (conds.length) {
+      out.conditions = conds;
+      out.condition_type = o.condType;
+      if (o.track) out.track_conditions = true;
+    }
+    return out;
+  });
+
+// The custom actions of `customize` for an entity: those of its id, then those of its domain.
+const customActions = (config, entityId) => {
+  const c = config?.customize && typeof config.customize === "object" ? config.customize : {};
+  const list = [...(Array.isArray(c[entityId]) ? c[entityId] : []), ...(Array.isArray(c[domainOf(entityId)]) ? c[domainOf(entityId)] : [])];
+  return list
+    .filter((a) => a && typeof a.service === "string" && a.service.includes("."))
+    .map((a) => ({ service: a.service, data: a.service_data && typeof a.service_data === "object" ? a.service_data : {}, name: a.name ? String(a.name) : "" }));
+};
+
+// The entities a new schedule can act on: the action domains, narrowed by `include` and `exclude` (entity ids or
+// domains).
+const pickable = (hass, config = {}) => {
+  const list = (v) => (Array.isArray(v) ? v.map(String) : v ? [String(v)] : []);
+  const inc = list(config.include);
+  const exc = list(config.exclude);
+  const hit = (id, l) => l.includes(id) || l.includes(domainOf(id));
+  return Object.keys(hass?.states || {})
+    .filter((id) => (inc.length ? hit(id, inc) : ACTION_DOMAINS.includes(domainOf(id))))
+    .filter((id) => !hit(id, exc) && !id.startsWith("switch.schedule_"))
+    .sort();
+};
+
+// A day `d` days after a date "YYYY-MM-DD".
+const addDays = (date, d) => {
+  const ms = Date.parse(`${date}T12:00:00Z`);
+  return Number.isFinite(ms) ? new Date(ms + d * 86400000).toISOString().slice(0, 10) : date;
 };
 
 // The actions the editor offers for an entity: turning on and off, opening and closing, a temperature or a
@@ -2729,15 +4326,18 @@ const STYLE = `
          background: var(--secondary-background-color, #f1f1f1); transition: background .2s; }
   .row:hover { background: color-mix(in srgb, var(--c) 8%, var(--secondary-background-color, #f1f1f1)); }
   .row .line { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  /* The tile look shared by the ha-* cards: a neutral tile, a round icon tinted in the schedule's colour (grey when
+     disabled), the name in bold, a state line coloured while a slot runs, a status dot on every tile. */
   .ic { position: relative; flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-        color: var(--primary-text-color); background: color-mix(in srgb, var(--sc-na) 14%, transparent); }
+        color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
   .ic ha-icon { --mdc-icon-size: 24px; }
-  .row.active .ic { color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
+  .row:not(.enabled) .ic { color: var(--sc-na); background: color-mix(in srgb, var(--sc-na) 14%, transparent); }
   .ic .on { position: absolute; right: -1px; bottom: -1px; width: 10px; height: 10px; border-radius: 50%; background: var(--sc-na);
             box-shadow: 0 0 0 2px var(--secondary-background-color, #f1f1f1); }
   .row.enabled .ic .on { background: var(--sc-ok); }
+  .row.active .ic .on { background: var(--c); }
   .row .txt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .row .nm { font-size: 14px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .nm { font-size: 14px; font-weight: 600; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row .stl { font-size: 12px; line-height: 1.25; color: var(--secondary-text-color); overflow-wrap: break-word; }
   .row.active .stl { color: color-mix(in srgb, var(--c) 60%, var(--primary-text-color, #212121)); }
   .row ha-switch { flex: none; }
@@ -2795,6 +4395,7 @@ const STYLE = `
   .legend .sw i { width: 14px; height: 10px; border-radius: 3px; background: color-mix(in srgb, var(--b) 85%, transparent); }
   .legend .sw.def i { background: color-mix(in srgb, var(--b) 16%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--b) 30%, transparent); }
   .legend .btn { margin-left: auto; }
+  .legend .btn + .btn { margin-left: 0; }
 
   /* ── Popup (slot editor, new schedule), at the top of the card ── */
   .backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: flex-start; justify-content: center;
@@ -2832,6 +4433,55 @@ const STYLE = `
                              background: color-mix(in srgb, var(--sc-accent) 16%, transparent); box-shadow: none; }
   .mfoot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .mfoot .grow { flex: 1 1 auto; }
+  /* ── Badges of a tile: the sun, the days, a condition, the dates, after the last slot ── */
+  .bdgs { display: flex; flex-wrap: wrap; gap: 4px; margin-left: 50px; }
+  .bdg { --k: var(--sc-na); max-width: 100%; box-sizing: border-box; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; line-height: 1.5;
+         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: color-mix(in srgb, var(--k) 16%, transparent);
+         color: color-mix(in srgb, var(--k) 45%, var(--primary-text-color, #212121)); }
+  .bdg.b-sun { --k: #f59e0b; }
+  .bdg.b-cond { --k: #3b82f6; }
+  .bdg.b-period { --k: #8b5cf6; }
+  /* ── Popup tabs, segmented choices, conditions, tags, entities ── */
+  .mtabs { display: flex; gap: 16px; border-bottom: 1px solid var(--divider-color, rgba(127,127,127,.2)); }
+  .mtab { all: unset; cursor: pointer; padding: 4px 2px 6px; font-size: 13px; font-weight: 500; color: var(--secondary-text-color); border-bottom: 2px solid transparent; }
+  .mtab[aria-selected="true"] { color: var(--primary-text-color); border-bottom-color: var(--sc-accent); }
+  .stack { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .seg { display: flex; gap: 2px; padding: 2px; border-radius: 8px; background: color-mix(in srgb, var(--sc-na) 14%, transparent); min-width: 0; }
+  .sg { all: unset; cursor: pointer; flex: 1 1 0; min-width: 0; text-align: center; padding: 4px 6px; border-radius: 6px; font-size: 12px; font-weight: 500;
+        color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sg[aria-pressed="true"] { background: var(--card-background-color, #fff); color: color-mix(in srgb, var(--sc-accent) 70%, var(--primary-text-color, #212121));
+                             box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  .seg.narrow { flex: none; }
+  .seg.narrow .sg { flex: none; padding: 4px 8px; }
+  .dayset.preset .dt { cursor: pointer; opacity: .75; }
+  .sect { grid-column: 1 / -1; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--secondary-text-color); }
+  .conds { display: flex; flex-direction: column; gap: 6px; }
+  .cond { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; padding: 6px; border-radius: 8px;
+          background: color-mix(in srgb, var(--sc-na) 10%, transparent); }
+  .cond .pair { grid-column: 1 / -1; }
+  .cond select { flex: none; width: auto; }
+  .x { all: unset; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: var(--secondary-text-color); }
+  .x:hover { color: var(--primary-text-color); background: color-mix(in srgb, var(--secondary-text-color) 12%, transparent); }
+  .x .icon { width: 14px; height: 14px; }
+  .tagset { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+  .tg { display: inline-flex; align-items: center; gap: 2px; padding: 1px 2px 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 500;
+        color: color-mix(in srgb, var(--sc-accent) 70%, var(--primary-text-color, #212121)); background: color-mix(in srgb, var(--sc-accent) 16%, transparent); }
+  .tg .x { width: 20px; height: 20px; }
+  .form .tagset input { flex: 1 1 90px; width: auto; }
+  .chk { display: flex; align-items: center; gap: 8px; color: var(--primary-text-color); }
+  .form .chk input { width: 16px; height: 16px; margin: 0; flex: none; accent-color: var(--sc-accent); }
+  .ents { display: flex; flex-direction: column; gap: 4px; }
+  .ent { display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 8px; border-radius: 8px; font-size: 13px;
+         background: color-mix(in srgb, var(--sc-na) 10%, transparent); }
+  .ent .en { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ent ha-icon { --mdc-icon-size: 18px; color: var(--secondary-text-color); }
+  /* ── Weekly grid: the edges of a slot are dragged ── */
+  .hdl { position: absolute; top: 3px; bottom: 3px; width: 8px; margin-left: -4px; border-radius: 3px; cursor: ew-resize; touch-action: none; z-index: 1;
+         background: var(--card-background-color, #fff); box-shadow: 0 0 0 1px color-mix(in srgb, var(--b) 80%, #000); opacity: 0; }
+  .track:hover .hdl, .hdl.on { opacity: 1; }
+  @media (hover: none) { .hdl { opacity: .9; } }
+  .tip { position: absolute; top: -26px; transform: translateX(-50%); padding: 2px 6px; border-radius: 6px; font-size: 11px; font-weight: 500; white-space: nowrap;
+         color: #fff; background: #16263a; pointer-events: none; z-index: 2; }
 `;
 
 // The mini card: the same 90 px banner (title and next action on the sky, today's timeline, the detail button at
@@ -2909,7 +4559,9 @@ class SchedulerCard extends HTMLElement {
     this._view = null;
     this._edit = null;
     this._run = 0;
+    this._items = null;
     this.shadowRoot.addEventListener("click", (ev) => this._click(ev));
+    this.shadowRoot.addEventListener("pointerdown", (ev) => this._dragStart(ev));
     this.shadowRoot.addEventListener("change", (ev) => this._change(ev));
     this.shadowRoot.addEventListener("input", (ev) => this._input(ev));
     this.shadowRoot.addEventListener("keydown", (ev) => {
@@ -2968,9 +4620,49 @@ class SchedulerCard extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
     if (!this._config) return;
+    this._watchItems();
     const sig = this._signature();
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
+    // Without the component's update subscription, the full schedules are read again when a schedule changes.
+    if (this._sig && !this._unsubItems) {
+      globalThis.clearTimeout?.(this._itemsTimer);
+      this._itemsTimer = globalThis.setTimeout?.(() => this._loadItems(), 500);
+    }
     this._update(sig);
+  }
+
+  // The full schedules (conditions, dates, repetition) from the `scheduler` websocket command, read again each
+  // time the component reports a change through its `scheduler_updated` subscription.
+  _watchItems() {
+    if (!this._hass || !this.isConnected || this._itemsWatch) return;
+    this._itemsWatch = true;
+    this._loadItems();
+    const conn = this._hass.connection;
+    if (typeof conn?.subscribeMessage !== "function") return;
+    Promise.resolve(conn.subscribeMessage(() => this._loadItems(), { type: "scheduler_updated" }))
+      .then((un) => {
+        if (this._itemsWatch) this._unsubItems = un;
+        else if (typeof un === "function") un();
+      })
+      .catch(() => {});
+  }
+
+  _unwatchItems() {
+    this._itemsWatch = false;
+    globalThis.clearTimeout?.(this._itemsTimer);
+    if (typeof this._unsubItems === "function") this._unsubItems();
+    this._unsubItems = null;
+  }
+
+  async _loadItems() {
+    if (typeof this._hass?.callWS !== "function") return;
+    try {
+      const list = await this._hass.callWS({ type: "scheduler" });
+      this._items = new Map((Array.isArray(list) ? list : []).filter((x) => x?.entity_id).map((x) => [x.entity_id, x]));
+      this._update();
+    } catch (_e) {
+      /* the entities' attributes alone */
+    }
   }
 
   get hass() {
@@ -2979,6 +4671,7 @@ class SchedulerCard extends HTMLElement {
 
   connectedCallback() {
     (this._outsideWatch ??= watchOutside(this, (ev) => this._onOutside(ev))).on();
+    this._watchItems();
     window.addEventListener("keydown", this._onKey);
     // The sun, the "now" markers and the state lines follow the clock: checked every 30 s.
     clearInterval(this._timer);
@@ -3000,6 +4693,8 @@ class SchedulerCard extends HTMLElement {
 
   disconnectedCallback() {
     this._outsideWatch?.off();
+    this._unwatchItems();
+    this._drag = null;
     window.removeEventListener("keydown", this._onKey);
     clearInterval(this._timer);
     this._resize?.disconnect();
@@ -3070,9 +4765,16 @@ class SchedulerCard extends HTMLElement {
   _models() {
     const tr = (k, v) => this._t(k, v);
     const loc = this._loc();
-    const all = discover(this._hass).map((id) => scheduleModel(this._hass, this._config, id, tr, loc));
+    const all = discover(this._hass).map((id) => scheduleModel(this._hass, this._config, id, tr, loc, this._items?.get(id) || null));
     this._all = all;
-    this._list = pickSchedules(all, this._config);
+    const now = this._now();
+    // `sort_by: next`: minutes to the next action; `state`: running now, then enabled.
+    const rank = (m, by) => {
+      if (by === "state") return this._runningNow(m, now) ? 0 : 1;
+      const next = m.enabled ? occurrences(m, now, this._hass)[0] : null;
+      return next ? next.at - now.min : Number.MAX_SAFE_INTEGER;
+    };
+    this._list = pickSchedules(all, this._config, rank);
     return this._list;
   }
 
@@ -3145,6 +4847,7 @@ class SchedulerCard extends HTMLElement {
   _stateLine(m, now) {
     if (m.state === "off") return this._t("state_disabled");
     if (m.state === "completed") return this._t("state_completed");
+    if (m.from && now.date && now.date < m.from) return this._t("starts_on", { date: this._date(m.from, true) });
     const occ = occurrences(m, now, this._hass);
     const next = occ[0];
     const cur = m.current !== null ? m.slots.find((s) => s.i === m.current) : null;
@@ -3162,6 +4865,63 @@ class SchedulerCard extends HTMLElement {
     const state = this._entityState(m);
     const action = this._actionAt(m.infos.get(next.slot.i), next, now);
     return state ? `${state} · ${action}` : action;
+  }
+
+  // A date "YYYY-MM-DD": « 20 Dec », or « Sat 20 Dec ».
+  _date(iso, weekday = false) {
+    const ms = Date.parse(`${iso}T12:00:00Z`);
+    if (!Number.isFinite(ms)) return String(iso);
+    try {
+      return new Intl.DateTimeFormat(this._loc(), { day: "numeric", month: "short", ...(weekday ? { weekday: "short" } : {}), timeZone: "UTC" }).format(new Date(ms));
+    } catch (_e) {
+      return String(iso);
+    }
+  }
+
+  // A time relative to the sun in words: « Sunset −00:30 », « Sunrise ».
+  _sunLabel(raw) {
+    const p = splitTime(raw);
+    if (p.mode === "time") return "";
+    const name = this._t(p.mode);
+    return p.off === "00:00" ? name : `${name} ${p.sign === "+" ? "+" : "−"}${p.off}`;
+  }
+
+  // An entity's name, for a condition.
+  _entityName(id) {
+    return this._hass.states[id]?.attributes?.friendly_name || id;
+  }
+
+  // A condition in words: « Anyone home is home », « Outdoor temperature below 15 ».
+  _condLabel(c) {
+    const st = this._hass.states[c.entity];
+    let value = c.value;
+    try {
+      const f = st && c.match !== "below" && c.match !== "above" && this._hass.formatEntityState?.({ ...st, state: String(c.value) });
+      if (f) value = f;
+    } catch (_e) {
+      /* raw value */
+    }
+    return this._t(`cond_${c.match}`, { entity: this._entityName(c.entity), value });
+  }
+
+  // The badges of a tile: the sun, workdays / weekend, the conditions, the dates, what happens after the last slot.
+  _badges(m) {
+    if (this._config.show_badges === false) return "";
+    const out = [];
+    const sunSlot = m.slots.find((x) => x.sun);
+    if (sunSlot) {
+      const raw = /sun/.test(sunSlot.startRaw) ? sunSlot.startRaw : sunSlot.stopRaw;
+      out.push(["sun", this._sunLabel(raw)]);
+    }
+    if (m.weekdays.length === 1 && (m.weekdays[0] === "workday" || m.weekdays[0] === "weekend")) out.push(["days", this._t(`days_${m.weekdays[0]}`)]);
+    const o = m.opts;
+    if (o?.conds.length) out.push(["cond", `${this._condLabel(o.conds[0])}${o.conds.length > 1 ? ` +${o.conds.length - 1}` : ""}`]);
+    if (m.from && m.to) out.push(["period", this._t("period_range", { from: this._date(m.from), to: this._date(m.to) })]);
+    else if (m.to) out.push(["period", this._t("period_until", { date: this._date(m.to) })]);
+    else if (m.from) out.push(["period", this._t("period_from", { date: this._date(m.from) })]);
+    if (o && o.repeat !== "repeat") out.push(["repeat", this._t(o.repeat === "pause" ? "repeat_pause_badge" : "repeat_single_badge")]);
+    if (!out.length) return "";
+    return `<div class="bdgs">${out.map(([k, txt]) => `<span class="bdg b-${k}">${esc(txt)}</span>`).join("")}</div>`;
   }
 
   // ── Header ──
@@ -3286,6 +5046,7 @@ class SchedulerCard extends HTMLElement {
         <ha-switch data-toggle="${esc(m.id)}"${m.enabled ? " checked" : ""} aria-label="${esc(m.name)}"></ha-switch>
       </div>
       <div class="bar">${this._todayBits(m, now)}<span class="now" style="left:${((now.min / DAY) * 100).toFixed(2)}%"></span></div>
+      ${this._badges(m)}
     </div>`;
   }
 
@@ -3361,6 +5122,11 @@ class SchedulerCard extends HTMLElement {
       const info = m.infos.get(s.i);
       return `${info.label} · ${this._time(s.start)}${s.stop !== null ? `–${this._time(s.stop)}` : ""}`;
     };
+    // Drag handles on both edges of a slot with fixed start and end, not crossing midnight.
+    const handles = (sp) =>
+      editable && sp.slot.stop !== null && !sp.slot.sun && sp.a === sp.slot.start && sp.b === sp.slot.stop
+        ? `<span class="hdl" data-drag="${sp.slot.i}:a" style="left:0" aria-hidden="true"></span><span class="hdl" data-drag="${sp.slot.i}:b" style="left:100%" aria-hidden="true"></span>`
+        : "";
     const attrs = (s) => (editable ? ` role="button" tabindex="0" data-slot="${s.i}" aria-label="${esc(blockLabel(s))}"` : ` aria-label="${esc(blockLabel(s))}"`);
     const days = [0, 1, 2, 3, 4, 5, 6]
       .map((wd) => {
@@ -3372,7 +5138,7 @@ class SchedulerCard extends HTMLElement {
                 .filter((sp) => m.infos.get(sp.slot.i)?.key !== def)
                 .map(
                   (sp) =>
-                    `<span class="blk" style="left:${pct(sp.a)}%;width:${pct(sp.b - sp.a)}%;--b:${color(sp.slot)}" title="${esc(blockLabel(sp.slot))}"${attrs(sp.slot)}><span class="bl">${esc(m.infos.get(sp.slot.i).short)}</span></span>`,
+                    `<span class="blk" style="left:${pct(sp.a)}%;width:${pct(sp.b - sp.a)}%;--b:${color(sp.slot)}" data-a="${sp.a}" data-b="${sp.b}" title="${esc(blockLabel(sp.slot))}"${attrs(sp.slot)}><span class="bl">${esc(m.infos.get(sp.slot.i).short)}</span>${handles(sp)}</span>`,
                 ),
               ...points.map((p) => `<span class="blk pt" style="left:${pct(p.at)}%;--b:${color(p.slot)}" title="${esc(blockLabel(p.slot))}"${attrs(p.slot)}></span>`),
             ].join("")
@@ -3392,12 +5158,15 @@ class SchedulerCard extends HTMLElement {
           `<span class="sw${i.key === def ? " def" : ""}" style="--b:${m.colors.get(i.key)}"><i></i>${esc(i.key === def ? this._t("default_value", { value: i.label }) : i.label)}</span>`,
       )
       .join("");
-    const add = editable ? `<button class="btn small" data-action="add-slot">${svgIcon(ICONS.plus)}${esc(this._t("add_slot"))}</button>` : "";
+    const add = editable
+      ? `<button class="btn small plain" data-action="opts">${esc(this._t("schedule_options"))}</button><button class="btn small" data-action="add-slot">${svgIcon(ICONS.plus)}${esc(this._t("add_slot"))}</button>`
+      : "";
     return `<div class="view" data-key="week-${esc(m.id)}">${chips}
       <div class="week" style="--dl:${dl}px">
         <div class="axis">${[0, 6, 12, 18, 24].map((h) => `<span style="left:${(h / 24) * 100}%">${esc(this._hoursLabel(h))}</span>`).join("")}</div>
         ${days}
         <div class="legend">${legend}${add}</div>
+        ${this._notice ? `<div class="err">${esc(this._notice)}</div>` : ""}
       </div>
     </div>`;
   }
@@ -3417,10 +5186,119 @@ class SchedulerCard extends HTMLElement {
     </div>`;
   }
 
-  _dayToggles(days) {
-    return `<div class="dayset">${[0, 1, 2, 3, 4, 5, 6]
+  _dayToggles(days, preset = false) {
+    return `<div class="dayset${preset ? " preset" : ""}">${[0, 1, 2, 3, 4, 5, 6]
       .map((wd) => `<button class="dt" data-dayt="${wd}" aria-pressed="${days.has(wd)}">${esc(this._weekday(wd))}</button>`)
       .join("")}</div>`;
+  }
+
+  // Segmented buttons setting `field` of the draft (`target`: "d" the draft, "o" the options).
+  _seg(field, value, choices, target = "d", cls = "") {
+    return `<div class="seg${cls ? ` ${cls}` : ""}" role="group">${choices
+      .map(([v, label]) => `<button class="sg" data-set="${target}:${field}" data-val="${esc(v)}" aria-pressed="${v === value}">${esc(label)}</button>`)
+      .join("")}</div>`;
+  }
+
+  // The `time_step` (minutes) of the time fields, as the inputs' step in seconds.
+  _stepAttr() {
+    const s = num(this._config.time_step);
+    return s && s > 0 ? ` step="${Math.round(s * 60)}"` : "";
+  }
+
+  // A start or end: a fixed time, or an offset before / after sunrise or sunset (with today's time).
+  _timeField(k, d, label, optional = false) {
+    const mode = d[`${k}Mode`] || "time";
+    const sun = sunTimes(this._hass);
+    const seg = this._seg(`${k}Mode`, mode, [
+      ["time", this._t("mode_time")],
+      ["sunrise", this._t("sunrise")],
+      ["sunset", this._t("sunset")],
+    ]);
+    let input;
+    if (mode === "time")
+      input = `<input id="sc-${k}" type="time" data-field="${k}" value="${esc(d[k] || "")}"${this._stepAttr()}${optional ? ` title="${esc(this._t("end_hint"))}"` : ""}>`;
+    else {
+      const raw = joinTime(mode, "", d[`${k}Sign`], d[`${k}Off`]);
+      const today = parseTime(raw, sun);
+      input = `<div class="pair">${this._seg(`${k}Sign`, d[`${k}Sign`] === "+" ? "+" : "-", [
+        ["-", this._t("before")],
+        ["+", this._t("after")],
+      ], "d", "narrow")}<input id="sc-${k}" type="text" inputmode="numeric" pattern="\\d{1,2}:\\d{2}" placeholder="00:30" data-field="${k}Off" value="${esc(d[`${k}Off`] || "00:00")}" aria-label="${esc(this._t("offset"))}"></div>
+        ${today ? `<span class="note">${esc(this._t("approx_today", { time: this._time(today.min) }))}</span>` : ""}`;
+    }
+    return `<label for="sc-${k}">${esc(label)}</label><div class="stack">${seg}${input}</div>`;
+  }
+
+  // Days: every day, workdays, weekend (the workday sensor's), or chosen ones.
+  _daysField(d) {
+    const mode = d.dayMode || "custom";
+    const shown = mode === "custom" ? d.days : new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn([mode], wd, this._hass)));
+    return `<label>${esc(this._t("days"))}</label><div class="stack">
+      ${this._seg("dayMode", mode, [
+        ["daily", this._t("days_daily")],
+        ["workday", this._t("days_workday")],
+        ["weekend", this._t("days_weekend")],
+        ["custom", this._t("days_custom")],
+      ])}
+      ${this._dayToggles(shown, mode !== "custom")}
+      ${mode === "workday" || mode === "weekend" ? `<span class="note">${esc(this._t("days_workday_note"))}</span>` : ""}
+    </div>`;
+  }
+
+  // The options of a schedule: name, tags, conditions, dates, after the last slot.
+  _optionsHtml(o) {
+    const ents = Object.keys(this._hass.states).sort();
+    const conds = o.conds
+      .map(
+        (c, i) => `<div class="cond" data-key="cond-${i}">
+          <input type="text" list="sc-cents" data-cond="${i}" data-cfield="entity" value="${esc(c.entity)}" placeholder="${esc(this._t("entity"))}" aria-label="${esc(this._t("entity"))}" autocomplete="off">
+          <button class="x" data-uncond="${i}" title="${esc(this._t("remove"))}" aria-label="${esc(this._t("remove"))}">${svgIcon(ICONS.close)}</button>
+          <div class="pair"><select data-cond="${i}" data-cfield="match" aria-label="${esc(this._t("conditions"))}">${MATCH_TYPES.map((mt) => `<option value="${mt}"${mt === c.match ? " selected" : ""}>${esc(this._t(`match_${mt}`))}</option>`).join("")}</select>
+          <input type="text" data-cond="${i}" data-cfield="value" value="${esc(c.value)}" placeholder="${esc(this._t("act_value"))}" aria-label="${esc(this._t("act_value"))}"></div>
+        </div>`,
+      )
+      .join("");
+    return `<div class="form">
+        <label for="sc-oname">${esc(this._t("name"))}</label><input id="sc-oname" type="text" data-ofield="name" value="${esc(o.name)}">
+        <label for="sc-tag">${esc(this._t("tags"))}</label><div class="tagset">${o.tags
+          .map((x) => `<span class="tg">${esc(x)}<button class="x" data-untag="${esc(x)}" title="${esc(this._t("remove"))}" aria-label="${esc(`${this._t("remove")} ${x}`)}">${svgIcon(ICONS.close)}</button></span>`)
+          .join("")}<input id="sc-tag" type="text" data-tag="1" placeholder="${esc(this._t("add_tag"))}"></div>
+        <div class="sect">${esc(this._t("conditions"))}</div>
+        <div class="full stack">
+          ${o.conds.length > 1 ? this._seg("condType", o.condType, [["and", this._t("cond_all")], ["or", this._t("cond_any")]], "o") : ""}
+          <div class="conds">${conds}</div>
+          <datalist id="sc-cents">${ents.map((id) => `<option value="${esc(id)}">${esc(this._entityName(id))}</option>`).join("")}</datalist>
+          <div><button class="btn small" data-action="add-cond">${svgIcon(ICONS.plus)}${esc(this._t("add_condition"))}</button></div>
+          ${o.conds.length ? `<label class="chk"><input type="checkbox" data-ofield="track"${o.track ? " checked" : ""}><span>${esc(this._t("track_conditions"))}</span></label>` : ""}
+        </div>
+        <div class="sect">${esc(this._t("period"))}</div>
+        <label class="chk full"><input type="checkbox" data-ofield="period"${o.period ? " checked" : ""}><span>${esc(this._t("period_hint"))}</span></label>
+        ${
+          o.period
+            ? `<label for="sc-from">${esc(this._t("date_from"))}</label><input id="sc-from" type="date" data-ofield="from" value="${esc(o.from)}">
+               <label for="sc-to">${esc(this._t("date_to"))}</label><input id="sc-to" type="date" data-ofield="to" value="${esc(o.to)}">`
+            : ""
+        }
+        <div class="sect">${esc(this._t("after_last"))}</div>
+        <div class="full stack">${this._seg("repeat", o.repeat, [["repeat", this._t("repeat_repeat")], ["pause", this._t("repeat_stop")], ["single", this._t("repeat_delete")]], "o")}
+          <span class="note">${esc(this._t("repeat_hint"))}</span></div>
+      </div>`;
+  }
+
+  _tabs(tab) {
+    return `<div class="mtabs" role="tablist">
+      <button class="mtab" role="tab" data-mtab="main" aria-selected="${tab !== "options"}">${esc(this._t(this._edit?.mode === "new" ? "tab_schedule" : "tab_slot"))}</button>
+      <button class="mtab" role="tab" data-mtab="options" aria-selected="${tab === "options"}">${esc(this._t("tab_options"))}</button>
+    </div>`;
+  }
+
+  _foot(left = "") {
+    const e = this._edit;
+    return `${e.error ? `<div class="err">${esc(e.error)}</div>` : ""}
+      <div class="mfoot">${left}<span class="grow"></span>
+        <button class="btn plain small" data-action="close">${esc(this._t("cancel"))}</button>
+        <button class="btn small" data-action="save"${e.saving ? " disabled" : ""}>${esc(this._t("save"))}</button>
+      </div>`;
   }
 
   _actionSelect(options, selected) {
@@ -3436,15 +5314,39 @@ class SchedulerCard extends HTMLElement {
       <div class="pair"><input id="sc-val" type="number" data-field="value" min="${i.min}" max="${i.max}" step="${i.step}" value="${esc(value ?? "")}">${i.unit ? `<span class="u">${esc(i.unit)}</span>` : ""}</div>`;
   }
 
+  // The slot under edit can be split in two (fixed times, with an end) or merged with the slot starting at its end.
+  _canSplitMerge(e) {
+    if (e.index === null || !e.item) return { split: false, merge: false };
+    const sun = sunTimes(this._hass);
+    const slot = e.item.timeslots?.[e.index];
+    const fixed = (x) => x && !/sun/.test(x);
+    const a = fixed(slot?.start) ? parseTime(slot.start, sun)?.min : null;
+    const b = fixed(slot?.stop) ? parseTime(slot.stop, sun)?.min : null;
+    const end = b === 0 && a > 0 ? DAY : b;
+    const split = a !== null && end !== null && end - a >= 2 * this._step();
+    const merge = !!slot?.stop && (e.item.timeslots || []).some((s, k) => k !== e.index && s.start === slot.stop && s.stop);
+    return { split, merge };
+  }
+
+  // The step of the grid's drags and splits, minutes (`time_step`, 15 by default).
+  _step() {
+    const s = num(this._config.time_step);
+    return s && s >= 1 && s <= 60 ? Math.round(s) : 15;
+  }
+
   _editHtml() {
     const e = this._edit;
     if (!e) return "";
     if (e.mode === "new") return this._newHtml();
     const m = this._all?.find((x) => x.id === e.id);
     if (!m) return "";
-    const title = this._t(e.index === null ? "add_slot" : "edit_slot");
+    const title = this._t(e.optsOnly ? "schedule_options" : e.index === null ? "add_slot" : "edit_slot");
     if (e.loading || !e.draft)
       return this._modal(title, m.name, m.icon, `<div class="${e.error ? "err" : "note"}">${esc(e.error || this._t("loading"))}</div>`, m.base);
+    if (e.optsOnly || e.tab === "options") {
+      const dup = e.optsOnly ? `<button class="btn small plain" data-action="duplicate">${esc(this._t("duplicate"))}</button>` : "";
+      return this._modal(title, m.name, m.icon, `${e.optsOnly ? "" : this._tabs("options")}${this._optionsHtml(e.opts)}${this._foot(dup)}`, m.base);
+    }
     const d = e.draft;
     const opt = e.options.find((o) => o.key === d.action);
     const single = e.item.timeslots.length <= 1;
@@ -3452,62 +5354,82 @@ class SchedulerCard extends HTMLElement {
       e.index === null
         ? ""
         : `<button class="btn small danger" data-action="delete" style="--c:var(--sc-danger)">${esc(e.confirm ? this._t("confirm_delete") : this._t(single ? "delete_schedule" : "delete_slot"))}</button>`;
-    const body = `<div class="form">
-        <label for="sc-start">${esc(this._t("start"))}</label><input id="sc-start" type="time" data-field="start" value="${esc(d.start)}">
-        <label for="sc-stop">${esc(this._t("end"))}</label><input id="sc-stop" type="time" data-field="stop" value="${esc(d.stop)}" title="${esc(this._t("end_hint"))}">
+    const sm = this._canSplitMerge(e);
+    const tools = `${sm.split ? `<button class="btn small plain" data-action="split">${esc(this._t("split"))}</button>` : ""}${sm.merge ? `<button class="btn small plain" data-action="merge">${esc(this._t("merge_next"))}</button>` : ""}`;
+    const body = `${this._tabs("main")}<div class="form">
+        ${this._timeField("start", d, this._t("start"))}
+        ${this._timeField("stop", d, this._t("end"), true)}
         <label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(e.options, d.action).replace("<select", '<select id="sc-act"')}
         ${this._valueInput(opt, d.value)}
-        <label>${esc(this._t("days"))}</label>${this._dayToggles(d.days)}
-        <div class="note full">${esc(this._t("days_note"))}${e.sun ? ` ${esc(this._t("sun_kept"))}` : ""}</div>
+        ${this._daysField(d)}
+        <div class="note full">${esc(this._t("days_note"))}</div>
       </div>
-      ${e.error ? `<div class="err">${esc(e.error)}</div>` : ""}
-      <div class="mfoot">${del}<span class="grow"></span>
-        <button class="btn plain small" data-action="close">${esc(this._t("cancel"))}</button>
-        <button class="btn small" data-action="save"${e.saving ? " disabled" : ""}>${esc(this._t("save"))}</button>
-      </div>`;
+      ${this._foot(`${del}${tools}`)}`;
     return this._modal(title, m.name, m.icon, body, m.base);
   }
 
   _newHtml() {
     const e = this._edit;
     const d = e.draft;
+    if (e.tab === "options") return this._modal(this._t("new_schedule"), "", ICONS.calendarClock, `${this._tabs("options")}${this._optionsHtml(e.opts)}${this._foot()}`);
     const options = this._newOptions(d.entity);
     const opt = options.find((o) => o.key === d.action);
-    const ents = Object.keys(this._hass.states)
-      .filter((id) => ACTION_DOMAINS.includes(domainOf(id)))
-      .sort();
-    const body = `<div class="form">
+    const all = pickable(this._hass, this._config);
+    // More entities: of the first one's kind, so that its action fits them all.
+    const more = d.entity && this._hass.states[d.entity] ? all.filter((id) => domainOf(id) === domainOf(d.entity) && id !== d.entity && !d.more.includes(id)) : [];
+    const icon = (id) => this._hass.states[id]?.attributes?.icon || DOMAIN_ICONS[domainOf(id)] || "mdi:help-circle-outline";
+    const extra = d.more
+      .map(
+        (id) => `<div class="ent" data-key="ent-${esc(id)}"><ha-icon icon="${esc(icon(id))}"></ha-icon><span class="en">${esc(this._entityName(id))}</span>
+          <button class="x" data-unent="${esc(id)}" title="${esc(this._t("remove"))}" aria-label="${esc(`${this._t("remove")} ${this._entityName(id)}`)}">${svgIcon(ICONS.close)}</button></div>`,
+      )
+      .join("");
+    const body = `${this._tabs("main")}<div class="form">
         <label for="sc-name">${esc(this._t("name"))}</label><input id="sc-name" type="text" data-field="name" value="${esc(d.name)}">
-        <label for="sc-ent">${esc(this._t("entity"))}</label><input id="sc-ent" type="text" list="sc-entities" data-field="entity" value="${esc(d.entity)}" autocomplete="off">
-        <datalist id="sc-entities">${ents.map((id) => `<option value="${esc(id)}">${esc(this._hass.states[id].attributes?.friendly_name || id)}</option>`).join("")}</datalist>
+        <label>${esc(this._t("kind"))}</label><div class="stack">${this._seg("kind", d.kind, [["slots", this._t("kind_slots")], ["single", this._t("kind_single")]])}
+          <span class="note">${esc(this._t(d.kind === "single" ? "kind_single_hint" : "kind_slots_hint"))}</span></div>
+        <label for="sc-ent">${esc(this._t("entities"))}</label><div class="stack">
+          <input id="sc-ent" type="text" list="sc-entities" data-field="entity" value="${esc(d.entity)}" autocomplete="off">
+          <datalist id="sc-entities">${all.map((id) => `<option value="${esc(id)}">${esc(this._entityName(id))}</option>`).join("")}</datalist>
+          ${d.more.length ? `<div class="ents">${extra}</div>` : ""}
+          ${
+            more.length
+              ? `<input type="text" list="sc-more" data-more="1" placeholder="${esc(this._t("add_entity"))}" aria-label="${esc(this._t("add_entity"))}" autocomplete="off">
+                 <datalist id="sc-more">${more.map((id) => `<option value="${esc(id)}">${esc(this._entityName(id))}</option>`).join("")}</datalist>`
+              : ""
+          }
+        </div>
         ${options.length ? `<label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(options, d.action).replace("<select", '<select id="sc-act"')}` : ""}
         ${this._valueInput(opt, d.value)}
-        <label for="sc-start">${esc(this._t("start"))}</label><input id="sc-start" type="time" data-field="start" value="${esc(d.start)}">
-        <label for="sc-stop">${esc(this._t("end"))}</label><input id="sc-stop" type="time" data-field="stop" value="${esc(d.stop)}" title="${esc(this._t("end_hint"))}">
-        <label>${esc(this._t("days"))}</label>${this._dayToggles(d.days)}
+        ${this._timeField("start", d, this._t(d.kind === "single" ? "at_time" : "start"))}
+        ${d.kind === "single" ? "" : this._timeField("stop", d, this._t("end"), true)}
+        ${this._daysField(d)}
       </div>
-      ${e.error ? `<div class="err">${esc(e.error)}</div>` : ""}
-      <div class="mfoot"><span class="grow"></span>
-        <button class="btn plain small" data-action="close">${esc(this._t("cancel"))}</button>
-        <button class="btn small" data-action="save"${e.saving ? " disabled" : ""}>${esc(this._t("save"))}</button>
-      </div>`;
+      ${this._foot()}`;
     return this._modal(this._t("new_schedule"), "", ICONS.calendarClock, body);
   }
 
-  // The actions offered for an entity, labelled.
+  // The actions offered for an entity, labelled (a custom action by its own name).
   _labelled(list, entityId) {
     const tr = (k, v) => this._t(k, v);
     return list.map((a) => ({
       ...a,
       key: a.input ? `${a.service}#${a.input.field}` : actionKey(a.service, a.data),
-      label: a.input
-        ? `${this._t(a.input.field === "temperature" ? "act_temperature" : a.input.field === "position" ? "act_position" : "act_value")}…`
-        : actionInfo(this._hass, tr, this._loc(), a, entityId).label,
+      label: a.name
+        ? a.name
+        : a.input
+          ? `${this._t(a.input.field === "temperature" ? "act_temperature" : a.input.field === "position" ? "act_position" : "act_value")}…`
+          : actionInfo(this._hass, tr, this._loc(), a, entityId).label,
     }));
   }
 
+  // The actions of an entity: the card's custom ones first, then those of its domain.
+  _entityActions(entityId) {
+    return [...customActions(this._config, entityId), ...domainActions(this._hass, entityId)];
+  }
+
   _newOptions(entityId) {
-    return this._hass.states[entityId] ? this._labelled(domainActions(this._hass, entityId), entityId) : [];
+    return this._hass.states[entityId] ? this._labelled(this._entityActions(entityId), entityId).filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k) : [];
   }
 
   // ── Rendering ──
@@ -3548,12 +5470,14 @@ class SchedulerCard extends HTMLElement {
 
   _showWeek(id) {
     this._view = id;
+    this._notice = null;
     this._run++;
     this._update(this._sig);
   }
 
   _showTimeline() {
     this._view = null;
+    this._notice = null;
     this._edit = null;
     this._update(this._sig);
   }
@@ -3573,10 +5497,10 @@ class SchedulerCard extends HTMLElement {
     return item || found;
   }
 
-  async _openSlot(id, index, atMin = null) {
+  async _openSlot(id, index, atMin = null, optsOnly = false) {
     const m = this._all.find((x) => x.id === id);
     if (!m || this._config.editable === false) return;
-    this._edit = { mode: "slot", id, index, loading: true };
+    this._edit = { mode: "slot", id, index, loading: true, optsOnly, tab: optsOnly ? "options" : "main" };
     this._update(this._sig);
     let item;
     try {
@@ -3600,29 +5524,59 @@ class SchedulerCard extends HTMLElement {
       const a = ts.actions?.[0];
       if (a && !own.some((o) => actionKey(o.service, o.data) === actionKey(a.service, a.service_data))) own.push({ service: a.service, data: a.service_data || {} });
     }
-    const options = this._labelled([...own, ...domainActions(this._hass, target)], target).filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
+    const options = this._labelled([...own, ...this._entityActions(target)], target).filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
     const days = new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn(item.weekdays, wd, this._hass)));
+    const wds = Array.isArray(item.weekdays) ? item.weekdays : [];
+    const dayMode = wds.length === 1 && ["daily", "workday", "weekend"].includes(wds[0]) ? wds[0] : "custom";
     let draft;
     if (slot) {
       const a = slot.actions?.[0] || {};
-      const start = parseTime(slot.start, sun);
-      const stop = slot.stop ? parseTime(slot.stop, sun) : null;
-      draft = { start: start ? hm(start.min) : "", stop: stop ? hm(stop.min) : "", action: actionKey(a.service, a.service_data), value: "", days };
+      draft = { ...this._timeDraft("start", slot.start, sun), ...this._timeDraft("stop", slot.stop, sun), action: actionKey(a.service, a.service_data), value: "", days, dayMode };
       if (!options.some((o) => o.key === draft.action)) draft.action = options[0]?.key || "";
     } else {
       const start = atMin ?? 12 * 60;
-      draft = { start: hm(start), stop: hm(Math.min(DAY - 1, start + 60)), action: options[0]?.key || "", value: "", days };
+      draft = { ...this._timeDraft("start", `${hm(start)}:00`, sun), ...this._timeDraft("stop", `${hm(Math.min(DAY - 1, start + 60))}:00`, sun), action: options[0]?.key || "", value: "", days, dayMode };
     }
     const opt = options.find((o) => o.key === draft.action);
     if (opt?.input) draft.value = String(opt.input.min);
-    this._edit = { ...e, loading: false, item, options, targets, draft, initial: { ...draft, days: new Set(days) }, sun: !!slot && /sun/.test(`${slot.start}${slot.stop || ""}`) };
+    const opts = optionsOf(item);
+    this._edit = {
+      ...e,
+      loading: false,
+      item,
+      options,
+      targets,
+      draft,
+      initial: { ...draft, days: new Set(days) },
+      initialRaw: { start: this._raw(draft, "start"), stop: this._raw(draft, "stop") },
+      opts,
+      initialOpts: JSON.parse(JSON.stringify(opts)),
+    };
     this._update(this._sig);
+  }
+
+  // The draft fields of a start or end: its fixed time, its mode (time, sunrise, sunset), the offset's sign and length.
+  _timeDraft(k, raw, sun) {
+    const p = splitTime(raw, sun);
+    return { [k]: p.time, [`${k}Mode`]: p.mode, [`${k}Sign`]: p.sign, [`${k}Off`]: p.off };
+  }
+
+  // The time of the draft as the component stores it ("" for no end).
+  _raw(d, k) {
+    return joinTime(d[`${k}Mode`] || "time", d[k], d[`${k}Sign`], d[`${k}Off`]);
   }
 
   _openNew() {
     const now = this._now();
     const start = Math.min(DAY - 60, Math.ceil((now.min + 1) / 30) * 30);
-    this._edit = { mode: "new", draft: { name: "", entity: "", action: "", value: "", start: hm(start), stop: "", days: new Set([0, 1, 2, 3, 4, 5, 6]) } };
+    const opts = optionsOf({ tags: cardTags(this._config) });
+    this._edit = {
+      mode: "new",
+      tab: "main",
+      draft: { entity: "", more: [], kind: "slots", action: "", value: "", ...this._timeDraft("start", `${hm(start)}:00`), ...this._timeDraft("stop", `${hm(Math.min(DAY - 1, start + 60))}:00`), days: new Set([0, 1, 2, 3, 4, 5, 6]), dayMode: "daily" },
+      opts,
+      initialOpts: JSON.parse(JSON.stringify(opts)),
+    };
     this._update(this._sig);
   }
 
@@ -3639,9 +5593,11 @@ class SchedulerCard extends HTMLElement {
   _slotsAfterEdit(e) {
     const d = e.draft;
     const sun = sunTimes(this._hass);
-    const start = parseTime(d.start, sun);
+    const startRaw = this._raw(d, "start");
+    const start = startRaw ? parseTime(startRaw, sun) : null;
     if (!start) return { error: this._t("err_time") };
-    const stop = d.stop ? parseTime(d.stop, sun) : null;
+    const stopRaw = this._raw(d, "stop");
+    const stop = stopRaw ? parseTime(stopRaw, sun) : null;
     if (stop && stop.min === start.min) return { error: this._t("err_same") };
     const act = this._actionData(
       e.options.find((o) => o.key === d.action),
@@ -3651,33 +5607,17 @@ class SchedulerCard extends HTMLElement {
     const slots = (e.item.timeslots || []).map(cleanSlot);
     const old = e.index !== null ? slots[e.index] : null;
     const base = old || slots[0] || {};
-    const keep = (field) => d[field] === e.initial?.[field] && old?.[field];
     const slot = {};
-    slot.start = keep("start") ? old.start : `${d.start}:00`;
-    if (d.stop) slot.stop = keep("stop") ? old.stop : `${d.stop}:00`;
+    // An unchanged time is sent back as stored.
+    slot.start = old && startRaw === e.initialRaw?.start ? old.start : startRaw;
+    if (stopRaw) slot.stop = old?.stop && stopRaw === e.initialRaw?.stop ? old.stop : stopRaw;
     for (const k of ["conditions", "condition_type", "track_conditions"]) if (base[k] !== undefined) slot[k] = base[k];
     const targets = e.targets?.length ? e.targets : [];
     slot.actions = targets.length
       ? targets.map((id) => ({ service: act.service, entity_id: id, ...(Object.keys(act.data).length ? { service_data: act.data } : {}) }))
       : [{ service: act.service, ...(Object.keys(act.data).length ? { service_data: act.data } : {}) }];
-    const others = slots.filter((_s, k) => k !== e.index);
-    const range = (s) => {
-      const a = parseTime(s.start, sun)?.min ?? 0;
-      const b = s.stop ? (parseTime(s.stop, sun)?.min ?? a) : null;
-      return [a, b === null ? null : b === 0 && a > 0 ? DAY : b];
-    };
-    const [a1, b1] = range(slot);
-    const covers = (a, b, x) => (b > a ? x >= a && x < b : x >= a || x < b);
-    for (const o of others) {
-      const [a2, b2] = range(o);
-      const clash =
-        a1 === a2 ||
-        (b1 !== null && b2 !== null && (covers(a1, b1, a2) || covers(a2, b2, a1))) ||
-        (b1 !== null && b2 === null && covers(a1, b1, a2)) ||
-        (b1 === null && b2 !== null && covers(a2, b2, a1));
-      if (clash) return { error: this._t("err_overlap") };
-    }
-    const all = [...others, slot].sort((x, y) => range(x)[0] - range(y)[0]);
+    const all = [...slots.filter((_s, k) => k !== e.index), slot].sort((x, y) => slotRange(x, sun)[0] - slotRange(y, sun)[0]);
+    if (slotsClash(all, all.indexOf(slot), sun)) return { error: this._t("err_overlap") };
     return { slots: all };
   }
 
@@ -3688,6 +5628,32 @@ class SchedulerCard extends HTMLElement {
     } catch (err) {
       return this._t("err_save", { error: err?.message || String(err) });
     }
+  }
+
+  // The options put into a payload: conditions on every slot (only when changed, so that slots with their own
+  // conditions keep them), dates, name, tags and what happens after the last slot. An error key, or null.
+  _applyOptions(e, payload, slots, isNew = false) {
+    const o = e.opts;
+    const i = e.initialOpts || {};
+    const c = conditionsPayload(o);
+    if (c.error) return c.error;
+    const changed = isNew || JSON.stringify([o.conds, o.condType, o.track]) !== JSON.stringify([i.conds, i.condType, i.track]);
+    payload.timeslots = changed ? withConditions(slots, o, c.conds) : slots;
+    if (o.period && (o.from || o.to)) {
+      if (o.from && o.to && o.to < o.from) return "err_dates";
+      if (o.from) payload.start_date = o.from;
+      if (o.to) payload.end_date = o.to;
+    }
+    if (isNew) {
+      if (o.name.trim()) payload.name = o.name.trim();
+      if (o.tags.length) payload.tags = [...o.tags];
+      payload.repeat_type = o.repeat;
+      return null;
+    }
+    if (o.name !== i.name) payload.name = o.name.trim() || null;
+    if (JSON.stringify(o.tags) !== JSON.stringify(i.tags)) payload.tags = [...o.tags];
+    if (o.repeat !== i.repeat) payload.repeat_type = o.repeat;
+    return null;
   }
 
   async _save() {
@@ -3702,28 +5668,36 @@ class SchedulerCard extends HTMLElement {
       const act = this._actionData(opt, d.value);
       if (!act) return this._fail(this._t("err_action"));
       const sun = sunTimes(this._hass);
-      const start = parseTime(d.start, sun);
+      const startRaw = this._raw(d, "start");
+      const start = startRaw ? parseTime(startRaw, sun) : null;
       if (!start) return this._fail(this._t("err_time"));
-      const stop = d.stop ? parseTime(d.stop, sun) : null;
+      const stopRaw = d.kind === "single" ? "" : this._raw(d, "stop");
+      const stop = stopRaw ? parseTime(stopRaw, sun) : null;
       if (stop && stop.min === start.min) return this._fail(this._t("err_same"));
-      if (!d.days.size) return this._fail(this._t("err_days"));
-      const slot = { start: `${d.start}:00`, actions: [{ service: act.service, entity_id: d.entity, ...(Object.keys(act.data).length ? { service_data: act.data } : {}) }] };
-      if (d.stop) slot.stop = `${d.stop}:00`;
+      if (d.dayMode === "custom" && !d.days.size) return this._fail(this._t("err_days"));
+      const ents = [d.entity, ...d.more.filter((id) => this._hass.states[id])];
+      const data = Object.keys(act.data).length ? { service_data: act.data } : {};
+      const slot = { start: startRaw, actions: ents.map((id) => ({ service: act.service, entity_id: id, ...data })) };
+      if (stopRaw) slot.stop = stopRaw;
       service = "add";
-      payload = { weekdays: weekdaysPayload(d.days, null, this._hass), timeslots: [slot], repeat_type: "repeat" };
-      if (d.name.trim()) payload.name = d.name.trim();
-      const tags = Array.isArray(this._config.tags) ? this._config.tags : this._config.tags ? [this._config.tags] : [];
-      if (tags.length) payload.tags = tags.map(String);
+      payload = { weekdays: this._weekdaysOf(e) };
+      const err = this._applyOptions(e, payload, [slot], true);
+      if (err) return this._fail(this._t(err));
+    } else if (e.optsOnly) {
+      if (!e.item) return;
+      service = "edit";
+      payload = { entity_id: e.id };
+      const err = this._applyOptions(e, payload, (e.item.timeslots || []).map(cleanSlot));
+      if (err) return this._fail(this._t(err));
     } else {
       if (!e.draft) return;
-      if (!e.draft.days.size) return this._fail(this._t("err_days"));
+      if (e.draft.dayMode === "custom" && !e.draft.days.size) return this._fail(this._t("err_days"));
       const r = this._slotsAfterEdit(e);
       if (r.error) return this._fail(r.error);
       service = "edit";
-      payload = { entity_id: e.id, timeslots: r.slots, weekdays: this._weekdaysOf(e) };
-      // scheduler.edit resets the dates it is not given: they are sent back as they are.
-      if (e.item.start_date) payload.start_date = e.item.start_date;
-      if (e.item.end_date) payload.end_date = e.item.end_date;
+      payload = { entity_id: e.id, weekdays: this._weekdaysOf(e) };
+      const err = this._applyOptions(e, payload, r.slots);
+      if (err) return this._fail(this._t(err));
     }
     e.saving = true;
     e.error = null;
@@ -3734,10 +5708,12 @@ class SchedulerCard extends HTMLElement {
     this._closeEdit();
   }
 
-  // The weekdays to send: unchanged days keep the schedule's own (workday, weekend, daily).
+  // The weekdays to send: a preset (daily, workday, weekend) as such; chosen days unchanged keep the schedule's own.
   _weekdaysOf(e) {
-    const same = e.initial && e.draft.days.size === e.initial.days.size && [...e.draft.days].every((d) => e.initial.days.has(d));
-    return same && Array.isArray(e.item.weekdays) && e.item.weekdays.length ? e.item.weekdays : weekdaysPayload(e.draft.days, e.item.weekdays, this._hass);
+    const d = e.draft;
+    if (d.dayMode && d.dayMode !== "custom") return [d.dayMode];
+    const same = e.initial && e.initial.dayMode === "custom" && d.days.size === e.initial.days.size && [...d.days].every((x) => e.initial.days.has(x));
+    return same && Array.isArray(e.item?.weekdays) && e.item.weekdays.length ? e.item.weekdays : weekdaysPayload(d.days, null, this._hass);
   }
 
   _fail(message) {
@@ -3745,6 +5721,11 @@ class SchedulerCard extends HTMLElement {
     this._edit.saving = false;
     this._edit.error = message;
     this._update(this._sig);
+  }
+
+  // The schedule's dates, sent back with every scheduler.edit (it resets those it is not given).
+  _dates(item) {
+    return { ...(item?.start_date ? { start_date: item.start_date } : {}), ...(item?.end_date ? { end_date: item.end_date } : {}) };
   }
 
   // Delete: the slot when the schedule has others, else the schedule itself (scheduler.remove); asked twice.
@@ -3761,15 +5742,48 @@ class SchedulerCard extends HTMLElement {
     const error =
       slots.length <= 1
         ? await this._call("scheduler", "remove", { entity_id: e.id })
-        : await this._call("scheduler", "edit", {
-            entity_id: e.id,
-            timeslots: slots.filter((_s, k) => k !== e.index),
-            ...(e.item.start_date ? { start_date: e.item.start_date } : {}),
-            ...(e.item.end_date ? { end_date: e.item.end_date } : {}),
-          });
+        : await this._call("scheduler", "edit", { entity_id: e.id, timeslots: slots.filter((_s, k) => k !== e.index), ...this._dates(e.item) });
     if (this._edit !== e) return;
     if (error) return this._fail(error);
     if (slots.length <= 1) this._view = null;
+    this._closeEdit();
+  }
+
+  // Split the slot under edit in two halves (on the time step), or merge it with the slot starting at its end.
+  async _splitMerge(kind) {
+    const e = this._edit;
+    if (!e?.item || e.index === null || e.saving) return;
+    const sun = sunTimes(this._hass);
+    const slots = (e.item.timeslots || []).map(cleanSlot);
+    const s = slots[e.index];
+    if (kind === "split") {
+      const [a, b] = slotRange(s, sun);
+      const step = this._step();
+      const mid = a + Math.max(step, Math.round((b - a) / 2 / step) * step);
+      if (b === null || mid >= b) return;
+      slots.splice(e.index, 1, { ...s, stop: `${hm(mid)}:00` }, { ...s, start: `${hm(mid)}:00` });
+    } else {
+      const n = slots.findIndex((x, k) => k !== e.index && x.start === s.stop && x.stop);
+      if (n < 0) return;
+      slots[e.index] = { ...s, stop: slots[n].stop };
+      slots.splice(n, 1);
+    }
+    e.saving = true;
+    const error = await this._call("scheduler", "edit", { entity_id: e.id, timeslots: slots, ...this._dates(e.item) });
+    if (this._edit !== e) return;
+    if (error) return this._fail(error);
+    this._closeEdit();
+  }
+
+  // A copy of the schedule (scheduler.copy), named « Name (copy) ».
+  async _duplicate() {
+    const e = this._edit;
+    const m = this._all?.find((x) => x.id === e?.id);
+    if (!m || e.saving) return;
+    e.saving = true;
+    const error = await this._call("scheduler", "copy", { entity_id: e.id, name: this._t("copy_name", { name: m.name }) });
+    if (this._edit !== e) return;
+    if (error) return this._fail(error);
     this._closeEdit();
   }
 
@@ -3788,48 +5802,133 @@ class SchedulerCard extends HTMLElement {
     this._input(ev, true);
   }
 
-  // A field of the popup: kept in the draft; a new action or entity redraws the popup (its value field).
+  // A field of the popup: kept in the draft or the options; a new action or entity redraws the popup.
   _input(ev, change = false) {
     const el = ev.composedPath()[0];
-    const field = el?.dataset?.field;
-    if (!field || !this._edit?.draft) return;
-    const d = this._edit.draft;
+    const e = this._edit;
+    if (!el?.dataset || !e) return;
+    if (el.dataset.ofield && e.opts) {
+      const f = el.dataset.ofield;
+      e.opts[f] = el.type === "checkbox" ? !!el.checked : el.value;
+      if (f === "period" || f === "track") this._update(this._sig);
+      return;
+    }
+    if (el.dataset.cond !== undefined && e.opts) {
+      const c = e.opts.conds[Number(el.dataset.cond)];
+      if (c) c[el.dataset.cfield] = el.value;
+      return;
+    }
+    if (el.dataset.tag && change) {
+      const v = String(el.value || "").trim();
+      if (v && !e.opts.tags.includes(v)) e.opts.tags.push(v);
+      el.value = "";
+      this._update(this._sig);
+      return;
+    }
+    if (el.dataset.more && change) {
+      const id = String(el.value || "").trim();
+      const d = e.draft;
+      if (this._hass.states[id] && id !== d.entity && !d.more.includes(id) && domainOf(id) === domainOf(d.entity)) d.more.push(id);
+      el.value = "";
+      this._update(this._sig);
+      return;
+    }
+    const field = el.dataset.field;
+    if (!field || !e.draft) return;
+    const d = e.draft;
     d[field] = el.value;
     if (field === "action" || (field === "entity" && change)) {
-      const options = this._edit.mode === "new" ? this._newOptions(d.entity) : this._edit.options;
-      if (field === "entity") d.action = options[0]?.key || "";
+      const options = e.mode === "new" ? this._newOptions(d.entity) : e.options;
+      if (field === "entity") {
+        d.action = options[0]?.key || "";
+        d.more = d.more.filter((id) => domainOf(id) === domainOf(d.entity));
+      }
       const opt = options.find((o) => o.key === d.action);
       d.value = opt?.input ? String(num(d.value) ?? opt.input.min) : "";
       this._update(this._sig);
     } else if (field === "entity" && this._hass.states[d.entity]) {
       d.action = this._newOptions(d.entity)[0]?.key || "";
       this._update(this._sig);
+    } else if (field.endsWith("Off")) this._update(this._sig);
+  }
+
+  // A click inside the open popup.
+  _clickEdit(ev, path, action) {
+    const e = this._edit;
+    const find = (k) => path.find((n) => n.dataset?.[k] !== undefined);
+    const day = find("dayt");
+    if (day && e.draft) {
+      const d = e.draft;
+      // A day of a preset turns it into chosen days, from the preset's own.
+      if (d.dayMode && d.dayMode !== "custom") {
+        d.days = new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn([d.dayMode], wd, this._hass)));
+        d.dayMode = "custom";
+      }
+      const wd = Number(day.dataset.dayt);
+      if (d.days.has(wd)) d.days.delete(wd);
+      else d.days.add(wd);
+      this._update(this._sig);
+      return;
     }
+    const set = find("set");
+    if (set) {
+      const [target, field] = set.dataset.set.split(":");
+      const obj = target === "o" ? e.opts : e.draft;
+      if (!obj) return;
+      if (field === "dayMode" && set.dataset.val === "custom" && obj.dayMode !== "custom")
+        obj.days = new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn([obj.dayMode || "daily"], wd, this._hass)));
+      obj[field] = set.dataset.val;
+      this._update(this._sig);
+      return;
+    }
+    const tab = find("mtab");
+    if (tab) {
+      e.tab = tab.dataset.mtab;
+      this._update(this._sig);
+      return;
+    }
+    const untag = find("untag");
+    if (untag) {
+      e.opts.tags = e.opts.tags.filter((x) => x !== untag.dataset.untag);
+      this._update(this._sig);
+      return;
+    }
+    const uncond = find("uncond");
+    if (uncond) {
+      e.opts.conds.splice(Number(uncond.dataset.uncond), 1);
+      this._update(this._sig);
+      return;
+    }
+    const unent = find("unent");
+    if (unent) {
+      e.draft.more = e.draft.more.filter((x) => x !== unent.dataset.unent);
+      this._update(this._sig);
+      return;
+    }
+    if (action === "add-cond") {
+      e.opts.conds.push({ entity: "", match: "is", value: "" });
+      this._update(this._sig);
+    } else if (action === "close" || (action === "backdrop" && path[0] === path.find((n) => n.dataset?.action === "backdrop"))) this._closeEdit();
+    else if (action === "save") this._save();
+    else if (action === "delete") this._delete();
+    else if (action === "split" || action === "merge") this._splitMerge(action);
+    else if (action === "duplicate") this._duplicate();
   }
 
   _click(ev) {
     const path = ev.composedPath();
     const action = path.find((n) => n.dataset?.action)?.dataset.action;
-    if (this._edit) {
-      // While the popup is open, its buttons and the backdrop act; a click elsewhere in it does nothing else.
-      const day = path.find((n) => n.dataset?.dayt !== undefined);
-      if (day && this._edit.draft) {
-        const wd = Number(day.dataset.dayt);
-        const days = this._edit.draft.days;
-        if (days.has(wd)) days.delete(wd);
-        else days.add(wd);
-        this._update(this._sig);
-        return;
-      }
-      if (action === "close" || (action === "backdrop" && path[0] === path.find((n) => n.dataset?.action === "backdrop"))) this._closeEdit();
-      else if (action === "save") this._save();
-      else if (action === "delete") this._delete();
+    if (this._edit) return this._clickEdit(ev, path, action);
+    // The click ending a drag of a slot's edge.
+    if (this._dragged) {
+      this._dragged = false;
       return;
     }
     if (path.some((n) => n.localName === "ha-switch")) return;
     if (action === "new") return this._openNew();
     if (action === "back") return this._showTimeline();
     if (action === "add-slot" && this._view) return this._openSlot(this._view, null);
+    if (action === "opts" && this._view) return this._openSlot(this._view, null, null, true);
     const tab = path.find((n) => n.dataset?.tab);
     if (tab) {
       if (tab.dataset.tab !== this._view) this._showWeek(tab.dataset.tab);
@@ -3845,6 +5944,101 @@ class SchedulerCard extends HTMLElement {
     }
     const row = path.find((n) => n.dataset?.open);
     if (row) this._showWeek(row.dataset.open);
+  }
+
+  // ── Dragging a slot's edge on the weekly grid (by the time step) ──
+
+  _dragStart(ev) {
+    const h = ev.composedPath().find((n) => n.dataset?.drag);
+    if (!h || this._edit || !this._view || ev.button > 0) return;
+    const blk = h.closest?.(".blk");
+    const track = blk?.closest?.(".track");
+    if (!track) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    const [i, edge] = h.dataset.drag.split(":");
+    const a = Number(blk.dataset.a);
+    const b = Number(blk.dataset.b);
+    this._drag = { id: this._view, i: Number(i), edge, a, b, to: edge === "a" ? a : b, track, blk };
+    this._notice = null;
+    h.classList.add("on");
+    h.setPointerCapture?.(ev.pointerId);
+    const move = (e2) => this._dragMove(e2);
+    const up = (e2) => {
+      h.removeEventListener("pointermove", move);
+      h.removeEventListener("pointerup", up);
+      h.removeEventListener("pointercancel", up);
+      h.classList.remove("on");
+      this._dragEnd(e2.type === "pointercancel");
+    };
+    h.addEventListener("pointermove", move);
+    h.addEventListener("pointerup", up);
+    h.addEventListener("pointercancel", up);
+  }
+
+  _dragMove(ev) {
+    const g = this._drag;
+    if (!g) return;
+    const r = g.track.getBoundingClientRect();
+    const step = this._step();
+    let v = Math.round((((ev.clientX - r.left) / (r.width || 1)) * DAY) / step) * step;
+    v = g.edge === "a" ? Math.max(0, Math.min(g.b - step, v)) : Math.max(g.a + step, Math.min(DAY, v));
+    g.to = v;
+    const a = g.edge === "a" ? v : g.a;
+    const b = g.edge === "b" ? v : g.b;
+    g.blk.style.left = `${((a / DAY) * 100).toFixed(2)}%`;
+    g.blk.style.width = `${(((b - a) / DAY) * 100).toFixed(2)}%`;
+    let tip = g.track.querySelector(".tip");
+    if (!tip) {
+      tip = document.createElement("span");
+      tip.className = "tip";
+      g.track.appendChild(tip);
+    }
+    tip.style.left = `${((v / DAY) * 100).toFixed(2)}%`;
+    tip.textContent = `${this._time(a)} → ${this._time(b)}`;
+  }
+
+  async _dragEnd(cancel) {
+    const g = this._drag;
+    this._drag = null;
+    if (!g) return;
+    g.track.querySelector(".tip")?.remove();
+    const moved = g.to !== (g.edge === "a" ? g.a : g.b);
+    if (cancel || !moved) {
+      this._html = "";
+      this._update(this._sig);
+      return;
+    }
+    this._dragged = true;
+    globalThis.setTimeout?.(() => {
+      this._dragged = false;
+    }, 400);
+    await this._moveEdge(g.id, g.i, g.edge, g.to);
+  }
+
+  // A slot's start or end moved on the grid: saved with scheduler.edit, refused when it overlaps another slot.
+  async _moveEdge(id, i, edge, min) {
+    let item;
+    try {
+      item = await this._fetchItem(id);
+    } catch (_e) {
+      this._notice = this._t("err_load");
+      this._html = "";
+      return this._update(this._sig);
+    }
+    const sun = sunTimes(this._hass);
+    const slots = (item.timeslots || []).map(cleanSlot);
+    if (!slots[i]) return;
+    slots[i] = { ...slots[i], [edge === "a" ? "start" : "stop"]: `${hm(min)}:00` };
+    if (slotsClash(slots, i, sun)) {
+      this._notice = this._t("err_overlap");
+      this._html = "";
+      return this._update(this._sig);
+    }
+    const error = await this._call("scheduler", "edit", { entity_id: id, timeslots: slots, ...this._dates(item) });
+    this._notice = error;
+    this._html = "";
+    this._update(this._sig);
   }
 }
 
@@ -3966,7 +6160,7 @@ class SchedulerMiniCard extends SchedulerCard {
 // ---------------------------------------------------------------------------
 
 // Options on by default (left out of the YAML while on).
-const ON_BY_DEFAULT = ["illustration", "show_disabled", "editable", "zoom"];
+const ON_BY_DEFAULT = ["illustration", "show_disabled", "editable", "show_badges", "zoom"];
 const LANGUAGES = [
   ["en", "English"], ["fr", "Français"], ["de", "Deutsch"], ["es", "Español"], ["sr", "Српски"], ["sr-Latn", "Srpski (latinica)"],
   ["it", "Italiano"], ["nl", "Nederlands"], ["pt", "Português (Portugal)"], ["pl", "Polski"], ["ro", "Română"], ["da", "Dansk"],
@@ -3991,7 +6185,7 @@ class SchedulerCardEditor extends HTMLElement {
 
   _schema() {
     const tr = (k) => t(this._hass, this._config, k);
-    const toggles = ["illustration", "show_disabled", "editable"];
+    const toggles = ["illustration", "show_disabled", "editable", "show_badges"];
     if (this.constructor.mini) toggles.push("zoom");
     const grid = [
       {
@@ -3999,6 +6193,10 @@ class SchedulerCardEditor extends HTMLElement {
         selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: tr(`theme_${v}`) })) } },
       },
     ];
+    grid.push(
+      { name: "sort_by", selector: { select: { mode: "dropdown", options: ["name", "next", "state"].map((v) => ({ value: v, label: tr(`sort_${v}`) })) } } },
+      { name: "time_step", selector: { number: { min: 1, max: 60, step: 1, mode: "box", unit_of_measurement: "min" } } },
+    );
     if (this.constructor.mini) grid.push({ name: "next_actions", selector: { number: { min: 1, max: 10, step: 1, mode: "box" } } });
     return [
       { name: "title", selector: { text: {} } },
@@ -4027,6 +6225,8 @@ class SchedulerCardEditor extends HTMLElement {
             v === null ||
             (ON_BY_DEFAULT.includes(k) && v === true) ||
             (k === "illustration_theme" && v === "auto") ||
+            (k === "sort_by" && v === "name") ||
+            (k === "time_step" && v === 15) ||
             (k === "next_actions" && v === 3)
           )
             delete config[k];
@@ -4036,7 +6236,7 @@ class SchedulerCardEditor extends HTMLElement {
       });
       this.appendChild(this._form);
     }
-    const data = { illustration_theme: "auto", ...(this.constructor.mini ? { next_actions: 3 } : {}), ...this._config };
+    const data = { illustration_theme: "auto", sort_by: "name", time_step: 15, ...(this.constructor.mini ? { next_actions: 3 } : {}), ...this._config };
     for (const k of ON_BY_DEFAULT) if (data[k] === undefined) data[k] = true;
     this._form.hass = this._hass;
     this._form.data = data;

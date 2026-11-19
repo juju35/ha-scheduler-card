@@ -6,6 +6,7 @@ const pair = (file, extra = {}) => [
   { file: `${file}-dark`, theme: "dark", ...extra },
 ];
 const HEATING = '.row[data-open="switch.schedule_living_room_heating"]';
+const AWAY = '.row[data-open="switch.schedule_away_mode"]';
 
 export const FULL = 460;
 export const MINI = 380;
@@ -17,8 +18,12 @@ export const SHOTS = [
   ...pair("card-week", { tag: "scheduler-card", config: {}, clicks: [HEATING] }),
   // The slot editor, at the top of the card.
   ...pair("card-edit", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]'], min: 520 }),
+  // A slot starting after sunrise (with today's time), and the day presets.
+  ...pair("card-edit-sun", { tag: "scheduler-card", config: {}, clicks: [AWAY, '.blk[data-slot="0"]'], min: 620 }),
+  // A schedule's options: name, tags, conditions, dates, after the last slot.
+  ...pair("card-options", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]', '[data-mtab="options"]'], min: 760 }),
   // A new schedule.
-  ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'] }),
+  ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'], min: 720 }),
   // At night: the timeline under a night sky (forced: automatic follows the theme alone).
   ...pair("card-night", { tag: "scheduler-card", config: { illustration_theme: "night" }, now: at("23:10") }),
   // Without the illustration.

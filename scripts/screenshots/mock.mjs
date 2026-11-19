@@ -24,6 +24,18 @@ const TARGETS = {
   "light.garden": st("light.garden", "off", { friendly_name: "Garden lights", icon: "mdi:lightbulb" }),
   "water_heater.boiler": st("water_heater.boiler", "off", { friendly_name: "Water heater", icon: "mdi:water", operation_list: ["eco", "electric"] }),
   "input_boolean.away_mode": st("input_boolean.away_mode", "off", { friendly_name: "Away mode", icon: "mdi:home" }),
+  // Entities of the schedules' conditions.
+  "group.family": st("group.family", "home", { friendly_name: "Family" }),
+  "sensor.outdoor_temperature": st("sensor.outdoor_temperature", "12", { friendly_name: "Outdoor temperature", unit_of_measurement: "°C" }),
+};
+
+// Conditions, dates and repetition of some schedules (the full schedule of the websocket command only).
+const cond = (entity_id, match_type, value) => ({ entity_id, match_type, value });
+const EXTRA = {
+  living_room_heating: { conditions: [cond("group.family", "is", "home")] },
+  garden_lights: { end_date: "2026-12-31" },
+  water_heater: { conditions: [cond("sensor.outdoor_temperature", "below", 15)] },
+  away_mode: { start_date: "2026-12-20", end_date: "2027-01-04", repeat_type: "pause" },
 };
 
 const temp = (entity_id, temperature) => ({ service: "climate.set_temperature", entity_id, service_data: { temperature } });
@@ -51,7 +63,7 @@ const SCHEDULES = [
   ], true],
   ["garden_lights", "Garden lights", ["daily"], [["18:00:00", "23:30:00", call("light.turn_on", "light.garden")]], true],
   ["water_heater", "Water heater", ["daily"], [["02:00:00", "06:00:00", call("water_heater.turn_on", "water_heater.boiler")]], true],
-  ["away_mode", "Away mode", ["mon", "tue", "wed", "thu", "fri"], [["09:00:00", "17:00:00", call("input_boolean.turn_on", "input_boolean.away_mode")]], false],
+  ["away_mode", "Away mode", ["mon", "tue", "wed", "thu", "fri"], [["sunrise+03:13:00", "17:00:00", call("input_boolean.turn_on", "input_boolean.away_mode")]], false],
 ];
 
 const ws = SCHEDULES.map(([slug, name, weekdays, slots, enabled], k) => ({
@@ -59,17 +71,28 @@ const ws = SCHEDULES.map(([slug, name, weekdays, slots, enabled], k) => ({
   entity_id: `switch.schedule_${slug}`,
   name,
   weekdays,
-  start_date: null,
-  end_date: null,
-  repeat_type: "repeat",
+  start_date: EXTRA[slug]?.start_date ?? null,
+  end_date: EXTRA[slug]?.end_date ?? null,
+  repeat_type: EXTRA[slug]?.repeat_type ?? "repeat",
   enabled,
   tags: k < 2 ? ["heating"] : [],
-  timeslots: slots.map(([start, stop, action]) => ({ start, stop, conditions: [], condition_type: null, track_conditions: false, actions: [action] })),
+  timeslots: slots.map(([start, stop, action]) => ({
+    start,
+    stop,
+    conditions: EXTRA[slug]?.conditions ?? [],
+    condition_type: EXTRA[slug]?.conditions ? "and" : null,
+    track_conditions: false,
+    actions: [action],
+  })),
   next_entries: [],
   timestamps: [],
 }));
 
-const minutes = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+const minutes = (t) => {
+  const r = /^(sunrise|sunset)([+-])(\d{2}):(\d{2})/.exec(t);
+  if (r) return minutes(r[1] === "sunrise" ? SUNRISE : SUNSET) + (r[2] === "-" ? -1 : 1) * (Number(r[3]) * 60 + Number(r[4]));
+  return Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+};
 // Minutes of the day, local time of the mock.
 const localMin = (ms) => {
   const local = new Date(ms + 2 * 3600000);

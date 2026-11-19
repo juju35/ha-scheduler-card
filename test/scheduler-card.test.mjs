@@ -291,8 +291,9 @@ test("editing a slot: loaded from the websocket, checked for overlaps, saved wit
   // The end was not changed: kept as stored.
   assert.equal(r.slots[3].stop, "22:30:00");
   eq(JSON.parse(JSON.stringify(r.slots[3].actions)), [{ service: "climate.set_temperature", entity_id: "climate.living_room", service_data: { temperature: 20 } }]);
-  // The gap left between 17:30 and 18:00 is fine; the other slots stay as they were, without null fields.
-  assert.ok(r.slots.every((s) => !("conditions" in s) && s.stop !== null));
+  // The gap left between 17:30 and 18:00 is fine; the other slots stay as they were (their condition kept), without
+  // null fields.
+  assert.ok(r.slots.every((s) => s.conditions?.[0]?.entity_id === "group.family" && s.stop !== null));
   await el._save();
   const [domain, service, data] = h.calls.at(-1);
   eq([domain, service, data.entity_id], ["scheduler", "edit", HEATING]);
@@ -352,7 +353,8 @@ test("a new schedule: scheduler.add with the entity, the action, the days and th
   el._render();
   el._openNew();
   const d = el._edit.draft;
-  Object.assign(d, { name: "Porch light", entity: "light.garden", start: "19:00", stop: "23:00" });
+  Object.assign(d, { entity: "light.garden", start: "19:00", stop: "23:00", dayMode: "custom" });
+  el._edit.opts.name = "Porch light";
   d.action = el._newOptions("light.garden")[0].key;
   d.days = new Set([5, 6]);
   await el._save();
@@ -432,7 +434,7 @@ test("the illustrated header: today's timeline, the slot running now, the status
   assert.match(idle, /class="badge st-idle"/);
   assert.match(idle, /class="chip status st-idle"[^>]*><span class="dot"><\/span><span class="txt">Idle</);
   // No schedule matching the filters: amber.
-  assert.match(card(sc.SchedulerCard, { tags: ["none"] })._render(), /class="badge st-warn"/);
+  assert.match(card(sc.SchedulerCard, { tags: ["no-such-tag"] })._render(), /class="badge st-warn"/);
   // Two hours before sunset (21:56): the evening sky, unless forced to day.
   assert.match(card(sc.SchedulerCard, {}, hassWith({ now: at("20:30") }), at("20:30"))._render(), /class="banner evening"/);
   assert.match(card(sc.SchedulerCard, { illustration_theme: "day" }, hassWith({ now: at("20:30") }), at("20:30"))._render(), /class="banner"/);
