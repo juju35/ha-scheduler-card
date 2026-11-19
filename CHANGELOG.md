@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0 - 2026-11-19
+
+### Features
+- Times relative to the sun: a slot's start and end can be an offset before or after sunrise or sunset, set in the slot editor and the new schedule popup, with today's time shown beside it.
+- Day presets: Every day, Workdays and Weekend (the Workday sensor's, holidays skipped), or chosen days; a day clicked in a preset turns it into chosen days.
+- Options of a schedule, in a tab of the slot editor and from the weekly grid's Options button: name, tags, conditions on other entities (is, is not, below, above; all or any; re-checked as soon as they change), a period between two dates, and after the last slot repeat, stop or delete; Duplicate makes a copy with `scheduler.copy`.
+- New schedules of a single time (one action at a set time) or of time slots, on one entity or several of the same kind, with their options.
+- Weekly grid: drag a slot's edges to move its start or end, by `time_step` (15 min by default); Split and Merge with next in the slot editor.
+- Badges under each tile: time relative to the sun, workdays or weekend, the first condition, the dates and what happens after the last slot; « Starts … » for a schedule beginning later, and no upcoming action outside its dates (`show_badges: false` hides them).
+- Tiles in the look shared by the ha-* cards: the icon always tinted in the schedule's colour (grey when disabled), the name in bold, a status dot on every tile in the schedule's colour while a slot runs.
+- New options: `tags` also takes `none`, `enabled` and `disabled`; `exclude_tags`; `sort_by` (`name`, `next`, `state`); `include` and `exclude` for the entities a new schedule can act on; `customize` for your own actions; `time_step`; `show_badges`. `sort_by`, `time_step` and `show_badges` are in the visual editors.
+- The full schedules are read again whenever the Scheduler component reports a change (its `scheduler_updated` subscription).
+
 ## 1.1.1 - 2026-11-18
 
 ### Fixes
