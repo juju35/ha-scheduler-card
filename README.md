@@ -28,16 +28,20 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - The sky follows the time of day and the theme: **day**, a warmer **evening** in the two hours before sunset (`sun.sun`), and **night** with Home Assistant's dark mode
 - The round header icon shows the **status** by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the card's filters
 - **Today's timeline**: enabled / disabled chips, then one tile per schedule with
-  - the icon of the entity it acts on, coloured only while one of its slots is running, and a green (enabled) or grey (disabled) dot
+  - the icon of the entity it acts on in a round tinted badge (grey when disabled), and a status dot: green when enabled, the schedule's colour while a slot runs, grey when disabled
   - its name and a state line: « 20 °C now · 17 °C at 22:30 », « Off · on at 18:00 », « Open · close at 18:45 », « Done today · next 02:00 », « Disabled »
   - Home Assistant's own **switch** to enable or disable it
   - a **0–24 h bar** of today's slots and a "now" marker
-- A tinted **New schedule** button: name, entity, action, times and days, created with `scheduler.add`
+  - **badges**: a time relative to the sun (« Sunset −00:30 »), workdays or weekend, its first condition (« Family is Home »), its dates (« Until Dec 31 », « Dec 20 → Jan 4 ») and what happens after its last slot (« Once · then stop »); a schedule starting later reads « Starts Sun, Dec 20 » (`show_badges: false` hides the badges)
+- A tinted **New schedule** button: name, **time slots or a single time** (« turn off at 23:00 »), one entity or **several of the same kind**, action, start and end (fixed or **relative to sunrise / sunset**), days, and an **Options** tab; created with `scheduler.add`
 - Click a schedule for its **weekly grid**: text tabs to switch schedule, rows Monday to Sunday with the slots as **blocks labelled with their value**, today highlighted with a "now" marker, the value that covers the rest of the day drawn as the background (« 17 °C (default) »), a legend and the **weekly total** (« 20 °C 35 h / week »)
-- **Slot editor** in a popup at the top of the card: start, end, action and days, saved with `scheduler.edit`; click an empty spot of the grid (or **Add slot**) to add a slot at that hour; overlapping slots are refused, conditions and dates of the schedule are kept, the last slot's deletion removes the schedule after a confirmation
+- **Slot editor** in a popup at the top of the card: start and end, each a fixed time or an offset **before / after sunrise or sunset** (with today's time), action, and days as **Every day / Workdays / Weekend** (the Workday sensor's, holidays skipped) or chosen days; saved with `scheduler.edit`; click an empty spot of the grid (or **Add slot**) to add a slot at that hour; **Split** a slot in two or **Merge** it with the next one; overlapping slots are refused, the last slot's deletion removes the schedule after a confirmation
+- **Options** of a schedule (a tab of the slot editor, or the **Options** button of the weekly grid): its **name** and **tags**, **conditions** on other entities (is / is not / below / above, all or any of them, optionally re-checked as soon as they change), a **period** between two dates, and **after the last slot**: repeat, stop (disable it) or delete it; and **Duplicate** (`scheduler.copy`)
+- **Drag the edges** of a slot on the weekly grid to move its start or end, by the time step (`time_step`, 15 min by default)
 - Mini card: the same illustrated header (the next action on its sky), then the next actions of all your schedules (time, coloured icon, name, action), and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
-- Filters by `tags` and `entities`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
+- Filters by `tags` (also `none`, `enabled`, `disabled`), `exclude_tags` and `entities`, sorting with `sort_by`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
+- The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`
 - `illustration: false` for a classic header with a round icon, as on the other cards
 - Visual editor for both cards; options left at their default are kept out of the YAML
 - Light and dark themes, `prefers-reduced-motion` honoured
@@ -48,7 +52,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 
 | Integration | What the cards use |
 |---|---|
-| [Scheduler component](https://github.com/nielsfaber/scheduler-component) by nielsfaber (Marketplace) | The `switch.schedule_*` entities and their attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `tags`); `switch.turn_on` / `switch.turn_off` to enable or disable a schedule; the `scheduler.add`, `scheduler.edit` and `scheduler.remove` services to create, edit and delete; the `scheduler` and `scheduler/item` websocket commands to read a schedule in full before editing it |
+| [Scheduler component](https://github.com/nielsfaber/scheduler-component) by nielsfaber (Marketplace) | The `switch.schedule_*` entities and their attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `tags`); `switch.turn_on` / `switch.turn_off` to enable or disable a schedule; the `scheduler.add`, `scheduler.edit`, `scheduler.copy` and `scheduler.remove` services to create, edit, duplicate and delete; the `scheduler` and `scheduler/item` websocket commands for the full schedules (conditions, dates, repetition), read again on the component's `scheduler_updated` subscription |
 
 The [Workday](https://www.home-assistant.io/integrations/workday/) sensor (`binary_sensor.workday_sensor`) is read for the schedules that run on workdays or at the weekend, as the Scheduler component does.
 
@@ -111,10 +115,26 @@ tags:
 entities:
   - climate.living_room
   - switch.schedule_water_heater
+exclude_tags:
+  - holidays
 names:
   switch.schedule_living_room_heating: Living room
+sort_by: next
 show_disabled: true
+show_badges: true
 editable: true
+time_step: 15
+include:
+  - climate
+  - switch.boiler
+exclude:
+  - climate.guest_room
+customize:
+  climate.living_room:
+    - name: Frost protection
+      service: climate.set_temperature
+      service_data:
+        temperature: 7
 illustration: true
 illustration_theme: auto
 language: en
@@ -132,11 +152,18 @@ zoom: true
 | Option | Card | Default | Description |
 |---|---|---|---|
 | `title` | both | « Schedules » | Card title (on the weekly grid, the schedule's name is the title) |
-| `tags` | both | All | **YAML only.** Only the schedules carrying one of these tags (the Scheduler component's tags); a schedule created from the card gets them |
+| `tags` | both | All | **YAML only.** Only the schedules carrying one of these tags (the Scheduler component's tags); a schedule created from the card gets them. Special values: `none` (schedules without a tag), `enabled`, `disabled` |
+| `exclude_tags` | both | None | **YAML only.** Hides the schedules carrying one of these tags (applied after `tags`) |
 | `entities` | both | All | **YAML only.** Only these schedules: schedule entities (`switch.schedule_…`) or the entities they act on (`climate.living_room`) |
 | `names` | both | Entity name | **YAML only.** A name per schedule entity: `switch.schedule_living_room_heating: Living room` |
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
-| `editable` | both | `true` | The **New schedule** button, the slot editor and the clickable grid; `false` for a read-only card (the switches still work) |
+| `sort_by` | both | `name` | Order of the schedules: `name`, `next` (soonest next action first) or `state` (running first); disabled ones always last |
+| `show_badges` | both | `true` | The badges under each tile (sun, days, condition, dates, after the last slot); `false` hides them |
+| `editable` | both | `true` | The **New schedule** button, the slot editor, the options and the clickable, draggable grid; `false` for a read-only card (the switches still work) |
+| `time_step` | both | `15` | Minutes: the step of a dragged slot edge, of a split, and of the time fields |
+| `include` | both | All | **YAML only.** The entities a new schedule can act on: entity ids or domains (`light`, `climate.bedroom`) |
+| `exclude` | both | None | **YAML only.** Entity ids or domains left out of the entities a new schedule can act on |
+| `customize` | both | None | **YAML only.** Your own actions, by entity id or domain: a list of `name`, `service` and `service_data`, offered first in the editors |
 | `illustration` | both | `true` | The illustrated header with today's timeline; `false` for a classic header with a round icon |
 | `illustration_theme` | both | `auto` | `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme, evening in the two hours before sunset with a light theme), `day` or `night` |
 | `next_actions` | mini | `3` | Number of upcoming actions listed (1 to 10) |
@@ -180,6 +207,18 @@ Slot editor, at the top of the card:
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit.png" alt="slot editor" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-dark.png" alt="slot editor, dark theme" width="400"> |
+
+A slot starting after sunrise, with today's time, and the day presets:
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-sun.png" alt="slot relative to the sun" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-sun-dark.png" alt="slot relative to the sun, dark theme" width="400"> |
+
+Options of a schedule: name, tags, conditions, period, after the last slot:
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-options.png" alt="schedule options" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-options-dark.png" alt="schedule options, dark theme" width="400"> |
 
 New schedule:
 
