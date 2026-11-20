@@ -561,6 +561,20 @@ test("mini card: the next actions, the detail button to the full card, folded ba
   assert.ok(!/class="zoom/.test(card(sc.SchedulerMiniCard, { zoom: false })._render()));
 });
 
+test("visual editor: data and schema set again only when they change", () => {
+  const ed = new sc.SchedulerCardEditor();
+  ed.setConfig({ type: "custom:scheduler-card" });
+  ed.hass = hassWith();
+  const form = ed._form;
+  const [data, schema] = [form.data, form.schema];
+  ed.hass = hassWith();
+  assert.equal(form.data, data);
+  assert.equal(form.schema, schema);
+  ed.setConfig({ type: "custom:scheduler-card", time_step: 5 });
+  assert.notEqual(form.data, data);
+  assert.equal(form.data.time_step, 5);
+});
+
 test("visual editors: defaults left out of the YAML, the mini editor with the full card's options", () => {
   const ed = new sc.SchedulerMiniCardEditor();
   ed.setConfig({ type: "custom:scheduler-mini-card" });

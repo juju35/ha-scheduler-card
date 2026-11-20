@@ -6688,8 +6688,18 @@ class SchedulerCardEditor extends HTMLElement {
     const data = { illustration_theme: "auto", sort_by: "name", time_step: 15, ...(this.constructor.mini ? { next_actions: 3 } : {}), ...this._config };
     for (const k of ON_BY_DEFAULT) if (data[k] === undefined) data[k] = true;
     this._form.hass = this._hass;
-    this._form.data = data;
-    this._form.schema = this._schema();
+    // hass is pushed on every state change while the editor is open: data and schema are set again only when they
+    // changed, so that the form does not redraw each time.
+    const dataKey = JSON.stringify(data);
+    if (dataKey !== this._dataKey) {
+      this._dataKey = dataKey;
+      this._form.data = data;
+    }
+    const schemaKey = lang(this._hass, this._config);
+    if (schemaKey !== this._schemaKey) {
+      this._schemaKey = schemaKey;
+      this._form.schema = this._schema();
+    }
   }
 }
 
