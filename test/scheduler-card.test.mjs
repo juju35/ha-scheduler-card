@@ -173,6 +173,18 @@ test("the value of a schedule covering the whole day the longest is its backgrou
   assert.equal(model(BLINDS).def, null);
 });
 
+test("discovery: the scheduler platform's registry entries, else the switch.schedule_* entities", () => {
+  const h = hassWith();
+  const fallback = sc.discover(h);
+  assert.equal(fallback.length, 6);
+  // In the registry: only the registered schedules, whatever their entity id, while their state exists.
+  const reg = { "switch.heating_plan": { entity_id: "switch.heating_plan", platform: "scheduler" }, "switch.gone": { entity_id: "switch.gone", platform: "scheduler" } };
+  const withReg = { ...h, entities: reg, states: { ...h.states, "switch.heating_plan": { entity_id: "switch.heating_plan", state: "on", attributes: {} } } };
+  eq(sc.discover(withReg), ["switch.heating_plan"]);
+  // Same registry, states changed: the scan is kept, the states are read again.
+  eq(sc.discover({ ...withReg, states: h.states }), fallback);
+});
+
 test("filters: tags, entities (the schedule's or those it acts on), disabled schedules", () => {
   const h = hassWith();
   const all = sc.discover(h).map((id) => model(id, h));

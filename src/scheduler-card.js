@@ -3660,14 +3660,24 @@ const hm = (min) => {
 
 const PLATFORM = "scheduler";
 
-// The schedule entities: the scheduler platform's registry entries, and any switch.schedule_* entity carrying the
-// component's attributes (no registry in some setups).
+// The schedule entities: the scheduler platform's registry entries, else (no registry, or none of them in it, as in
+// some setups) any switch.schedule_* entity carrying the component's attributes. The registry scan is kept per
+// registry object: the card looks its schedules up on every state change, which should not walk every entity and
+// every state each time.
+const _scheduleIds = new WeakMap();
 const discover = (hass) => {
   const states = hass?.states || {};
-  const ids = new Set();
-  for (const e of Object.values(hass?.entities || {})) if (e?.platform === PLATFORM && domainOf(e.entity_id) === "switch" && states[e.entity_id]) ids.add(e.entity_id);
-  for (const [id, s] of Object.entries(states)) if (id.startsWith("switch.schedule_") && Array.isArray(s?.attributes?.timeslots)) ids.add(id);
-  return [...ids];
+  const reg = hass?.entities;
+  let known = reg ? _scheduleIds.get(reg) : null;
+  if (!known) {
+    known = Object.values(reg || {})
+      .filter((e) => e?.platform === PLATFORM && domainOf(e.entity_id) === "switch")
+      .map((e) => e.entity_id);
+    if (reg) _scheduleIds.set(reg, known);
+  }
+  const ids = known.filter((id) => states[id]);
+  if (ids.length) return ids;
+  return Object.keys(states).filter((id) => id.startsWith("switch.schedule_") && Array.isArray(states[id]?.attributes?.timeslots));
 };
 
 // The workdays (0 = Monday) of the workday sensor, Monday to Friday without it.
