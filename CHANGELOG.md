@@ -3,6 +3,7 @@
 ## 1.5.1 - 2026-11-20
 
 ### Fixes
+- The status pill is placed from the card's first frame: it was measured before Home Assistant's `<ha-card>` had laid out its content (0 px wide), so for a frame it showed on the wrong line (under the title, or beside it when it belongs under it), sometimes changing the card's height, before jumping to its place. It is now fitted once the card is drawn.
 - A card created again (another view, a dashboard opened) draws the schedules' conditions and dates from its first render, from the last ones read on the same connection, instead of growing by about 50 px when its own answer comes, which moved the page under it.
 
 ### Performance
