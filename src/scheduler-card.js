@@ -108,6 +108,10 @@ const STRINGS = {
     theme_night: "Night",
     show_disabled: "Disabled schedules",
     editable: "Slot editing",
+    show_header_toggle: "Switch for all schedules",
+    all_on: "Enable all",
+    all_off: "Disable all",
+    err_toggle: "{count} of {total} schedules could not be changed",
     next_actions: "Upcoming actions",
     zoom: "Detail button",
     language: "Language",
@@ -262,6 +266,10 @@ const STRINGS = {
     theme_night: "Nuit",
     show_disabled: "Plannings désactivés",
     editable: "Modification des plages",
+    show_header_toggle: "Interrupteur de tous les plannings",
+    all_on: "Tout activer",
+    all_off: "Tout désactiver",
+    err_toggle: "Modification impossible pour {count} plannings sur {total}",
     next_actions: "Actions à venir",
     zoom: "Bouton détail",
     language: "Langue",
@@ -416,6 +424,10 @@ const STRINGS = {
     theme_night: "Nacht",
     show_disabled: "Deaktivierte Zeitpläne",
     editable: "Zeitfenster bearbeiten",
+    show_header_toggle: "Schalter für alle Zeitpläne",
+    all_on: "Alle aktivieren",
+    all_off: "Alle deaktivieren",
+    err_toggle: "{count} von {total} Zeitplänen konnten nicht geändert werden",
     next_actions: "Anstehende Aktionen",
     zoom: "Detail-Schaltfläche",
     language: "Sprache",
@@ -570,6 +582,10 @@ const STRINGS = {
     theme_night: "Noche",
     show_disabled: "Programaciones desactivadas",
     editable: "Edición de franjas",
+    show_header_toggle: "Interruptor de todas las programaciones",
+    all_on: "Activar todas",
+    all_off: "Desactivar todas",
+    err_toggle: "No se pudieron cambiar {count} de {total} programaciones",
     next_actions: "Próximas acciones",
     zoom: "Botón de detalle",
     language: "Idioma",
@@ -726,6 +742,10 @@ const STRINGS = {
     theme_night: "Ноћ",
     show_disabled: "Искључени распореди",
     editable: "Измена термина",
+    show_header_toggle: "Прекидач за све распореде",
+    all_on: "Укључи све",
+    all_off: "Искључи све",
+    err_toggle: "Није могуће променити {count} од {total} распореда",
     next_actions: "Предстојеће радње",
     zoom: "Дугме за детаље",
     language: "Језик",
@@ -882,6 +902,10 @@ const STRINGS = {
     theme_night: "Noć",
     show_disabled: "Isključeni rasporedi",
     editable: "Izmena termina",
+    show_header_toggle: "Prekidač za sve rasporede",
+    all_on: "Uključi sve",
+    all_off: "Isključi sve",
+    err_toggle: "Nije moguće promeniti {count} od {total} rasporeda",
     next_actions: "Predstojeće radnje",
     zoom: "Dugme za detalje",
     language: "Jezik",
@@ -1036,6 +1060,10 @@ const STRINGS = {
     theme_night: "Notte",
     show_disabled: "Programmazioni disattivate",
     editable: "Modifica delle fasce",
+    show_header_toggle: "Interruttore di tutte le programmazioni",
+    all_on: "Attiva tutte",
+    all_off: "Disattiva tutte",
+    err_toggle: "Impossibile modificare {count} programmazioni su {total}",
     next_actions: "Prossime azioni",
     zoom: "Pulsante dettagli",
     language: "Lingua",
@@ -1190,6 +1218,10 @@ const STRINGS = {
     theme_night: "Nacht",
     show_disabled: "Uitgeschakelde schema's",
     editable: "Tijdvakken bewerken",
+    show_header_toggle: "Schakelaar voor alle schema's",
+    all_on: "Alles inschakelen",
+    all_off: "Alles uitschakelen",
+    err_toggle: "{count} van {total} schema's konden niet worden gewijzigd",
     next_actions: "Komende acties",
     zoom: "Detailknop",
     language: "Taal",
@@ -1344,6 +1376,10 @@ const STRINGS = {
     theme_night: "Noite",
     show_disabled: "Agendamentos desativados",
     editable: "Edição de intervalos",
+    show_header_toggle: "Interruptor de todos os agendamentos",
+    all_on: "Ativar todos",
+    all_off: "Desativar todos",
+    err_toggle: "Não foi possível alterar {count} de {total} agendamentos",
     next_actions: "Próximas ações",
     zoom: "Botão de detalhe",
     language: "Idioma",
@@ -1502,6 +1538,10 @@ const STRINGS = {
     theme_night: "Noc",
     show_disabled: "Wyłączone harmonogramy",
     editable: "Edycja przedziałów",
+    show_header_toggle: "Przełącznik wszystkich harmonogramów",
+    all_on: "Włącz wszystkie",
+    all_off: "Wyłącz wszystkie",
+    err_toggle: "Nie udało się zmienić {count} z {total} harmonogramów",
     next_actions: "Nadchodzące akcje",
     zoom: "Przycisk szczegółów",
     language: "Język",
@@ -1658,6 +1698,10 @@ const STRINGS = {
     theme_night: "Noapte",
     show_disabled: "Programări dezactivate",
     editable: "Editarea intervalelor",
+    show_header_toggle: "Comutator pentru toate programările",
+    all_on: "Activează toate",
+    all_off: "Dezactivează toate",
+    err_toggle: "Nu s-au putut modifica {count} din {total} programări",
     next_actions: "Acțiuni următoare",
     zoom: "Buton de detalii",
     language: "Limbă",
@@ -1812,6 +1856,10 @@ const STRINGS = {
     theme_night: "Nat",
     show_disabled: "Deaktiverede tidsplaner",
     editable: "Redigering af tidsrum",
+    show_header_toggle: "Kontakt til alle tidsplaner",
+    all_on: "Aktivér alle",
+    all_off: "Deaktivér alle",
+    err_toggle: "{count} af {total} tidsplaner kunne ikke ændres",
     next_actions: "Kommende handlinger",
     zoom: "Detaljeknap",
     language: "Sprog",
@@ -1966,6 +2014,10 @@ const STRINGS = {
     theme_night: "Natt",
     show_disabled: "Inaktiverade scheman",
     editable: "Redigering av intervall",
+    show_header_toggle: "Brytare för alla scheman",
+    all_on: "Aktivera alla",
+    all_off: "Inaktivera alla",
+    err_toggle: "{count} av {total} scheman kunde inte ändras",
     next_actions: "Kommande åtgärder",
     zoom: "Detaljknapp",
     language: "Språk",
@@ -2120,6 +2172,10 @@ const STRINGS = {
     theme_night: "Нощ",
     show_disabled: "Изключени графици",
     editable: "Редактиране на интервали",
+    show_header_toggle: "Превключвател за всички графици",
+    all_on: "Включи всички",
+    all_off: "Изключи всички",
+    err_toggle: "{count} от {total} графика не можаха да бъдат променени",
     next_actions: "Предстоящи действия",
     zoom: "Бутон за детайли",
     language: "Език",
@@ -2278,6 +2334,10 @@ const STRINGS = {
     theme_night: "Ночь",
     show_disabled: "Отключённые расписания",
     editable: "Изменение интервалов",
+    show_header_toggle: "Переключатель всех расписаний",
+    all_on: "Включить все",
+    all_off: "Отключить все",
+    err_toggle: "Не удалось изменить {count} из {total} расписаний",
     next_actions: "Ближайшие действия",
     zoom: "Кнопка подробностей",
     language: "Язык",
@@ -2436,6 +2496,10 @@ const STRINGS = {
     theme_night: "Ніч",
     show_disabled: "Вимкнені розклади",
     editable: "Зміна інтервалів",
+    show_header_toggle: "Перемикач усіх розкладів",
+    all_on: "Увімкнути всі",
+    all_off: "Вимкнути всі",
+    err_toggle: "Не вдалося змінити {count} з {total} розкладів",
     next_actions: "Найближчі дії",
     zoom: "Кнопка деталей",
     language: "Мова",
@@ -2590,6 +2654,10 @@ const STRINGS = {
     theme_night: "Éjszaka",
     show_disabled: "Letiltott ütemezések",
     editable: "Idősávok szerkesztése",
+    show_header_toggle: "Kapcsoló az összes ütemezéshez",
+    all_on: "Összes engedélyezése",
+    all_off: "Összes letiltása",
+    err_toggle: "{total} ütemezésből {count} nem módosítható",
     next_actions: "Közelgő műveletek",
     zoom: "Részletek gomb",
     language: "Nyelv",
@@ -2748,6 +2816,10 @@ const STRINGS = {
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
     editable: "Úprava intervalov",
+    show_header_toggle: "Prepínač všetkých plánov",
+    all_on: "Zapnúť všetky",
+    all_off: "Vypnúť všetky",
+    err_toggle: "Nepodarilo sa zmeniť {count} z {total} plánov",
     next_actions: "Nadchádzajúce akcie",
     zoom: "Tlačidlo podrobností",
     language: "Jazyk",
@@ -2906,6 +2978,10 @@ const STRINGS = {
     theme_night: "Noc",
     show_disabled: "Vypnuté plány",
     editable: "Úprava intervalů",
+    show_header_toggle: "Přepínač všech plánů",
+    all_on: "Zapnout vše",
+    all_off: "Vypnout vše",
+    err_toggle: "Nepodařilo se změnit {count} z {total} plánů",
     next_actions: "Nadcházející akce",
     zoom: "Tlačítko podrobností",
     language: "Jazyk",
@@ -3064,6 +3140,10 @@ const STRINGS = {
     theme_night: "Noč",
     show_disabled: "Izklopljeni urniki",
     editable: "Urejanje intervalov",
+    show_header_toggle: "Stikalo za vse urnike",
+    all_on: "Vklopi vse",
+    all_off: "Izklopi vse",
+    err_toggle: "{count} od {total} urnikov ni bilo mogoče spremeniti",
     next_actions: "Prihajajoča dejanja",
     zoom: "Gumb za podrobnosti",
     language: "Jezik",
@@ -3220,6 +3300,10 @@ const STRINGS = {
     theme_night: "Nakts",
     show_disabled: "Izslēgtie grafiki",
     editable: "Intervālu rediģēšana",
+    show_header_toggle: "Visu grafiku slēdzis",
+    all_on: "Ieslēgt visus",
+    all_off: "Izslēgt visus",
+    err_toggle: "Neizdevās mainīt {count} no {total} grafikiem",
     next_actions: "Gaidāmās darbības",
     zoom: "Detaļu poga",
     language: "Valoda",
@@ -3374,6 +3458,10 @@ const STRINGS = {
     theme_night: "Νύχτα",
     show_disabled: "Απενεργοποιημένα προγράμματα",
     editable: "Επεξεργασία διαστημάτων",
+    show_header_toggle: "Διακόπτης όλων των προγραμμάτων",
+    all_on: "Ενεργοποίηση όλων",
+    all_off: "Απενεργοποίηση όλων",
+    err_toggle: "Δεν ήταν δυνατή η αλλαγή {count} από {total} προγράμματα",
     next_actions: "Επερχόμενες ενέργειες",
     zoom: "Κουμπί λεπτομερειών",
     language: "Γλώσσα",
@@ -3884,6 +3972,12 @@ const pickSchedules = (models, config = {}, rank = null) => {
     .filter((m) => config.show_disabled !== false || m.state !== "off")
     .sort((x, y) => (x.state === "off") - (y.state === "off") || (sort !== "name" && rank ? rank(x, sort) - rank(y, sort) : 0) || byName(x, y));
 };
+
+// The schedules the header switch acts on: those of the card's `tags`, `exclude_tags` and `entities`, the disabled
+// ones included and the state tags (`enabled`, `disabled`) left aside, so that it can always turn back on what it
+// turned off, even with `show_disabled: false`.
+const toggleTargets = (models, config = {}) =>
+  pickSchedules(models, { ...config, show_disabled: true, tags: listOf(config.tags).filter((x) => x !== "enabled" && x !== "disabled") });
 
 // The tags a new schedule gets from the card: its own, the special values left out.
 const cardTags = (config = {}) => listOf(config.tags).filter((x) => !SPECIAL_TAGS.includes(x));
@@ -4432,6 +4526,11 @@ const STYLE = `
   /* ── Chips line under the header ── */
   .chips { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; padding: 10px 12px 0; }
   .chips .aside { margin-left: auto; font-size: 12px; color: var(--secondary-text-color); white-space: nowrap; }
+  /* show_header_toggle: the switch for every schedule, at the end of the line, its label saying what a click does. */
+  .chips .all { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color);
+                white-space: nowrap; }
+  .chips .aside + .all { margin-left: 4px; }
+  .chips + .err { margin: 8px 12px 0; }
 
   /* ── Today's timeline: one tile per schedule ── */
   .rows { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 12px; }
@@ -5157,7 +5256,7 @@ class SchedulerCard extends HTMLElement {
       <div class="line">
         <span class="ic"><ha-icon icon="${esc(m.icon)}"></ha-icon><span class="on"></span></span>
         <span class="txt"><span class="nm">${esc(m.name)}</span><span class="stl">${esc(this._stateLine(m, now))}</span></span>
-        <ha-switch data-toggle="${esc(m.id)}"${m.enabled ? " checked" : ""} aria-label="${esc(m.name)}"></ha-switch>
+        <ha-switch data-toggle="${esc(m.id)}"${m.enabled ? " checked" : ""}${this._config.editable === false ? " disabled" : ""} aria-label="${esc(m.name)}"></ha-switch>
       </div>
       <div class="bar">${this._todayBits(m, now)}<span class="now" style="left:${((now.min / DAY) * 100).toFixed(2)}%"></span></div>
       ${this._badges(m)}
@@ -5171,13 +5270,28 @@ class SchedulerCard extends HTMLElement {
         <span class="chip ok"><span class="dot"></span><span class="txt">${esc(plural(this._hass, this._config, "enabled", on))}</span></span>
         ${off ? `<span class="chip na"><span class="dot"></span><span class="txt">${esc(plural(this._hass, this._config, "disabled", off))}</span></span>` : ""}
         ${this._config.illustration === false ? "" : `<span class="aside">${esc(this._t("now_hint"))}</span>`}
+        ${this._allSwitch()}
       </div>`;
     const rows = models.length ? models.map((m) => this._row(m, now)).join("") : `<div class="empty">${esc(this._t("no_match"))}</div>`;
     const add =
       this._config.editable === false
         ? ""
         : `<div class="foot"><button class="btn" data-action="new">${svgIcon(ICONS.plus)}${esc(this._t("new_schedule"))}</button></div>`;
-    return `<div class="view" data-key="timeline">${chips}<div class="rows">${rows}${add}</div></div>`;
+    const notice = this._notice ? `<div class="err">${esc(this._notice)}</div>` : "";
+    return `<div class="view" data-key="timeline">${chips}${notice}<div class="rows">${rows}${add}</div></div>`;
+  }
+
+  // `show_header_toggle`: one switch for every schedule of the card's filters (toggleTargets), on while any of them is,
+  // as Home Assistant's header toggles: from a mixed state it turns them all off. Its label says what a click does.
+  // Greyed with `editable: false`.
+  _allSwitch() {
+    if (this._config.show_header_toggle !== true) return "";
+    const targets = toggleTargets(this._all || [], this._config);
+    if (!targets.length) return "";
+    const any = targets.some((m) => m.enabled);
+    const label = esc(this._t(any ? "all_off" : "all_on"));
+    const off = this._config.editable === false || this._toggling;
+    return `<span class="all"><span class="txt">${label}</span><ha-switch data-toggle-all="1"${any ? " checked" : ""}${off ? " disabled" : ""} aria-label="${label}"></ha-switch></span>`;
   }
 
   // ── Weekly grid ──
@@ -5938,11 +6052,37 @@ class SchedulerCard extends HTMLElement {
     this._hass.callService("switch", on ? "turn_on" : "turn_off", { entity_id: id });
   }
 
+  // The header switch: the schedules it acts on resolved once, then only those not yet in the wanted state switched,
+  // one call each so that a failure leaves the others done; the failures counted in a notice, the switches redrawn
+  // from Home Assistant's states. Only the schedules' enabled state changes.
+  async _toggleAll() {
+    if (this._config.editable === false || this._toggling) return this._update(this._sig);
+    const targets = toggleTargets(this._all || [], this._config);
+    // As the switch shows: any enabled turns them all off, none enabled turns them all on.
+    const on = !targets.some((m) => m.enabled);
+    const ids = targets.filter((m) => m.enabled !== on).map((m) => m.id);
+    if (!ids.length) return this._update(this._sig);
+    this._toggling = true;
+    this._notice = null;
+    this._update(this._sig);
+    const errors = (await Promise.all(ids.map((id) => this._call("switch", on ? "turn_on" : "turn_off", { entity_id: id })))).filter(Boolean);
+    this._toggling = false;
+    if (errors.length) this._notice = `${this._t("err_toggle", { count: errors.length, total: ids.length })} — ${errors[0]}`;
+    this._update(this._sig);
+  }
+
   _change(ev) {
     const path = ev.composedPath();
+    if (path.some((n) => n.dataset?.toggleAll)) {
+      ev.stopPropagation();
+      this._toggleAll();
+      return;
+    }
     const sw = path.find((n) => n.dataset?.toggle);
     if (sw) {
       ev.stopPropagation();
+      // Read-only card: the switch is greyed; a change that still gets through is put back.
+      if (this._config.editable === false) return this._update(this._sig);
       this._toggle(sw.dataset.toggle, !!sw.checked);
       return;
     }
@@ -6345,7 +6485,7 @@ class SchedulerCardEditor extends HTMLElement {
 
   _schema() {
     const tr = (k) => t(this._hass, this._config, k);
-    const toggles = ["illustration", "show_disabled", "editable", "show_badges"];
+    const toggles = ["illustration", "show_disabled", "editable", "show_badges", "show_header_toggle"];
     if (this.constructor.mini) toggles.push("zoom");
     const grid = [
       {
@@ -6384,6 +6524,7 @@ class SchedulerCardEditor extends HTMLElement {
             v === undefined ||
             v === null ||
             (ON_BY_DEFAULT.includes(k) && v === true) ||
+            (k === "show_header_toggle" && v === false) ||
             (k === "illustration_theme" && v === "auto") ||
             (k === "sort_by" && v === "name") ||
             (k === "time_step" && v === 15) ||

@@ -383,6 +383,68 @@ test("a schedule's switch enables and disables it with switch.turn_on / turn_off
   eq(h.calls.at(-1), ["switch", "turn_off", { entity_id: GARDEN }]);
 });
 
+test("show_header_toggle: one switch for the card's schedules, off by default, mixed turns them all off", async () => {
+  assert.ok(!/data-toggle-all/.test(card()._render()));
+  // Every schedule, the away mode disabled: a mixed state, the switch on, a click disables the enabled ones only.
+  const h = hassWith();
+  const el = card(sc.SchedulerCard, { show_header_toggle: true }, h);
+  const html = el._render();
+  assert.match(html, /<ha-switch data-toggle-all="1" checked aria-label="Disable all">/);
+  el._change({ composedPath: () => [{ dataset: { toggleAll: "1" } }], stopPropagation() {} });
+  await new Promise((r) => setTimeout(r));
+  assert.equal(h.calls.length, 5);
+  assert.ok(h.calls.every((c) => c[1] === "turn_off" && c[2].entity_id !== AWAY));
+  // All enabled (the heating tag): the switch on, a click disables those schedules and nothing else.
+  const h2 = hassWith();
+  const heat = card(sc.SchedulerCard, { show_header_toggle: true, tags: ["heating"] }, h2);
+  assert.match(heat._render(), /<ha-switch data-toggle-all="1" checked aria-label="Disable all">/);
+  await heat._toggleAll();
+  eq(h2.calls.map((c) => c[2].entity_id).sort(), [BEDROOM, HEATING].sort());
+  assert.ok(h2.calls.every((c) => c[0] === "switch" && c[1] === "turn_off"));
+});
+
+test("show_header_toggle: disabled schedules hidden or tagged by state still turned back on, failures reported", async () => {
+  // show_disabled: false and the `enabled` state tag hide the away mode, the switch still reaches it: with every
+  // schedule disabled it shows off and turns them all back on, hidden ones included.
+  for (const config of [{ show_disabled: false }, { tags: ["enabled"] }]) {
+    const h = hassWith();
+    for (const id of sc.discover(h)) h.states[id] = { ...h.states[id], state: "off" };
+    const el = card(sc.SchedulerCard, { show_header_toggle: true, ...config }, h);
+    assert.match(el._render(), /data-toggle-all="1" aria-label="Enable all"/);
+    await el._toggleAll();
+    assert.ok(h.calls.some((c) => c[1] === "turn_on" && c[2].entity_id === AWAY));
+  }
+  // A failed call: the others done, the failures counted.
+  const h = hassWith();
+  h.callService = async (_d, _s, data) => {
+    h.calls.push(data.entity_id);
+    if (data.entity_id === BEDROOM) throw new Error("boom");
+  };
+  const el = card(sc.SchedulerCard, { show_header_toggle: true, tags: ["heating"] }, h);
+  el._render();
+  await el._toggleAll();
+  eq(h.calls.sort(), [BEDROOM, HEATING].sort());
+  assert.match(el._render(), /class="err">1 of 2 schedules could not be changed — Could not save: boom/);
+});
+
+test("editable: false greys every switch, the header one included, and changes nothing", async () => {
+  const h = hassWith();
+  const el = card(sc.SchedulerCard, { show_header_toggle: true, editable: false }, h);
+  const html = el._render();
+  assert.match(html, /data-toggle-all="1"( checked)? disabled/);
+  assert.equal((html.match(/data-toggle="[^"]+"( checked)? disabled/g) || []).length, 6);
+  await el._toggleAll();
+  el._change({ composedPath: () => [{ dataset: { toggle: GARDEN }, checked: false }], stopPropagation() {} });
+  eq(h.calls, []);
+});
+
+test("show_header_toggle on the mini card's expanded view", () => {
+  const el = card(sc.SchedulerMiniCard, { show_header_toggle: true });
+  assert.ok(!/data-toggle-all/.test(el._render()));
+  el._zoomed = true;
+  assert.match(el._render(), /data-toggle-all="1"/);
+});
+
 test("timeline and weekly grid render", () => {
   const el = card();
   const html = el._render();
@@ -492,7 +554,7 @@ test("visual editors: defaults left out of the YAML, the mini editor with the fu
   ed.setConfig({ type: "custom:scheduler-mini-card" });
   ed.hass = hassWith();
   const names = JSON.stringify(ed._schema());
-  for (const k of ["title", "illustration_theme", "next_actions", "illustration", "show_disabled", "editable", "zoom", "language"]) assert.ok(names.includes(`"${k}"`), k);
+  for (const k of ["title", "illustration_theme", "next_actions", "illustration", "show_disabled", "editable", "show_header_toggle", "zoom", "language"]) assert.ok(names.includes(`"${k}"`), k);
   assert.ok(!JSON.stringify(new sc.SchedulerCardEditor()._schema.call({ _hass: null, _config: {}, constructor: sc.SchedulerCardEditor })).includes('"zoom"'));
   let out;
   ed.dispatchEvent = (ev) => {
@@ -508,7 +570,7 @@ test("visual editors: defaults left out of the YAML, the mini editor with the fu
   ed._render();
   form.listeners["value-changed"]({
     stopPropagation() {},
-    detail: { value: { type: "custom:scheduler-mini-card", illustration: true, zoom: true, next_actions: 3, illustration_theme: "auto", title: "", editable: false } },
+    detail: { value: { type: "custom:scheduler-mini-card", illustration: true, zoom: true, next_actions: 3, illustration_theme: "auto", title: "", editable: false, show_header_toggle: false } },
   });
   eq(JSON.parse(JSON.stringify(out)), { type: "custom:scheduler-mini-card", editable: false });
 });

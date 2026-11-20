@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 - 2026-11-20
+
+### Features
+- `show_header_toggle: true`: one switch under the header to enable or disable every schedule of the card's `tags`, `exclude_tags` and `entities` at once, on the full card and the mini card's expanded view. On while any of them is enabled, its label saying what a click does; from a mixed state a click disables them all, as Home Assistant's header toggles. Disabled schedules stay in reach, even hidden with `show_disabled: false` or left out by the `enabled` tag. Only their enabled state changes; a schedule that cannot be switched is reported, the others are done. Off by default (#12).
+
+### Fixes
+- `editable: false` now also locks the schedules' switches, greyed but still showing their state; they used to stay usable on a read-only card.
+
 ## 1.3.0 - 2026-11-20
 
 ### Features
