@@ -1,6 +1,6 @@
 {
   "name": "ha-scheduler-card",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Today's timeline and weekly grid of the Scheduler component's schedules for Home Assistant, under an illustrated header whose cursor follows the time of day.",
   "repository": {
     "type": "git",

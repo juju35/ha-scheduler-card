@@ -140,6 +140,8 @@ const STRINGS = {
     cond_all: "All",
     cond_any: "Any",
     add_condition: "Add condition",
+    cond_pick: "Choose a value…",
+    cond_other: "Other value…",
     match_is: "is",
     match_not: "is not",
     match_below: "below",
@@ -292,6 +294,8 @@ const STRINGS = {
     cond_all: "Toutes",
     cond_any: "Au moins une",
     add_condition: "Ajouter une condition",
+    cond_pick: "Choisir une valeur…",
+    cond_other: "Autre valeur…",
     match_is: "est",
     match_not: "n’est pas",
     match_below: "inférieur à",
@@ -444,6 +448,8 @@ const STRINGS = {
     cond_all: "Alle",
     cond_any: "Mindestens eine",
     add_condition: "Bedingung hinzufügen",
+    cond_pick: "Wert wählen…",
+    cond_other: "Anderer Wert…",
     match_is: "ist",
     match_not: "ist nicht",
     match_below: "unter",
@@ -596,6 +602,8 @@ const STRINGS = {
     cond_all: "Todas",
     cond_any: "Alguna",
     add_condition: "Añadir condición",
+    cond_pick: "Elegir un valor…",
+    cond_other: "Otro valor…",
     match_is: "es",
     match_not: "no es",
     match_below: "por debajo de",
@@ -750,6 +758,8 @@ const STRINGS = {
     cond_all: "Сви",
     cond_any: "Бар један",
     add_condition: "Додај услов",
+    cond_pick: "Изаберите вредност…",
+    cond_other: "Друга вредност…",
     match_is: "је",
     match_not: "није",
     match_below: "испод",
@@ -904,6 +914,8 @@ const STRINGS = {
     cond_all: "Svi",
     cond_any: "Bar jedan",
     add_condition: "Dodaj uslov",
+    cond_pick: "Izaberite vrednost…",
+    cond_other: "Druga vrednost…",
     match_is: "je",
     match_not: "nije",
     match_below: "ispod",
@@ -1056,6 +1068,8 @@ const STRINGS = {
     cond_all: "Tutte",
     cond_any: "Almeno una",
     add_condition: "Aggiungi condizione",
+    cond_pick: "Scegli un valore…",
+    cond_other: "Altro valore…",
     match_is: "è",
     match_not: "non è",
     match_below: "sotto",
@@ -1208,6 +1222,8 @@ const STRINGS = {
     cond_all: "Alle",
     cond_any: "Minstens één",
     add_condition: "Voorwaarde toevoegen",
+    cond_pick: "Kies een waarde…",
+    cond_other: "Andere waarde…",
     match_is: "is",
     match_not: "is niet",
     match_below: "onder",
@@ -1360,6 +1376,8 @@ const STRINGS = {
     cond_all: "Todas",
     cond_any: "Pelo menos uma",
     add_condition: "Adicionar condição",
+    cond_pick: "Escolher um valor…",
+    cond_other: "Outro valor…",
     match_is: "é",
     match_not: "não é",
     match_below: "abaixo de",
@@ -1516,6 +1534,8 @@ const STRINGS = {
     cond_all: "Wszystkie",
     cond_any: "Którykolwiek",
     add_condition: "Dodaj warunek",
+    cond_pick: "Wybierz wartość…",
+    cond_other: "Inna wartość…",
     match_is: "jest",
     match_not: "nie jest",
     match_below: "poniżej",
@@ -1670,6 +1690,8 @@ const STRINGS = {
     cond_all: "Toate",
     cond_any: "Oricare",
     add_condition: "Adaugă condiție",
+    cond_pick: "Alege o valoare…",
+    cond_other: "Altă valoare…",
     match_is: "este",
     match_not: "nu este",
     match_below: "sub",
@@ -1822,6 +1844,8 @@ const STRINGS = {
     cond_all: "Alle",
     cond_any: "Mindst én",
     add_condition: "Tilføj betingelse",
+    cond_pick: "Vælg en værdi…",
+    cond_other: "Anden værdi…",
     match_is: "er",
     match_not: "er ikke",
     match_below: "under",
@@ -1974,6 +1998,8 @@ const STRINGS = {
     cond_all: "Alla",
     cond_any: "Minst ett",
     add_condition: "Lägg till villkor",
+    cond_pick: "Välj ett värde…",
+    cond_other: "Annat värde…",
     match_is: "är",
     match_not: "är inte",
     match_below: "under",
@@ -2126,6 +2152,8 @@ const STRINGS = {
     cond_all: "Всички",
     cond_any: "Поне едно",
     add_condition: "Добави условие",
+    cond_pick: "Изберете стойност…",
+    cond_other: "Друга стойност…",
     match_is: "е",
     match_not: "не е",
     match_below: "под",
@@ -2282,6 +2310,8 @@ const STRINGS = {
     cond_all: "Все",
     cond_any: "Любое",
     add_condition: "Добавить условие",
+    cond_pick: "Выберите значение…",
+    cond_other: "Другое значение…",
     match_is: "равно",
     match_not: "не равно",
     match_below: "ниже",
@@ -2438,6 +2468,8 @@ const STRINGS = {
     cond_all: "Усі",
     cond_any: "Будь-яка",
     add_condition: "Додати умову",
+    cond_pick: "Виберіть значення…",
+    cond_other: "Інше значення…",
     match_is: "дорівнює",
     match_not: "не дорівнює",
     match_below: "нижче",
@@ -2590,6 +2622,8 @@ const STRINGS = {
     cond_all: "Mind",
     cond_any: "Bármelyik",
     add_condition: "Feltétel hozzáadása",
+    cond_pick: "Válasszon értéket…",
+    cond_other: "Más érték…",
     match_is: "egyenlő",
     match_not: "nem egyenlő",
     match_below: "alatt",
@@ -2746,6 +2780,8 @@ const STRINGS = {
     cond_all: "Všetky",
     cond_any: "Ktorákoľvek",
     add_condition: "Pridať podmienku",
+    cond_pick: "Vyberte hodnotu…",
+    cond_other: "Iná hodnota…",
     match_is: "je",
     match_not: "nie je",
     match_below: "pod",
@@ -2902,6 +2938,8 @@ const STRINGS = {
     cond_all: "Všechny",
     cond_any: "Kterákoli",
     add_condition: "Přidat podmínku",
+    cond_pick: "Vyberte hodnotu…",
+    cond_other: "Jiná hodnota…",
     match_is: "je",
     match_not: "není",
     match_below: "pod",
@@ -3058,6 +3096,8 @@ const STRINGS = {
     cond_all: "Vsi",
     cond_any: "Kateri koli",
     add_condition: "Dodaj pogoj",
+    cond_pick: "Izberite vrednost…",
+    cond_other: "Druga vrednost…",
     match_is: "je",
     match_not: "ni",
     match_below: "pod",
@@ -3212,6 +3252,8 @@ const STRINGS = {
     cond_all: "Visi",
     cond_any: "Jebkurš",
     add_condition: "Pievienot nosacījumu",
+    cond_pick: "Izvēlieties vērtību…",
+    cond_other: "Cita vērtība…",
     match_is: "ir",
     match_not: "nav",
     match_below: "zem",
@@ -3364,6 +3406,8 @@ const STRINGS = {
     cond_all: "Όλες",
     cond_any: "Οποιαδήποτε",
     add_condition: "Προσθήκη συνθήκης",
+    cond_pick: "Επιλέξτε τιμή…",
+    cond_other: "Άλλη τιμή…",
     match_is: "είναι",
     match_not: "δεν είναι",
     match_below: "κάτω από",
@@ -4027,14 +4071,83 @@ const customActions = (config, entityId) => {
 // The entities a new schedule can act on: the action domains, narrowed by `include` and `exclude` (entity ids or
 // domains).
 const pickable = (hass, config = {}) => {
-  const list = (v) => (Array.isArray(v) ? v.map(String) : v ? [String(v)] : []);
-  const inc = list(config.include);
-  const exc = list(config.exclude);
-  const hit = (id, l) => l.includes(id) || l.includes(domainOf(id));
+  const inc = listOf(config.include);
+  const exc = listOf(config.exclude);
   return Object.keys(hass?.states || {})
-    .filter((id) => (inc.length ? hit(id, inc) : ACTION_DOMAINS.includes(domainOf(id))))
-    .filter((id) => !hit(id, exc) && !id.startsWith("switch.schedule_"))
+    .filter((id) => (inc.length ? matchesAny(id, inc) : ACTION_DOMAINS.includes(domainOf(id))))
+    .filter((id) => !matchesAny(id, exc) && !id.startsWith("switch.schedule_"))
     .sort();
+};
+
+// Does an entity id match one of these patterns: an entity id, a domain, or a pattern with `*` wildcards
+// ("sensor.*_temperature", "binary_sensor.bedroom_*")?
+const globRe = (p) => new RegExp("^" + p.replace(/[.+?^$|()[\]{}\\]/g, "\\$&").replace(/\*/g, ".*") + "$");
+const matchesAny = (id, patterns) =>
+  patterns.some((p) => (p.includes("*") ? globRe(p).test(id) : p.includes(".") ? p === id : p === domainOf(id)));
+
+// The entities offered for a condition: every entity, narrowed by `condition_include` and `condition_exclude`
+// (entity ids, domains or wildcards), independently of `include` / `exclude`.
+const conditionPickable = (hass, config = {}) => {
+  const inc = listOf(config.condition_include);
+  const exc = listOf(config.condition_exclude);
+  return Object.keys(hass?.states || {})
+    .filter((id) => (!inc.length || matchesAny(id, inc)) && !matchesAny(id, exc))
+    .sort();
+};
+
+// The states of a few domains, for a condition's value.
+const ON_OFF_DOMAINS = ["binary_sensor", "input_boolean", "switch", "light", "fan", "automation", "humidifier", "siren", "remote", "script"];
+const DOMAIN_STATES = {
+  sun: ["above_horizon", "below_horizon"],
+  cover: ["open", "closed", "opening", "closing"],
+  valve: ["open", "closed", "opening", "closing"],
+  lock: ["locked", "unlocked", "locking", "unlocking", "jammed", "open"],
+  alarm_control_panel: ["disarmed", "armed_home", "armed_away", "armed_night", "armed_vacation", "armed_custom_bypass", "pending", "arming", "triggered"],
+  media_player: ["on", "off", "playing", "paused", "idle", "standby", "buffering"],
+  vacuum: ["cleaning", "docked", "returning", "idle", "paused", "error"],
+  lawn_mower: ["mowing", "docked", "paused", "returning", "error"],
+};
+const NUMBER_DOMAINS = ["input_number", "number", "counter"];
+// The « Other value… » choice of a condition's list of states: a free value instead.
+const OTHER_VALUE = "__sc_other__";
+
+// The value a condition on an entity takes: { kind: "list", values: [{ value, name }] } (its known states),
+// { kind: "number", min, max, step, unit }, or null (a free value). `condition_states` (by entity id, wildcard or
+// domain: a list of states — strings or { value, name } — or { min, max, step, unit }) comes first.
+const conditionValues = (hass, config, id) => {
+  const custom = config?.condition_states && typeof config.condition_states === "object" ? config.condition_states : {};
+  const key = Object.hasOwn(custom, id) ? id : Object.keys(custom).find((k) => k.includes("*") && globRe(k).test(id)) || (Object.hasOwn(custom, domainOf(id)) ? domainOf(id) : null);
+  const st = hass?.states?.[id];
+  const a = st?.attributes || {};
+  const list = (vals) => {
+    const values = (Array.isArray(vals) ? vals : [])
+      .map((v) => (v && typeof v === "object" ? { value: String(v.value ?? v.state ?? ""), name: v.name ? String(v.name) : "" } : { value: String(v ?? ""), name: "" }))
+      .filter((v) => v.value !== "");
+    return values.length ? { kind: "list", values: values.filter((v, i) => values.findIndex((x) => x.value === v.value) === i) } : null;
+  };
+  const range = (r, unit) => ({ kind: "number", min: num(r.min), max: num(r.max), step: num(r.step), unit: r.unit !== undefined ? String(r.unit) : unit || "" });
+  if (key !== null) {
+    const c = custom[key];
+    if (Array.isArray(c)) return list(c);
+    if (c && typeof c === "object") return range(c, a.unit_of_measurement);
+  }
+  if (!st) return null;
+  const d = domainOf(id);
+  if (ON_OFF_DOMAINS.includes(d)) return list(["on", "off"]);
+  if (d === "select" || d === "input_select" || (d === "sensor" && a.device_class === "enum")) return list(a.options);
+  if (d === "person" || d === "device_tracker") {
+    const zones = Object.keys(hass.states)
+      .filter((z) => domainOf(z) === "zone" && z !== "zone.home")
+      .map((z) => hass.states[z].attributes?.friendly_name)
+      .filter(Boolean);
+    return list(["home", "not_home", ...zones]);
+  }
+  if (d === "climate") return list(a.hvac_modes);
+  if (d === "water_heater") return list(a.operation_list);
+  if (DOMAIN_STATES[d]) return list(DOMAIN_STATES[d]);
+  if (NUMBER_DOMAINS.includes(d)) return range({ min: a.minimum ?? a.min, max: a.maximum ?? a.max, step: a.step ?? (d === "counter" ? 1 : undefined) }, a.unit_of_measurement);
+  if (d === "sensor" && (num(st.state) !== null || a.state_class || a.unit_of_measurement)) return range({}, a.unit_of_measurement);
+  return null;
 };
 
 // A day `d` days after a date "YYYY-MM-DD".
@@ -4460,6 +4573,7 @@ const STYLE = `
           background: color-mix(in srgb, var(--sc-na) 10%, transparent); }
   .cond .pair { grid-column: 1 / -1; }
   .cond select { flex: none; width: auto; }
+  .cond select[data-cfield="value"] { flex: 1 1 0; width: 100%; }
   .x { all: unset; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: var(--secondary-text-color); }
   .x:hover { color: var(--primary-text-color); background: color-mix(in srgb, var(--secondary-text-color) 12%, transparent); }
   .x .icon { width: 14px; height: 14px; }
@@ -5246,15 +5360,48 @@ class SchedulerCard extends HTMLElement {
   }
 
   // The options of a schedule: name, tags, conditions, dates, after the last slot.
+  // A state of an entity in words (« Home », « Heat »), for a condition's value; the raw state otherwise.
+  _stateName(id, value) {
+    const st = this._hass.states[id];
+    try {
+      const f = st && this._hass.formatEntityState?.({ ...st, state: String(value) });
+      if (f) return String(f);
+    } catch (_e) {
+      /* raw value */
+    }
+    return String(value);
+  }
+
+  // A condition's value: a list of the entity's known states, a number (below / above, or a numeric entity), or a
+  // free text when its states cannot be told (or « Other value… » was chosen). The stored value is always kept.
+  _condValueHtml(c, i) {
+    const attrs = `data-cond="${i}" data-cfield="value" aria-label="${esc(this._t("act_value"))}"`;
+    const info = c.entity ? conditionValues(this._hass, this._config, c.entity) : null;
+    const numeric = c.match === "below" || c.match === "above";
+    if (info?.kind === "list" && !numeric && !c.manual) {
+      const vals = info.values.some((v) => v.value === c.value) || c.value === "" ? info.values : [...info.values, { value: c.value, name: "" }];
+      return `<select ${attrs}>${c.value === "" ? `<option value="" selected>${esc(this._t("cond_pick"))}</option>` : ""}${vals
+        .map((v) => `<option value="${esc(v.value)}"${v.value === c.value ? " selected" : ""}>${esc(v.name || this._stateName(c.entity, v.value))}</option>`)
+        .join("")}<option value="${OTHER_VALUE}">${esc(this._t("cond_other"))}</option></select>`;
+    }
+    if (numeric || info?.kind === "number") {
+      const r = info?.kind === "number" ? info : {};
+      const n = (k) => (r[k] !== null && r[k] !== undefined ? ` ${k}="${r[k]}"` : "");
+      const input = `<input type="number" inputmode="decimal" ${attrs} value="${esc(c.value)}"${n("min")}${n("max")} step="${r.step ?? "any"}" placeholder="${esc(this._t("act_value"))}">`;
+      return r.unit ? `${input}<span class="u">${esc(r.unit)}</span>` : input;
+    }
+    return `<input type="text" ${attrs} value="${esc(c.value)}" placeholder="${esc(this._t("act_value"))}">`;
+  }
+
   _optionsHtml(o) {
-    const ents = Object.keys(this._hass.states).sort();
+    const ents = [...new Set([...conditionPickable(this._hass, this._config), ...o.conds.map((c) => c.entity).filter((id) => this._hass.states[id])])].sort();
     const conds = o.conds
       .map(
         (c, i) => `<div class="cond" data-key="cond-${i}">
           <input type="text" list="sc-cents" data-cond="${i}" data-cfield="entity" value="${esc(c.entity)}" placeholder="${esc(this._t("entity"))}" aria-label="${esc(this._t("entity"))}" autocomplete="off">
           <button class="x" data-uncond="${i}" title="${esc(this._t("remove"))}" aria-label="${esc(this._t("remove"))}">${svgIcon(ICONS.close)}</button>
           <div class="pair"><select data-cond="${i}" data-cfield="match" aria-label="${esc(this._t("conditions"))}">${MATCH_TYPES.map((mt) => `<option value="${mt}"${mt === c.match ? " selected" : ""}>${esc(this._t(`match_${mt}`))}</option>`).join("")}</select>
-          <input type="text" data-cond="${i}" data-cfield="value" value="${esc(c.value)}" placeholder="${esc(this._t("act_value"))}" aria-label="${esc(this._t("act_value"))}"></div>
+          ${this._condValueHtml(c, i)}</div>
         </div>`,
       )
       .join("");
@@ -5815,7 +5962,20 @@ class SchedulerCard extends HTMLElement {
     }
     if (el.dataset.cond !== undefined && e.opts) {
       const c = e.opts.conds[Number(el.dataset.cond)];
-      if (c) c[el.dataset.cfield] = el.value;
+      if (!c) return;
+      const f = el.dataset.cfield;
+      if (f === "value" && el.value === OTHER_VALUE) {
+        // « Other value… »: a free field, the value chosen so far kept in it.
+        if (change) {
+          c.manual = true;
+          this._update(this._sig);
+        }
+        return;
+      }
+      if (f === "entity" && el.value !== c.entity) c.manual = false;
+      c[f] = el.value;
+      // Another entity or comparison changes the kind of value field.
+      if (change && (f === "entity" || f === "match")) this._update(this._sig);
       return;
     }
     if (el.dataset.tag && change) {
