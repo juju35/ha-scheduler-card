@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1 - 2026-11-20
+
+### Performance
+- The schedules are found from the entity registry once per registry change, instead of walking every entity and every state on each state change of Home Assistant; the `switch.schedule_*` fallback is only read when the registry has no schedule.
+- The visual editor no longer redraws its form on every state change while it is open.
+
 ## 1.5.0 - 2026-11-20
 
 ### Features
