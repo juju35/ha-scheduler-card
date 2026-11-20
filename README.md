@@ -42,6 +42,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
 - Filters by `tags` (also `none`, `enabled`, `disabled`), `exclude_tags` and `entities`, sorting with `sort_by`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
 - The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`
+- Conditions guided by their entity: its own entity filters (`condition_include` / `condition_exclude`, with `*` wildcards), a list of the entity's states shown in words (on/off, a select's options, zones, HVAC modes…) while the real state is saved, a number field with the entity's unit and range for numbers and below / above, a free value otherwise or with **Other value…**, and your own states with `condition_states`
 - `illustration: false` for a classic header with a round icon, as on the other cards
 - Visual editor for both cards; options left at their default are kept out of the YAML
 - Light and dark themes, `prefers-reduced-motion` honoured
@@ -129,6 +130,21 @@ include:
   - switch.boiler
 exclude:
   - climate.guest_room
+condition_include:
+  - binary_sensor.bedroom_*
+  - input_boolean.vacation_mode
+  - input_select.energy_tariff
+condition_exclude:
+  - binary_sensor.bedroom_window
+condition_states:
+  sensor.heating_mode:
+    - value: eco
+      name: Economy
+    - comfort
+  sensor.*_temperature:
+    min: -20
+    max: 40
+    step: 0.5
 customize:
   climate.living_room:
     - name: Frost protection
@@ -161,8 +177,11 @@ zoom: true
 | `show_badges` | both | `true` | The badges under each tile (sun, days, condition, dates, after the last slot); `false` hides them |
 | `editable` | both | `true` | The **New schedule** button, the slot editor, the options and the clickable, draggable grid; `false` for a read-only card (the switches still work) |
 | `time_step` | both | `15` | Minutes: the step of a dragged slot edge, of a split, and of the time fields |
-| `include` | both | All | **YAML only.** The entities a new schedule can act on: entity ids or domains (`light`, `climate.bedroom`) |
-| `exclude` | both | None | **YAML only.** Entity ids or domains left out of the entities a new schedule can act on |
+| `include` | both | All | **YAML only.** The entities a new schedule can act on: entity ids, domains or `*` wildcards (`light`, `climate.bedroom`, `switch.*_heater`) |
+| `exclude` | both | None | **YAML only.** Entity ids, domains or `*` wildcards left out of the entities a new schedule can act on |
+| `condition_include` | both | All | **YAML only.** The entities offered for a condition: entity ids, domains or `*` wildcards (`binary_sensor.bedroom_*`), independently of `include` / `exclude`; conditions already set on other entities stay shown and editable |
+| `condition_exclude` | both | None | **YAML only.** Entity ids, domains or `*` wildcards left out of the entities offered for a condition |
+| `condition_states` | both | None | **YAML only.** The values offered for a condition on an entity, by entity id, `*` wildcard or domain: a list of states (a state, or `value` and `name`), or a number range (`min`, `max`, `step`, `unit`) |
 | `customize` | both | None | **YAML only.** Your own actions, by entity id or domain: a list of `name`, `service` and `service_data`, offered first in the editors |
 | `illustration` | both | `true` | The illustrated header with today's timeline; `false` for a classic header with a round icon |
 | `illustration_theme` | both | `auto` | `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme, evening in the two hours before sunset with a light theme), `day` or `night` |

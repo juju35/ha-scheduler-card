@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 - 2026-11-20
+
+### Features
+- Conditions with their own entity filters: `condition_include` and `condition_exclude` (entity ids, domains or `*` wildcards such as `binary_sensor.bedroom_*`), independent of the entities a schedule acts on, on the full card and the mini card's expanded view. Without them every entity is offered, as before; a condition already set on an entity outside them stays shown and editable, and nothing stored is rewritten.
+- Guided condition values: a list of the entity's states shown in words while the real state is saved (on / off, the options of a select or an enum sensor, home / away and the zones, HVAC modes, lock, cover, alarm, media player, vacuum and mower states…); a number field with the entity's unit, minimum, maximum and step for numeric entities and for below / above; a free value for the entities whose states cannot be told, or with **Other value…**. A stored value missing from the list stays selected.
+- `condition_states`: your own values for a condition, by entity id, `*` wildcard or domain — a list of states (`value` and `name`) or a number range (`min`, `max`, `step`, `unit`).
+- `include` and `exclude` also take `*` wildcards.
+
 ## 1.2.0 - 2026-11-19
 
 ### Features
