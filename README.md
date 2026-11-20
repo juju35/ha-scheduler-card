@@ -95,7 +95,7 @@ The Marketplace registers the dashboard resource for you (`/local/community/ha-s
 
 ### Visual editor
 
-Edit a dashboard, click **Add card** and search for **Scheduler Card** or **Scheduler Mini Card**. The schedules are found by themselves; set the title, the illustration theme, the options to show and the language. The preview updates live, and options left at their default are kept out of the generated YAML. The mini card's editor also has the full card's options, used by its unfolded view. The filters (`tags`, `entities`) and `names` are lists or maps: set them in YAML.
+Edit a dashboard, click **Add card** and search for **Scheduler Card** or **Scheduler Mini Card**. The schedules are found by themselves; set the title, the illustration theme, the options to show and the language. The preview updates live, and options left at their default are kept out of the generated YAML. The mini card's editor also has the full card's options, used by its unfolded view. The filters `entities`, `tags` and `exclude_tags` are lists picked in the editor (the tags of your schedules are offered, or type a new one); `names` and entities written as objects stay in YAML.
 
 ### Minimal
 
@@ -181,9 +181,9 @@ zoom: true
 | Option | Card | Default | Description |
 |---|---|---|---|
 | `title` | both | « Schedules » | Card title (on the weekly grid, the schedule's name is the title) |
-| `tags` | both | All | **YAML only.** Only the schedules carrying one of these tags (the Scheduler component's tags); a schedule created from the card gets them. Special values: `none` (schedules without a tag), `enabled`, `disabled` |
-| `exclude_tags` | both | None | **YAML only.** Hides the schedules carrying one of these tags (applied after `tags`) |
-| `entities` | both | All | **YAML only.** Only these schedules: schedule entities (`switch.schedule_…`) or the entities they act on (`climate.living_room`) |
+| `tags` | both | All | Only the schedules carrying one of these tags (the Scheduler component's tags); a schedule created from the card gets them. Special values: `none` (schedules without a tag), `enabled`, `disabled` |
+| `exclude_tags` | both | None | Hides the schedules carrying one of these tags (applied after `tags`) |
+| `entities` | both | All | Only these schedules: schedule entities (`switch.schedule_…`) or the entities they act on (`climate.living_room`). A list of entity ids in the editor; written as objects (`- entity: …`) it stays YAML-only |
 | `names` | both | Entity name | **YAML only.** A name per schedule entity: `switch.schedule_living_room_heating: Living room` |
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
 | `sort_by` | both | `name` | Order of the schedules: `name`, `next` (soonest next action first) or `state` (running first); disabled ones always last |

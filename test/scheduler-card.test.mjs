@@ -26,6 +26,7 @@ const sc = load([
   "SchedulerMiniCardEditor",
   "document",
   "window",
+  "globalThis",
 ]);
 
 // Values built in the card's context have its own Array and Object: compared as plain data.
@@ -171,6 +172,18 @@ test("the value of a schedule covering the whole day the longest is its backgrou
   // Gaps in the day: no background.
   assert.equal(model(GARDEN).def, null);
   assert.equal(model(BLINDS).def, null);
+});
+
+test("discovery: the scheduler platform's registry entries, else the switch.schedule_* entities", () => {
+  const h = hassWith();
+  const fallback = sc.discover(h);
+  assert.equal(fallback.length, 6);
+  // In the registry: only the registered schedules, whatever their entity id, while their state exists.
+  const reg = { "switch.heating_plan": { entity_id: "switch.heating_plan", platform: "scheduler" }, "switch.gone": { entity_id: "switch.gone", platform: "scheduler" } };
+  const withReg = { ...h, entities: reg, states: { ...h.states, "switch.heating_plan": { entity_id: "switch.heating_plan", state: "on", attributes: {} } } };
+  eq(sc.discover(withReg), ["switch.heating_plan"]);
+  // Same registry, states changed: the scan is kept, the states are read again.
+  eq(sc.discover({ ...withReg, states: h.states }), fallback);
 });
 
 test("filters: tags, entities (the schedule's or those it acts on), disabled schedules", () => {
@@ -549,6 +562,20 @@ test("mini card: the next actions, the detail button to the full card, folded ba
   assert.ok(!/class="zoom/.test(card(sc.SchedulerMiniCard, { zoom: false })._render()));
 });
 
+test("visual editor: data and schema set again only when they change", () => {
+  const ed = new sc.SchedulerCardEditor();
+  ed.setConfig({ type: "custom:scheduler-card" });
+  ed.hass = hassWith();
+  const form = ed._form;
+  const [data, schema] = [form.data, form.schema];
+  ed.hass = hassWith();
+  assert.equal(form.data, data);
+  assert.equal(form.schema, schema);
+  ed.setConfig({ type: "custom:scheduler-card", time_step: 5 });
+  assert.notEqual(form.data, data);
+  assert.equal(form.data.time_step, 5);
+});
+
 test("visual editors: defaults left out of the YAML, the mini editor with the full card's options", () => {
   const ed = new sc.SchedulerMiniCardEditor();
   ed.setConfig({ type: "custom:scheduler-mini-card" });
@@ -573,4 +600,85 @@ test("visual editors: defaults left out of the YAML, the mini editor with the fu
     detail: { value: { type: "custom:scheduler-mini-card", illustration: true, zoom: true, next_actions: 3, illustration_theme: "auto", title: "", editable: false, show_header_toggle: false } },
   });
   eq(JSON.parse(JSON.stringify(out)), { type: "custom:scheduler-mini-card", editable: false });
+});
+
+// A card created again (another view, a dashboard opened) must not grow when the full schedules arrive: it starts
+// from the last ones read on the same connection, until its own answer replaces them.
+test("full schedules: a new card on the same connection draws the last ones read from its first render", async () => {
+  const connection = {};
+  const first = card();
+  first._hass = { ...hassWith(), connection };
+  Object.defineProperty(first, "isConnected", { value: true });
+  first._watchItems();
+  await new Promise((r) => setTimeout(r, 0));
+  first._update();
+  const full = first._html;
+  assert.ok(first._items?.size > 0);
+
+  const second = card();
+  // Its answer never comes: only the shared schedules can give the conditions and dates.
+  second._hass = { ...hassWith(), connection, callWS: () => new Promise(() => {}) };
+  Object.defineProperty(second, "isConnected", { value: true });
+  second._watchItems();
+  second._update();
+  assert.equal(second._html, full);
+
+  // Another connection (another Home Assistant, a new login) shares nothing.
+  const other = card();
+  other._hass = { ...hassWith(), connection: {}, callWS: () => new Promise(() => {}) };
+  Object.defineProperty(other, "isConnected", { value: true });
+  other._watchItems();
+  other._update();
+  assert.notEqual(other._html, full);
+});
+
+test("visual editor: entities, tags and exclude_tags as lists, entity objects stay YAML-only", () => {
+  const ed = new sc.SchedulerCardEditor();
+  ed.setConfig({ type: "custom:scheduler-card", tags: "heating" });
+  ed.hass = hassWith();
+  const schema = plain(ed._schema());
+  const field = (n) => schema.find((s) => s.name === n);
+  eq(field("entities").selector, { entity: { multiple: true } });
+  assert.equal(field("tags").selector.select.multiple, true);
+  assert.equal(field("tags").selector.select.custom_value, true);
+  // The special values and the tags of the schedules found.
+  for (const x of ["none", "enabled", "disabled", "heating"]) assert.ok(field("tags").selector.select.options.includes(x), x);
+  assert.ok(!field("exclude_tags").selector.select.options.includes("enabled"));
+  // A single tag written as a string shows as a list.
+  eq(ed._form.data.tags, ["heating"]);
+  ed.setConfig({ type: "custom:scheduler-card", entities: [{ entity: HEATING }] });
+  assert.equal(
+    plain(ed._schema()).find((s) => s.name === "entities"),
+    undefined,
+  );
+});
+
+test("full schedules without the update subscription: read again only when a schedule entity changes", () => {
+  const h = hassWith();
+  const el = card(sc.SchedulerCard, {}, h);
+  let loads = 0;
+  el._loadItems = () => {
+    loads++;
+  };
+  el._watchItems = () => {};
+  el._update = function (sig) {
+    this._sig = sig ?? this._signature();
+  };
+  const timers = [];
+  // The card's own global (its context has no timers): a recorded setTimeout.
+  sc.globalThis.setTimeout = (fn) => timers.push(fn);
+  try {
+    el.hass = h;
+    // Another minute: the signature changes, the schedules do not.
+    el._nowMs = () => NOW + 120000;
+    el.hass = { ...h };
+    assert.equal(timers.length, 0);
+    // A schedule toggled: read again.
+    el.hass = { ...h, states: { ...h.states, [HEATING]: { ...h.states[HEATING], state: "off" } } };
+    assert.equal(timers.length, 1);
+    timers[0]();
+    assert.equal(loads, 1);
+  } finally {
+    delete sc.globalThis.setTimeout;
+  }
 });

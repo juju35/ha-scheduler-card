@@ -185,6 +185,7 @@ const STRINGS = {
     sort_next: "Next action",
     sort_state: "Running first",
     time_step: "Time step",
+    exclude_tags: "Hidden tags",
   },
   fr: {
     schedules: "Plannings",
@@ -343,6 +344,7 @@ const STRINGS = {
     sort_next: "Prochaine action",
     sort_state: "En cours d’abord",
     time_step: "Pas de temps",
+    exclude_tags: "Tags masqués",
   },
   de: {
     schedules: "Zeitpläne",
@@ -501,6 +503,7 @@ const STRINGS = {
     sort_next: "Nächste Aktion",
     sort_state: "Laufende zuerst",
     time_step: "Zeitschritt",
+    exclude_tags: "Ausgeblendete Tags",
   },
   es: {
     schedules: "Programaciones",
@@ -659,6 +662,7 @@ const STRINGS = {
     sort_next: "Próxima acción",
     sort_state: "En curso primero",
     time_step: "Paso de tiempo",
+    exclude_tags: "Etiquetas ocultas",
   },
   sr: {
     schedules: "Распореди",
@@ -819,6 +823,7 @@ const STRINGS = {
     sort_next: "Следећа радња",
     sort_state: "Активни прво",
     time_step: "Корак времена",
+    exclude_tags: "Скривене ознаке",
   },
   "sr-Latn": {
     schedules: "Rasporedi",
@@ -979,6 +984,7 @@ const STRINGS = {
     sort_next: "Sledeća radnja",
     sort_state: "Aktivni prvo",
     time_step: "Korak vremena",
+    exclude_tags: "Skrivene oznake",
   },
   it: {
     schedules: "Programmazioni",
@@ -1137,6 +1143,7 @@ const STRINGS = {
     sort_next: "Prossima azione",
     sort_state: "In corso prima",
     time_step: "Passo orario",
+    exclude_tags: "Tag nascosti",
   },
   nl: {
     schedules: "Schema's",
@@ -1295,6 +1302,7 @@ const STRINGS = {
     sort_next: "Volgende actie",
     sort_state: "Actief eerst",
     time_step: "Tijdstap",
+    exclude_tags: "Verborgen tags",
   },
   pt: {
     schedules: "Agendamentos",
@@ -1453,6 +1461,7 @@ const STRINGS = {
     sort_next: "Próxima ação",
     sort_state: "Em curso primeiro",
     time_step: "Passo de tempo",
+    exclude_tags: "Etiquetas ocultas",
   },
   pl: {
     schedules: "Harmonogramy",
@@ -1615,6 +1624,7 @@ const STRINGS = {
     sort_next: "Następna akcja",
     sort_state: "Aktywne najpierw",
     time_step: "Krok czasu",
+    exclude_tags: "Ukryte tagi",
   },
   ro: {
     schedules: "Programări",
@@ -1775,6 +1785,7 @@ const STRINGS = {
     sort_next: "Următoarea acțiune",
     sort_state: "Active întâi",
     time_step: "Pas de timp",
+    exclude_tags: "Etichete ascunse",
   },
   da: {
     schedules: "Tidsplaner",
@@ -1933,6 +1944,7 @@ const STRINGS = {
     sort_next: "Næste handling",
     sort_state: "Aktive først",
     time_step: "Tidstrin",
+    exclude_tags: "Skjulte tags",
   },
   sv: {
     schedules: "Scheman",
@@ -2091,6 +2103,7 @@ const STRINGS = {
     sort_next: "Nästa åtgärd",
     sort_state: "Pågående först",
     time_step: "Tidssteg",
+    exclude_tags: "Dolda taggar",
   },
   bg: {
     schedules: "Графици",
@@ -2249,6 +2262,7 @@ const STRINGS = {
     sort_next: "Следващо действие",
     sort_state: "Активните първо",
     time_step: "Стъпка на времето",
+    exclude_tags: "Скрити етикети",
   },
   ru: {
     schedules: "Расписания",
@@ -2411,6 +2425,7 @@ const STRINGS = {
     sort_next: "Следующее действие",
     sort_state: "Активные сначала",
     time_step: "Шаг времени",
+    exclude_tags: "Скрытые теги",
   },
   uk: {
     schedules: "Розклади",
@@ -2573,6 +2588,7 @@ const STRINGS = {
     sort_next: "Наступна дія",
     sort_state: "Активні спершу",
     time_step: "Крок часу",
+    exclude_tags: "Приховані теги",
   },
   hu: {
     schedules: "Ütemezések",
@@ -2731,6 +2747,7 @@ const STRINGS = {
     sort_next: "Következő művelet",
     sort_state: "Futók elöl",
     time_step: "Időlépés",
+    exclude_tags: "Elrejtett címkék",
   },
   sk: {
     schedules: "Plány",
@@ -2893,6 +2910,7 @@ const STRINGS = {
     sort_next: "Ďalšia akcia",
     sort_state: "Bežiace najprv",
     time_step: "Časový krok",
+    exclude_tags: "Skryté štítky",
   },
   cs: {
     schedules: "Plány",
@@ -3055,6 +3073,7 @@ const STRINGS = {
     sort_next: "Další akce",
     sort_state: "Běžící nejdřív",
     time_step: "Časový krok",
+    exclude_tags: "Skryté štítky",
   },
   sl: {
     schedules: "Urniki",
@@ -3217,6 +3236,7 @@ const STRINGS = {
     sort_next: "Naslednje dejanje",
     sort_state: "Aktivni najprej",
     time_step: "Časovni korak",
+    exclude_tags: "Skrite oznake",
   },
   lv: {
     schedules: "Grafiki",
@@ -3377,6 +3397,7 @@ const STRINGS = {
     sort_next: "Nākamā darbība",
     sort_state: "Aktīvie vispirms",
     time_step: "Laika solis",
+    exclude_tags: "Slēptās birkas",
   },
   el: {
     schedules: "Προγράμματα",
@@ -3535,6 +3556,7 @@ const STRINGS = {
     sort_next: "Επόμενη ενέργεια",
     sort_state: "Ενεργά πρώτα",
     time_step: "Βήμα χρόνου",
+    exclude_tags: "Κρυφές ετικέτες",
   },
 };
 
@@ -3660,14 +3682,24 @@ const hm = (min) => {
 
 const PLATFORM = "scheduler";
 
-// The schedule entities: the scheduler platform's registry entries, and any switch.schedule_* entity carrying the
-// component's attributes (no registry in some setups).
+// The schedule entities: the scheduler platform's registry entries, else (no registry, or none of them in it, as in
+// some setups) any switch.schedule_* entity carrying the component's attributes. The registry scan is kept per
+// registry object: the card looks its schedules up on every state change, which should not walk every entity and
+// every state each time.
+const _scheduleIds = new WeakMap();
 const discover = (hass) => {
   const states = hass?.states || {};
-  const ids = new Set();
-  for (const e of Object.values(hass?.entities || {})) if (e?.platform === PLATFORM && domainOf(e.entity_id) === "switch" && states[e.entity_id]) ids.add(e.entity_id);
-  for (const [id, s] of Object.entries(states)) if (id.startsWith("switch.schedule_") && Array.isArray(s?.attributes?.timeslots)) ids.add(id);
-  return [...ids];
+  const reg = hass?.entities;
+  let known = reg ? _scheduleIds.get(reg) : null;
+  if (!known) {
+    known = Object.values(reg || {})
+      .filter((e) => e?.platform === PLATFORM && domainOf(e.entity_id) === "switch")
+      .map((e) => e.entity_id);
+    if (reg) _scheduleIds.set(reg, known);
+  }
+  const ids = known.filter((id) => states[id]);
+  if (ids.length) return ids;
+  return Object.keys(states).filter((id) => id.startsWith("switch.schedule_") && Array.isArray(states[id]?.attributes?.timeslots));
 };
 
 // The workdays (0 = Monday) of the workday sensor, Monday to Friday without it.
@@ -4855,6 +4887,12 @@ const ZOOM_STYLE = `
 // The full card
 // ---------------------------------------------------------------------------
 
+// The last full schedules read on each Home Assistant connection, shared by the cards: a card created again (another
+// view, a dashboard opened) draws their conditions and dates from its first render instead of growing when its own
+// answer comes, which moved the page under it. Its own answer still replaces them.
+const ITEMS_CACHE = new WeakMap();
+const itemsKey = (hass) => (hass?.connection && typeof hass.connection === "object" ? hass.connection : null);
+
 class SchedulerCard extends HTMLElement {
   constructor() {
     super();
@@ -4927,11 +4965,15 @@ class SchedulerCard extends HTMLElement {
     this._watchItems();
     const sig = this._signature();
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
-    // Without the component's update subscription, the full schedules are read again when a schedule changes.
-    if (this._sig && !this._unsubItems) {
+    // Without the component's update subscription, the full schedules are read again when a schedule entity changes
+    // (not on the minute tick nor on a target's or the sun's change, which leave the schedules as they are).
+    const sched = discover(hass).map((id) => hass.states[id]);
+    const schedChanged = !this._sched || sched.length !== this._sched.length || sched.some((v, i) => v !== this._sched[i]);
+    if (this._sig && !this._unsubItems && schedChanged && this._sched) {
       globalThis.clearTimeout?.(this._itemsTimer);
       this._itemsTimer = globalThis.setTimeout?.(() => this._loadItems(), 500);
     }
+    this._sched = sched;
     this._update(sig);
   }
 
@@ -4940,6 +4982,8 @@ class SchedulerCard extends HTMLElement {
   _watchItems() {
     if (!this._hass || !this.isConnected || this._itemsWatch) return;
     this._itemsWatch = true;
+    const key = itemsKey(this._hass);
+    if (!this._items && key) this._items = ITEMS_CACHE.get(key) || null;
     this._loadItems();
     const conn = this._hass.connection;
     if (typeof conn?.subscribeMessage !== "function") return;
@@ -4963,6 +5007,8 @@ class SchedulerCard extends HTMLElement {
     try {
       const list = await this._hass.callWS({ type: "scheduler" });
       this._items = new Map((Array.isArray(list) ? list : []).filter((x) => x?.entity_id).map((x) => [x.entity_id, x]));
+      const key = itemsKey(this._hass);
+      if (key) ITEMS_CACHE.set(key, this._items);
       this._update();
     } catch (_e) {
       /* the entities' attributes alone */
@@ -5257,6 +5303,16 @@ class SchedulerCard extends HTMLElement {
   // the line is too narrow for it or (on the banner) the text would run into the timeline strip, it keeps its dot
   // alone (.pill-dot). Measured in the real fonts, so that every language and title length gets its own answer.
   _fitPill() {
+    // Home Assistant's <ha-card> (a Lit element) shows its content only from its first update, a microtask after it
+    // is connected: measured before, everything is 0 px wide and the pill lands on the wrong line. Fitted then.
+    const haCard = this.shadowRoot?.querySelector?.("ha-card");
+    if (haCard && haCard.hasUpdated === false) {
+      this._pillWait ??= (haCard.updateComplete?.then ? haCard.updateComplete : new Promise((r) => requestAnimationFrame(r))).then(() => {
+        this._pillWait = null;
+        this._fitPill();
+      });
+      return;
+    }
     for (const t of this.shadowRoot?.querySelectorAll?.(".titles, .mhd") || []) {
       const pill = t.querySelector(".chip.status");
       if (!pill?.getBoundingClientRect) continue;
@@ -6606,6 +6662,17 @@ const LANGUAGES = [
   ["cs", "Čeština"], ["sl", "Slovenščina"], ["lv", "Latviešu"], ["el", "Ελληνικά"],
 ];
 
+// The editor shows `entities` only as a list of entity ids (objects in YAML stay YAML-only).
+const editableEntities = (config = {}) => config.entities === undefined || (Array.isArray(config.entities) && config.entities.every((e) => typeof e === "string"));
+
+// The tags carried by the schedules found, sorted, for the editor's tag lists.
+const knownTags = (hass) => {
+  if (!hass?.states) return [];
+  const tags = new Set();
+  for (const id of discover(hass)) for (const x of listOf(hass.states[id]?.attributes?.tags)) if (typeof x === "string" && x) tags.add(x);
+  return [...tags].sort();
+};
+
 class SchedulerCardEditor extends HTMLElement {
   static get mini() {
     return false;
@@ -6636,10 +6703,18 @@ class SchedulerCardEditor extends HTMLElement {
       { name: "time_step", selector: { number: { min: 1, max: 60, step: 1, mode: "box", unit_of_measurement: "min" } } },
     );
     if (this.constructor.mini) grid.push({ name: "next_actions", selector: { number: { min: 1, max: 10, step: 1, mode: "box" } } });
+    // The filters: the schedules (or the entities they act on) and the tags, as lists. Entities given as objects
+    // in YAML stay YAML-only, so the editor never drops what it cannot show.
+    const filters = [];
+    if (editableEntities(this._config)) filters.push({ name: "entities", selector: { entity: { multiple: true } } });
+    const tagOptions = [...new Set([...SPECIAL_TAGS, ...knownTags(this._hass), ...listOf(this._config.tags), ...listOf(this._config.exclude_tags)])];
+    const tagSel = { select: { multiple: true, custom_value: true, mode: "dropdown", options: tagOptions } };
+    filters.push({ name: "tags", selector: tagSel }, { name: "exclude_tags", selector: { select: { ...tagSel.select, options: tagOptions.filter((x) => !SPECIAL_TAGS.includes(x)) } } });
     return [
       { name: "title", selector: { text: {} } },
       { type: "grid", name: "", schema: grid },
       { type: "grid", name: "", schema: toggles.map((name) => ({ name, selector: { boolean: {} } })) },
+      ...filters,
       {
         name: "language",
         selector: { select: { mode: "dropdown", options: [{ value: "", label: tr("lang_auto") }, ...LANGUAGES.map(([value, label]) => ({ value, label }))] } },
@@ -6659,6 +6734,7 @@ class SchedulerCardEditor extends HTMLElement {
           // A minimal YAML: no empty values, no options left at their default.
           if (
             v === "" ||
+            (Array.isArray(v) && v.length === 0) ||
             v === undefined ||
             v === null ||
             (ON_BY_DEFAULT.includes(k) && v === true) ||
@@ -6677,9 +6753,21 @@ class SchedulerCardEditor extends HTMLElement {
     }
     const data = { illustration_theme: "auto", sort_by: "name", time_step: 15, ...(this.constructor.mini ? { next_actions: 3 } : {}), ...this._config };
     for (const k of ON_BY_DEFAULT) if (data[k] === undefined) data[k] = true;
+    // A single tag written as a string in YAML shows as a one-item list.
+    for (const k of ["tags", "exclude_tags"]) if (data[k] !== undefined) data[k] = listOf(data[k]);
     this._form.hass = this._hass;
-    this._form.data = data;
-    this._form.schema = this._schema();
+    // hass is pushed on every state change while the editor is open: data and schema are set again only when they
+    // changed, so that the form does not redraw each time.
+    const dataKey = JSON.stringify(data);
+    if (dataKey !== this._dataKey) {
+      this._dataKey = dataKey;
+      this._form.data = data;
+    }
+    const schemaKey = JSON.stringify([lang(this._hass, this._config), editableEntities(this._config), knownTags(this._hass), listOf(this._config.tags), listOf(this._config.exclude_tags)]);
+    if (schemaKey !== this._schemaKey) {
+      this._schemaKey = schemaKey;
+      this._form.schema = this._schema();
+    }
   }
 }
 
