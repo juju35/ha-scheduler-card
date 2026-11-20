@@ -4865,6 +4865,12 @@ const ZOOM_STYLE = `
 // The full card
 // ---------------------------------------------------------------------------
 
+// The last full schedules read on each Home Assistant connection, shared by the cards: a card created again (another
+// view, a dashboard opened) draws their conditions and dates from its first render instead of growing when its own
+// answer comes, which moved the page under it. Its own answer still replaces them.
+const ITEMS_CACHE = new WeakMap();
+const itemsKey = (hass) => (hass?.connection && typeof hass.connection === "object" ? hass.connection : null);
+
 class SchedulerCard extends HTMLElement {
   constructor() {
     super();
@@ -4950,6 +4956,8 @@ class SchedulerCard extends HTMLElement {
   _watchItems() {
     if (!this._hass || !this.isConnected || this._itemsWatch) return;
     this._itemsWatch = true;
+    const key = itemsKey(this._hass);
+    if (!this._items && key) this._items = ITEMS_CACHE.get(key) || null;
     this._loadItems();
     const conn = this._hass.connection;
     if (typeof conn?.subscribeMessage !== "function") return;
@@ -4973,6 +4981,8 @@ class SchedulerCard extends HTMLElement {
     try {
       const list = await this._hass.callWS({ type: "scheduler" });
       this._items = new Map((Array.isArray(list) ? list : []).filter((x) => x?.entity_id).map((x) => [x.entity_id, x]));
+      const key = itemsKey(this._hass);
+      if (key) ITEMS_CACHE.set(key, this._items);
       this._update();
     } catch (_e) {
       /* the entities' attributes alone */

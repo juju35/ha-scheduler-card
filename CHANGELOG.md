@@ -2,6 +2,9 @@
 
 ## 1.5.1 - 2026-11-20
 
+### Fixes
+- A card created again (another view, a dashboard opened) draws the schedules' conditions and dates from its first render, from the last ones read on the same connection, instead of growing by about 50 px when its own answer comes, which moved the page under it.
+
 ### Performance
 - The schedules are found from the entity registry once per registry change, instead of walking every entity and every state on each state change of Home Assistant; the `switch.schedule_*` fallback is only read when the registry has no schedule.
 - The visual editor no longer redraws its form on every state change while it is open.
