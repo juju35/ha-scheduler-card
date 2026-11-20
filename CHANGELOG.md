@@ -1,6 +1,9 @@
 # Changelog
 
-## 1.5.1 - 2026-11-20
+## 1.6.0 - 2026-11-20
+
+### Features
+- Visual editor: the `entities`, `tags` and `exclude_tags` filters can be set there — a multiple entity picker, and tag lists offering the special values (`none`, `enabled`, `disabled`) and the tags of your schedules, or a new one typed in. Entities written as objects in YAML stay YAML-only (the field is then not shown, so nothing is lost).
 
 ### Fixes
 - The status pill is placed from the card's first frame: it was measured before Home Assistant's `<ha-card>` had laid out its content (0 px wide), so for a frame it showed on the wrong line (under the title, or beside it when it belongs under it), sometimes changing the card's height, before jumping to its place. It is now fitted once the card is drawn.
@@ -9,6 +12,7 @@
 ### Performance
 - The schedules are found from the entity registry once per registry change, instead of walking every entity and every state on each state change of Home Assistant; the `switch.schedule_*` fallback is only read when the registry has no schedule.
 - The visual editor no longer redraws its form on every state change while it is open.
+- Without the Scheduler component's `scheduler_updated` subscription, the full schedules are read again only when a schedule entity changes, no longer on every minute tick or target change.
 
 ## 1.5.0 - 2026-11-20
 
