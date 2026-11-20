@@ -42,7 +42,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
 - Filters by `tags` (also `none`, `enabled`, `disabled`), `exclude_tags` and `entities`, sorting with `sort_by`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
 - One switch for all the card's schedules with `show_header_toggle: true`: on while any is enabled, a click from a mixed state disables them all, as Home Assistant's header toggles
-- The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`
+- The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`, fixed or with `variables` (a number or a list chosen in the editor, merged into the action's data)
 - Conditions guided by their entity: its own entity filters (`condition_include` / `condition_exclude`, with `*` wildcards), a list of the entity's states shown in words (on/off, a select's options, zones, HVAC modes…) while the real state is saved, a number field with the entity's unit and range for numbers and below / above, a free value otherwise or with **Other value…**, and your own states with `condition_states`
 - `illustration: false` for a classic header with a round icon, as on the other cards
 - Visual editor for both cards; options left at their default are kept out of the YAML
@@ -153,6 +153,17 @@ customize:
       service: climate.set_temperature
       service_data:
         temperature: 7
+    - name: Heat to…
+      service: climate.set_temperature
+      service_data:
+        hvac_mode: heat
+      variables:
+        temperature:
+          name: Temperature
+          min: 16
+          max: 25
+          step: 0.5
+          unit: °C
 illustration: true
 illustration_theme: auto
 language: en
@@ -185,12 +196,67 @@ zoom: true
 | `condition_include` | both | All | **YAML only.** The entities offered for a condition: entity ids, domains or `*` wildcards (`binary_sensor.bedroom_*`), independently of `include` / `exclude`; conditions already set on other entities stay shown and editable |
 | `condition_exclude` | both | None | **YAML only.** Entity ids, domains or `*` wildcards left out of the entities offered for a condition |
 | `condition_states` | both | None | **YAML only.** The values offered for a condition on an entity, by entity id, `*` wildcard or domain: a list of states (a state, or `value` and `name`), or a number range (`min`, `max`, `step`, `unit`) |
-| `customize` | both | None | **YAML only.** Your own actions, by entity id or domain: a list of `name`, `service` and `service_data`, offered first in the editors |
+| `customize` | both | None | **YAML only.** Your own actions, by entity id or domain: a list of `name`, `service`, `service_data` and `variables`, offered first in the editors (see [Custom actions with variables](#custom-actions-with-variables)) |
 | `illustration` | both | `true` | The illustrated header with today's timeline; `false` for a classic header with a round icon |
 | `illustration_theme` | both | `auto` | `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme, evening in the two hours before sunset with a light theme), `day` or `night` |
 | `next_actions` | mini | `3` | Number of upcoming actions listed (1 to 10) |
 | `zoom` | mini | `true` | Detail button at the top right: unfolds the full card and back (`false` removes it). The full card's options above apply to the unfolded view and are also set in the mini card's visual editor |
 | `language` | both | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings) |
+
+
+### Custom actions with variables
+
+A custom action of `customize` can leave some of its data to be chosen in the editor: each entry of `variables`, keyed by the `service_data` field it sets, adds a field under the action. The chosen values are merged into the fixed `service_data` and stored as ordinary action data. Several variables can go on the same action.
+
+```yaml
+customize:
+  climate.bedroom:
+    - name: Heat to…
+      service: climate.set_temperature
+      service_data:
+        hvac_mode: heat
+      variables:
+        temperature:
+          name: Temperature
+          min: 16
+          max: 25
+          step: 0.5
+          unit: °C
+  script:
+    - name: Comfort
+      service: script.comfort
+      variables:
+        temperature:
+          min: 16
+          max: 25
+          step: 0.5
+        fan_mode:
+          name: Fan
+          options:
+            - value: low
+              name: Low
+              icon: mdi:fan-speed-1
+            - value: high
+              name: High
+            - auto
+        brightness:
+          name: Brightness
+          min: 0
+          max: 100
+          unit: "%"
+          scale_factor: 2.55
+          optional: true
+```
+
+| Key | Applies to | Description |
+|---|---|---|
+| `name` | number, list | Label of the field (by default the field's name) |
+| `optional` | number, list | `true`: the field can be left empty, and is then left out of the action's data |
+| `min`, `max`, `step`, `unit` | number | Range, step and unit of the number field; a value out of range is refused |
+| `scale_factor` | number | The value is multiplied by it when stored and divided by it when shown: `2.55` shows a brightness (0–255) as a percentage |
+| `options` | list | The choices: plain values, or `value` (stored), `name` (shown) and `icon` (shown beside the list) |
+
+Editing a slot whose stored action matches a custom action with variables (same service, same fixed data, a value for every required variable) selects it with its stored values; data the action does not set is kept as is.
 
 ## Screenshots
 
