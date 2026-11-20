@@ -26,6 +26,7 @@ const sc = load([
   "SchedulerMiniCardEditor",
   "document",
   "window",
+  "globalThis",
 ]);
 
 // Values built in the card's context have its own Array and Object: compared as plain data.
@@ -629,4 +630,55 @@ test("full schedules: a new card on the same connection draws the last ones read
   other._watchItems();
   other._update();
   assert.notEqual(other._html, full);
+});
+
+test("visual editor: entities, tags and exclude_tags as lists, entity objects stay YAML-only", () => {
+  const ed = new sc.SchedulerCardEditor();
+  ed.setConfig({ type: "custom:scheduler-card", tags: "heating" });
+  ed.hass = hassWith();
+  const schema = plain(ed._schema());
+  const field = (n) => schema.find((s) => s.name === n);
+  eq(field("entities").selector, { entity: { multiple: true } });
+  assert.equal(field("tags").selector.select.multiple, true);
+  assert.equal(field("tags").selector.select.custom_value, true);
+  // The special values and the tags of the schedules found.
+  for (const x of ["none", "enabled", "disabled", "heating"]) assert.ok(field("tags").selector.select.options.includes(x), x);
+  assert.ok(!field("exclude_tags").selector.select.options.includes("enabled"));
+  // A single tag written as a string shows as a list.
+  eq(ed._form.data.tags, ["heating"]);
+  ed.setConfig({ type: "custom:scheduler-card", entities: [{ entity: HEATING }] });
+  assert.equal(
+    plain(ed._schema()).find((s) => s.name === "entities"),
+    undefined,
+  );
+});
+
+test("full schedules without the update subscription: read again only when a schedule entity changes", () => {
+  const h = hassWith();
+  const el = card(sc.SchedulerCard, {}, h);
+  let loads = 0;
+  el._loadItems = () => {
+    loads++;
+  };
+  el._watchItems = () => {};
+  el._update = function (sig) {
+    this._sig = sig ?? this._signature();
+  };
+  const timers = [];
+  // The card's own global (its context has no timers): a recorded setTimeout.
+  sc.globalThis.setTimeout = (fn) => timers.push(fn);
+  try {
+    el.hass = h;
+    // Another minute: the signature changes, the schedules do not.
+    el._nowMs = () => NOW + 120000;
+    el.hass = { ...h };
+    assert.equal(timers.length, 0);
+    // A schedule toggled: read again.
+    el.hass = { ...h, states: { ...h.states, [HEATING]: { ...h.states[HEATING], state: "off" } } };
+    assert.equal(timers.length, 1);
+    timers[0]();
+    assert.equal(loads, 1);
+  } finally {
+    delete sc.globalThis.setTimeout;
+  }
 });
