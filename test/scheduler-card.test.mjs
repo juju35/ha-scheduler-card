@@ -600,3 +600,33 @@ test("visual editors: defaults left out of the YAML, the mini editor with the fu
   });
   eq(JSON.parse(JSON.stringify(out)), { type: "custom:scheduler-mini-card", editable: false });
 });
+
+// A card created again (another view, a dashboard opened) must not grow when the full schedules arrive: it starts
+// from the last ones read on the same connection, until its own answer replaces them.
+test("full schedules: a new card on the same connection draws the last ones read from its first render", async () => {
+  const connection = {};
+  const first = card();
+  first._hass = { ...hassWith(), connection };
+  Object.defineProperty(first, "isConnected", { value: true });
+  first._watchItems();
+  await new Promise((r) => setTimeout(r, 0));
+  first._update();
+  const full = first._html;
+  assert.ok(first._items?.size > 0);
+
+  const second = card();
+  // Its answer never comes: only the shared schedules can give the conditions and dates.
+  second._hass = { ...hassWith(), connection, callWS: () => new Promise(() => {}) };
+  Object.defineProperty(second, "isConnected", { value: true });
+  second._watchItems();
+  second._update();
+  assert.equal(second._html, full);
+
+  // Another connection (another Home Assistant, a new login) shares nothing.
+  const other = card();
+  other._hass = { ...hassWith(), connection: {}, callWS: () => new Promise(() => {}) };
+  Object.defineProperty(other, "isConnected", { value: true });
+  other._watchItems();
+  other._update();
+  assert.notEqual(other._html, full);
+});
