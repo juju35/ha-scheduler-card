@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0 - 2026-11-20
+
+### Features
+- Custom actions with variables: an action of `customize` can take `variables`, each a number (`min`, `max`, `step`, `unit`, `scale_factor`) or a list of `options` (`value`, `name`, `icon`), with its `name` and `optional`. Their fields appear under the action in the slot editor and the new schedule popup, on the full card and the mini card's expanded view; the chosen values are merged into the action's fixed `service_data` and stored as ordinary action data. One « Heat to… » action with a temperature field replaces a fixed action per temperature (#13).
+- Editing a slot whose stored action matches such an action selects it with its stored values; data the action does not set is kept, and the other slots, actions, conditions, dates and tags are left unchanged. A missing required value or a number out of range is refused. Fixed custom actions work as before.
+
 ## 1.4.0 - 2026-11-20
 
 ### Features

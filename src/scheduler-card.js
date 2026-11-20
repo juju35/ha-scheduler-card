@@ -4153,13 +4153,104 @@ const withConditions = (slots, o, conds) =>
     return out;
   });
 
+// The variables of a custom action: a number (`min`, `max`, `step`, `unit`, `scale_factor`) or a list of `options`
+// (`value`, `name`, `icon`), each with its `name` and `optional`. Keyed by the field of `service_data` they set.
+const actionVars = (vars) => {
+  if (!vars || typeof vars !== "object" || Array.isArray(vars)) return [];
+  return Object.entries(vars)
+    .filter(([field, v]) => field && v && typeof v === "object")
+    .map(([field, v]) => {
+      const base = { field, label: v.name ? String(v.name) : cap(field.replace(/_/g, " ")), optional: v.optional === true };
+      if (Array.isArray(v.options)) {
+        const options = v.options
+          .map((o) => (o && typeof o === "object" ? o : { value: o }))
+          .filter((o) => o.value !== undefined && o.value !== null && o.value !== "")
+          .map((o) => ({ value: o.value, label: o.name ? String(o.name) : String(o.value), ...(o.icon ? { icon: String(o.icon) } : {}) }));
+        return options.length ? { ...base, type: "list", options } : null;
+      }
+      const scale = num(v.scale_factor);
+      return { ...base, type: "number", min: num(v.min), max: num(v.max), step: num(v.step) ?? "any", unit: v.unit ? String(v.unit) : "", scale: scale && scale > 0 ? scale : 1 };
+    })
+    .filter(Boolean);
+};
+
 // The custom actions of `customize` for an entity: those of its id, then those of its domain.
 const customActions = (config, entityId) => {
   const c = config?.customize && typeof config.customize === "object" ? config.customize : {};
   const list = [...(Array.isArray(c[entityId]) ? c[entityId] : []), ...(Array.isArray(c[domainOf(entityId)]) ? c[domainOf(entityId)] : [])];
   return list
     .filter((a) => a && typeof a.service === "string" && a.service.includes("."))
-    .map((a) => ({ service: a.service, data: a.service_data && typeof a.service_data === "object" ? a.service_data : {}, name: a.name ? String(a.name) : "" }));
+    .map((a) => {
+      const vars = actionVars(a.variables);
+      const out = { service: a.service, data: a.service_data && typeof a.service_data === "object" ? a.service_data : {}, name: a.name ? String(a.name) : "" };
+      return vars.length ? { ...out, vars } : out;
+    });
+};
+
+// A number without float noise (21.000000000000004 → 21).
+const tidy = (n) => Math.round(n * 1e6) / 1e6;
+const sameValue = (a, b) => JSON.stringify(a) === JSON.stringify(b) || (num(a) !== null && num(a) === num(b) && typeof a !== "boolean" && typeof b !== "boolean");
+
+// The editor's values of an action with variables, read from a stored action's data: `{ vals, keep }` (`keep`:
+// the data the action does not set, kept as is), or null when the stored action is not this one.
+const matchVars = (opt, service, data) => {
+  if (!opt?.vars || opt.service !== service) return null;
+  const d = data && typeof data === "object" ? data : {};
+  for (const [k, v] of Object.entries(opt.data || {})) if (opt.vars.every((x) => x.field !== k) && !sameValue(d[k], v)) return null;
+  const vals = {};
+  for (const x of opt.vars) {
+    const v = d[x.field];
+    if (v === undefined || v === null || v === "") {
+      if (!x.optional) return null;
+      vals[x.field] = "";
+    } else if (x.type === "list") {
+      const i = x.options.findIndex((o) => sameValue(o.value, v));
+      if (i < 0) return null;
+      vals[x.field] = String(i);
+    } else {
+      const n = num(v);
+      if (n === null) return null;
+      vals[x.field] = String(tidy(n / x.scale));
+    }
+  }
+  const keep = Object.fromEntries(Object.entries(d).filter(([k]) => !(k in (opt.data || {})) && opt.vars.every((x) => x.field !== k)));
+  return { vals, keep };
+};
+
+// The values a new action with variables starts from: those already chosen when they still fit, else the
+// minimum of a number and the first option of a list (empty when optional).
+const varDefaults = (opt, prev = {}) => {
+  const vals = {};
+  for (const x of opt?.vars || []) {
+    const p = prev?.[x.field];
+    if (x.type === "list") vals[x.field] = p !== undefined && x.options[Number(p)] ? String(p) : x.optional ? "" : "0";
+    else vals[x.field] = p !== undefined && (p === "" ? x.optional : num(p) !== null) ? String(p) : x.optional ? "" : String(x.min ?? 0);
+  }
+  return vals;
+};
+
+// The data of an action with variables: its fixed data, the kept data, then the chosen values (a number scaled by
+// its `scale_factor`; an empty optional one left out), or null when a value is missing or out of range.
+const varsData = (opt, vals = {}, keep = {}) => {
+  const data = { ...keep, ...(opt.data || {}) };
+  for (const x of opt.vars) {
+    const raw = String(vals?.[x.field] ?? "").trim();
+    delete data[x.field];
+    if (raw === "") {
+      if (x.optional) continue;
+      return null;
+    }
+    if (x.type === "list") {
+      const o = x.options[Number(raw)];
+      if (!o) return null;
+      data[x.field] = o.value;
+    } else {
+      const n = num(raw);
+      if (n === null || (x.min !== null && n < x.min) || (x.max !== null && n > x.max)) return null;
+      data[x.field] = tidy(n * x.scale);
+    }
+  }
+  return data;
 };
 
 // The entities a new schedule can act on: the action domains, narrowed by `include` and `exclude` (entity ids or
@@ -4634,7 +4725,7 @@ const STYLE = `
   .form select option { color: #212121; }
   .form input:focus, .form select:focus { outline: 2px solid color-mix(in srgb, var(--sc-accent) 60%, transparent); outline-offset: 0; }
   .pair { display: flex; align-items: center; gap: 6px; min-width: 0; }
-  .pair input { flex: 1 1 0; }
+  .pair input, .pair select { flex: 1 1 0; }
   .pair .u { flex: none; color: var(--secondary-text-color); }
   .note { font-size: 12px; color: var(--secondary-text-color); }
   .err { font-size: 12px; color: color-mix(in srgb, var(--sc-danger) 60%, var(--primary-text-color, #212121)); }
@@ -5568,11 +5659,28 @@ class SchedulerCard extends HTMLElement {
       .join("")}</select>`;
   }
 
-  _valueInput(opt, value) {
+  _valueInput(opt, value, vals = {}) {
+    if (opt?.vars) return opt.vars.map((x, k) => this._varInput(x, k, vals?.[x.field])).join("");
     if (!opt?.input) return "";
     const i = opt.input;
     return `<label for="sc-val">${esc(this._t(i.field === "temperature" ? "act_temperature" : i.field === "position" ? "act_position" : "act_value"))}</label>
       <div class="pair"><input id="sc-val" type="number" data-field="value" min="${i.min}" max="${i.max}" step="${i.step}" value="${esc(value ?? "")}">${i.unit ? `<span class="u">${esc(i.unit)}</span>` : ""}</div>`;
+  }
+
+  // The field of a custom action's variable: a list of its options, or a number with its unit and range.
+  _varInput(x, k, value) {
+    const id = `sc-var${k}`;
+    const label = `<label for="${id}">${esc(x.label)}</label>`;
+    if (x.type === "list") {
+      const opts = `${x.optional ? `<option value=""${value === "" ? " selected" : ""}>—</option>` : ""}${x.options
+        .map((o, i) => `<option value="${i}"${String(i) === String(value) ? " selected" : ""}>${esc(o.label)}</option>`)
+        .join("")}`;
+      const icon = x.options[Number(value)]?.icon;
+      const sel = `<select id="${id}" data-var="${esc(x.field)}">${opts}</select>`;
+      return `${label}${icon ? `<div class="pair">${sel}<ha-icon class="u" icon="${esc(icon)}"></ha-icon></div>` : sel}`;
+    }
+    const n = (a) => (x[a] !== null && x[a] !== undefined ? ` ${a}="${x[a]}"` : "");
+    return `${label}<div class="pair"><input id="${id}" type="number" inputmode="decimal" data-var="${esc(x.field)}"${n("min")}${n("max")} step="${x.step}" value="${esc(value ?? "")}"${x.optional ? ' placeholder="—"' : ""}>${x.unit ? `<span class="u">${esc(x.unit)}</span>` : ""}</div>`;
   }
 
   // The slot under edit can be split in two (fixed times, with an end) or merged with the slot starting at its end.
@@ -5621,7 +5729,7 @@ class SchedulerCard extends HTMLElement {
         ${this._timeField("start", d, this._t("start"))}
         ${this._timeField("stop", d, this._t("end"), true)}
         <label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(e.options, d.action).replace("<select", '<select id="sc-act"')}
-        ${this._valueInput(opt, d.value)}
+        ${this._valueInput(opt, d.value, d.vals)}
         ${this._daysField(d)}
         <div class="note full">${esc(this._t("days_note"))}</div>
       </div>
@@ -5661,7 +5769,7 @@ class SchedulerCard extends HTMLElement {
           }
         </div>
         ${options.length ? `<label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(options, d.action).replace("<select", '<select id="sc-act"')}` : ""}
-        ${this._valueInput(opt, d.value)}
+        ${this._valueInput(opt, d.value, d.vals)}
         ${this._timeField("start", d, this._t(d.kind === "single" ? "at_time" : "start"))}
         ${d.kind === "single" ? "" : this._timeField("stop", d, this._t("end"), true)}
         ${this._daysField(d)}
@@ -5675,10 +5783,12 @@ class SchedulerCard extends HTMLElement {
     const tr = (k, v) => this._t(k, v);
     return list.map((a) => ({
       ...a,
-      key: a.input ? `${a.service}#${a.input.field}` : actionKey(a.service, a.data),
+      key: a.vars ? `${actionKey(a.service, a.data)}#${a.vars.map((x) => x.field).join(",")}` : a.input ? `${a.service}#${a.input.field}` : actionKey(a.service, a.data),
       label: a.name
         ? a.name
-        : a.input
+        : a.vars
+          ? `${actionInfo(this._hass, tr, this._loc(), { service: a.service, data: {} }, entityId).label}…`
+          : a.input
           ? `${this._t(a.input.field === "temperature" ? "act_temperature" : a.input.field === "position" ? "act_position" : "act_value")}…`
           : actionInfo(this._hass, tr, this._loc(), a, entityId).label,
     }));
@@ -5780,19 +5890,31 @@ class SchedulerCard extends HTMLElement {
     const targets = (slot || item.timeslots?.[0])?.actions?.map((a) => a.entity_id).filter(Boolean) || m.entities;
     const target = targets[0] || m.target;
     // The schedule's own actions first, then those of its entity.
+    // A stored action set by a custom action with variables is shown as that action, with its values.
+    const entityActions = this._labelled(this._entityActions(target), target);
+    const varsOf = (a) => {
+      let best = null;
+      for (const o of entityActions) {
+        const r = o.vars && matchVars(o, a?.service, a?.service_data);
+        if (r && (!best || Object.keys(r.keep).length < Object.keys(best.keep).length)) best = { ...r, key: o.key };
+      }
+      return best;
+    };
     const own = [];
     for (const ts of item.timeslots || []) {
       const a = ts.actions?.[0];
-      if (a && !own.some((o) => actionKey(o.service, o.data) === actionKey(a.service, a.service_data))) own.push({ service: a.service, data: a.service_data || {} });
+      if (a && !varsOf(a) && !own.some((o) => actionKey(o.service, o.data) === actionKey(a.service, a.service_data))) own.push({ service: a.service, data: a.service_data || {} });
     }
-    const options = this._labelled([...own, ...this._entityActions(target)], target).filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
+    const options = [...this._labelled(own, target), ...entityActions].filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
     const days = new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn(item.weekdays, wd, this._hass)));
     const wds = Array.isArray(item.weekdays) ? item.weekdays : [];
     const dayMode = wds.length === 1 && ["daily", "workday", "weekend"].includes(wds[0]) ? wds[0] : "custom";
     let draft;
     if (slot) {
       const a = slot.actions?.[0] || {};
-      draft = { ...this._timeDraft("start", slot.start, sun), ...this._timeDraft("stop", slot.stop, sun), action: actionKey(a.service, a.service_data), value: "", days, dayMode };
+      const v = varsOf(a);
+      draft = { ...this._timeDraft("start", slot.start, sun), ...this._timeDraft("stop", slot.stop, sun), action: v ? v.key : actionKey(a.service, a.service_data), value: "", days, dayMode };
+      if (v) Object.assign(draft, { vals: v.vals, keep: { key: v.key, data: v.keep, vals: { ...v.vals } } });
       if (!options.some((o) => o.key === draft.action)) draft.action = options[0]?.key || "";
     } else {
       const start = atMin ?? 12 * 60;
@@ -5800,6 +5922,7 @@ class SchedulerCard extends HTMLElement {
     }
     const opt = options.find((o) => o.key === draft.action);
     if (opt?.input) draft.value = String(opt.input.min);
+    if (opt?.vars && !draft.vals) draft.vals = varDefaults(opt);
     const opts = optionsOf(item);
     this._edit = {
       ...e,
@@ -5842,8 +5965,12 @@ class SchedulerCard extends HTMLElement {
   }
 
   // The data of the chosen action: an entered value goes into its field.
-  _actionData(opt, value) {
+  _actionData(opt, value, d = {}) {
     if (!opt) return null;
+    if (opt.vars) {
+      const data = varsData(opt, d.vals, d.keep?.key === opt.key ? d.keep.data : {});
+      return data ? { service: opt.service, data } : null;
+    }
     if (!opt.input) return { service: opt.service, data: opt.data || {} };
     const v = num(value);
     if (v === null) return null;
@@ -5863,6 +5990,7 @@ class SchedulerCard extends HTMLElement {
     const act = this._actionData(
       e.options.find((o) => o.key === d.action),
       d.value,
+      d,
     );
     if (!act) return { error: this._t("err_action") };
     const slots = (e.item.timeslots || []).map(cleanSlot);
@@ -5926,7 +6054,7 @@ class SchedulerCard extends HTMLElement {
       const d = e.draft;
       if (!this._hass.states[d.entity]) return this._fail(this._t("err_entity"));
       const opt = this._newOptions(d.entity).find((o) => o.key === d.action) || this._newOptions(d.entity)[0];
-      const act = this._actionData(opt, d.value);
+      const act = this._actionData(opt, d.value, d);
       if (!act) return this._fail(this._t("err_action"));
       const sun = sunTimes(this._hass);
       const startRaw = this._raw(d, "start");
@@ -6133,6 +6261,12 @@ class SchedulerCard extends HTMLElement {
       this._update(this._sig);
       return;
     }
+    if (el.dataset.var !== undefined && e.draft) {
+      e.draft.vals = { ...(e.draft.vals || {}), [el.dataset.var]: el.value };
+      // A list's option shows its icon.
+      if (change && el.tagName === "SELECT") this._update(this._sig);
+      return;
+    }
     const field = el.dataset.field;
     if (!field || !e.draft) return;
     const d = e.draft;
@@ -6145,9 +6279,13 @@ class SchedulerCard extends HTMLElement {
       }
       const opt = options.find((o) => o.key === d.action);
       d.value = opt?.input ? String(num(d.value) ?? opt.input.min) : "";
+      // Another action: its own values (the data kept from the stored action only goes with its own action).
+      d.vals = opt?.vars ? (d.keep?.key === opt.key ? { ...d.keep.vals } : varDefaults(opt, d.vals)) : undefined;
       this._update(this._sig);
     } else if (field === "entity" && this._hass.states[d.entity]) {
       d.action = this._newOptions(d.entity)[0]?.key || "";
+      const opt = this._newOptions(d.entity)[0];
+      d.vals = opt?.vars ? varDefaults(opt) : undefined;
       this._update(this._sig);
     } else if (field.endsWith("Off")) this._update(this._sig);
   }
