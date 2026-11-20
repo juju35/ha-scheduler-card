@@ -5281,16 +5281,17 @@ class SchedulerCard extends HTMLElement {
     return `<div class="view" data-key="timeline">${chips}${notice}<div class="rows">${rows}${add}</div></div>`;
   }
 
-  // `show_header_toggle`: one switch for every schedule of the card's filters (toggleTargets), on only while they all
-  // are; from a mixed state it turns them all on. Its label says what a click does. Greyed with `editable: false`.
+  // `show_header_toggle`: one switch for every schedule of the card's filters (toggleTargets), on while any of them is,
+  // as Home Assistant's header toggles: from a mixed state it turns them all off. Its label says what a click does.
+  // Greyed with `editable: false`.
   _allSwitch() {
     if (this._config.show_header_toggle !== true) return "";
     const targets = toggleTargets(this._all || [], this._config);
     if (!targets.length) return "";
-    const all = targets.every((m) => m.enabled);
-    const label = esc(this._t(all ? "all_off" : "all_on"));
+    const any = targets.some((m) => m.enabled);
+    const label = esc(this._t(any ? "all_off" : "all_on"));
     const off = this._config.editable === false || this._toggling;
-    return `<span class="all"><span class="txt">${label}</span><ha-switch data-toggle-all="1"${all ? " checked" : ""}${off ? " disabled" : ""} aria-label="${label}"></ha-switch></span>`;
+    return `<span class="all"><span class="txt">${label}</span><ha-switch data-toggle-all="1"${any ? " checked" : ""}${off ? " disabled" : ""} aria-label="${label}"></ha-switch></span>`;
   }
 
   // ── Weekly grid ──
@@ -6057,7 +6058,8 @@ class SchedulerCard extends HTMLElement {
   async _toggleAll() {
     if (this._config.editable === false || this._toggling) return this._update(this._sig);
     const targets = toggleTargets(this._all || [], this._config);
-    const on = !targets.every((m) => m.enabled);
+    // As the switch shows: any enabled turns them all off, none enabled turns them all on.
+    const on = !targets.some((m) => m.enabled);
     const ids = targets.filter((m) => m.enabled !== on).map((m) => m.id);
     if (!ids.length) return this._update(this._sig);
     this._toggling = true;

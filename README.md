@@ -41,7 +41,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - Mini card: the same illustrated header (the next action on its sky), then the next actions of all your schedules (time, coloured icon, name, action), and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
 - Filters by `tags` (also `none`, `enabled`, `disabled`), `exclude_tags` and `entities`, sorting with `sort_by`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
-- One switch for all the card's schedules with `show_header_toggle: true`: on while they are all enabled, a click from a mixed state enables them all
+- One switch for all the card's schedules with `show_header_toggle: true`: on while any is enabled, a click from a mixed state disables them all, as Home Assistant's header toggles
 - The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`
 - Conditions guided by their entity: its own entity filters (`condition_include` / `condition_exclude`, with `*` wildcards), a list of the entity's states shown in words (on/off, a select's options, zones, HVAC modes…) while the real state is saved, a number field with the entity's unit and range for numbers and below / above, a free value otherwise or with **Other value…**, and your own states with `condition_states`
 - `illustration: false` for a classic header with a round icon, as on the other cards
@@ -177,7 +177,7 @@ zoom: true
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
 | `sort_by` | both | `name` | Order of the schedules: `name`, `next` (soonest next action first) or `state` (running first); disabled ones always last |
 | `show_badges` | both | `true` | The badges under each tile (sun, days, condition, dates, after the last slot); `false` hides them |
-| `show_header_toggle` | both | `false` | A switch under the header that enables or disables every schedule of the card's `tags`, `exclude_tags` and `entities` (disabled ones included, even hidden by `show_disabled: false`), and nothing else. On while they are all enabled, off otherwise; from a mixed state a click enables them all. Only their enabled state changes. On the full card and the mini card's expanded view |
+| `show_header_toggle` | both | `false` | A switch under the header that enables or disables every schedule of the card's `tags`, `exclude_tags` and `entities` (disabled ones included, even hidden by `show_disabled: false`), and nothing else. On while any of them is enabled, as Home Assistant's header toggles: from a mixed state a click disables them all. Only their enabled state changes. On the full card and the mini card's expanded view |
 | `editable` | both | `true` | The **New schedule** button, the slot editor, the options and the clickable, draggable grid, and the switches; `false` for a read-only card (the switches are greyed) |
 | `time_step` | both | `15` | Minutes: the step of a dragged slot edge, of a split, and of the time fields |
 | `include` | both | All | **YAML only.** The entities a new schedule can act on: entity ids, domains or `*` wildcards (`light`, `climate.bedroom`, `switch.*_heater`) |

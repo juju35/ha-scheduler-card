@@ -383,16 +383,17 @@ test("a schedule's switch enables and disables it with switch.turn_on / turn_off
   eq(h.calls.at(-1), ["switch", "turn_off", { entity_id: GARDEN }]);
 });
 
-test("show_header_toggle: one switch for the card's schedules, off by default, mixed turns them all on", async () => {
+test("show_header_toggle: one switch for the card's schedules, off by default, mixed turns them all off", async () => {
   assert.ok(!/data-toggle-all/.test(card()._render()));
-  // Every schedule, the away mode disabled: a mixed state, the switch off, a click enables the disabled one only.
+  // Every schedule, the away mode disabled: a mixed state, the switch on, a click disables the enabled ones only.
   const h = hassWith();
   const el = card(sc.SchedulerCard, { show_header_toggle: true }, h);
   const html = el._render();
-  assert.match(html, /<ha-switch data-toggle-all="1" aria-label="Enable all">/);
+  assert.match(html, /<ha-switch data-toggle-all="1" checked aria-label="Disable all">/);
   el._change({ composedPath: () => [{ dataset: { toggleAll: "1" } }], stopPropagation() {} });
   await new Promise((r) => setTimeout(r));
-  eq(h.calls, [["switch", "turn_on", { entity_id: AWAY }]]);
+  assert.equal(h.calls.length, 5);
+  assert.ok(h.calls.every((c) => c[1] === "turn_off" && c[2].entity_id !== AWAY));
   // All enabled (the heating tag): the switch on, a click disables those schedules and nothing else.
   const h2 = hassWith();
   const heat = card(sc.SchedulerCard, { show_header_toggle: true, tags: ["heating"] }, h2);
@@ -403,13 +404,15 @@ test("show_header_toggle: one switch for the card's schedules, off by default, m
 });
 
 test("show_header_toggle: disabled schedules hidden or tagged by state still turned back on, failures reported", async () => {
-  // show_disabled: false and the `enabled` state tag hide the away mode, the switch still reaches it.
+  // show_disabled: false and the `enabled` state tag hide the away mode, the switch still reaches it: with every
+  // schedule disabled it shows off and turns them all back on, hidden ones included.
   for (const config of [{ show_disabled: false }, { tags: ["enabled"] }]) {
     const h = hassWith();
+    for (const id of sc.discover(h)) h.states[id] = { ...h.states[id], state: "off" };
     const el = card(sc.SchedulerCard, { show_header_toggle: true, ...config }, h);
-    assert.match(el._render(), /aria-label="Enable all"/);
+    assert.match(el._render(), /data-toggle-all="1" aria-label="Enable all"/);
     await el._toggleAll();
-    eq(h.calls, [["switch", "turn_on", { entity_id: AWAY }]]);
+    assert.ok(h.calls.some((c) => c[1] === "turn_on" && c[2].entity_id === AWAY));
   }
   // A failed call: the others done, the failures counted.
   const h = hassWith();
@@ -428,7 +431,7 @@ test("editable: false greys every switch, the header one included, and changes n
   const h = hassWith();
   const el = card(sc.SchedulerCard, { show_header_toggle: true, editable: false }, h);
   const html = el._render();
-  assert.match(html, /data-toggle-all="1" disabled/);
+  assert.match(html, /data-toggle-all="1"( checked)? disabled/);
   assert.equal((html.match(/data-toggle="[^"]+"( checked)? disabled/g) || []).length, 6);
   await el._toggleAll();
   el._change({ composedPath: () => [{ dataset: { toggle: GARDEN }, checked: false }], stopPropagation() {} });
