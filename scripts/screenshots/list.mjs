@@ -9,6 +9,16 @@ const HEATING = '.row[data-open="switch.schedule_living_room_heating"]';
 const AWAY = '.row[data-open="switch.schedule_away_mode"]';
 
 export const FULL = 460;
+
+// The condition status captures: the heating's conditions met, the water heater waiting for its tracked condition,
+// the garden lights skipped (an untracked condition not met).
+export const CONDITIONS_HASS = {
+  values: { "sensor.outdoor_temperature": "18" },
+  conditions: {
+    water_heater: { track: true },
+    garden_lights: { conditions: [{ entity_id: "sensor.outdoor_temperature", match_type: "below", value: 10 }] },
+  },
+};
 export const MINI = 380;
 
 export const SHOTS = [
@@ -26,6 +36,12 @@ export const SHOTS = [
   ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'], min: 720 }),
   // At night: the timeline under a night sky (forced: automatic follows the theme alone).
   ...pair("card-night", { tag: "scheduler-card", config: { illustration_theme: "night" }, now: at("23:10") }),
+  // show_condition_status (still: no pulse).
+  ...pair("card-conditions", {
+    tag: "scheduler-card",
+    config: { show_condition_status: true, condition_status_animation: false },
+    hass: CONDITIONS_HASS,
+  }),
   // Without the illustration.
   ...pair("card-classic", { tag: "scheduler-card", config: { illustration: false } }),
   // The mini card, and unfolded by its detail button.
@@ -38,6 +54,8 @@ export const GIFS = [
   ...pair("day-cycle"),
   // Today's timeline → a schedule's weekly grid → another schedule's tab → back.
   ...pair("view-switch"),
+  // show_condition_status: the dot of conditions met pulsing.
+  ...pair("condition-status"),
 ];
 
 export const FILES = [...SHOTS.map((s) => `${s.file}.png`), ...GIFS.map((g) => `${g.file}.gif`)];

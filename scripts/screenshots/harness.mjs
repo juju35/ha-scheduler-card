@@ -116,7 +116,7 @@ const PAGE_HASS = `window.__mockHass = (h) => {
 };`;
 
 // Creates the card in the page, then clicks each selector of `clicks` (a mouse click: no focus ring in the shot).
-export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks = [] }) =>
+export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks = [], hass: extra = {} }) =>
   page.evaluate(
     async ({ tag, config, hass, clicks }) => {
       const el = document.createElement(tag);
@@ -128,7 +128,7 @@ export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks =
         await new Promise((r) => setTimeout(r, 30));
       }
     },
-    { tag, config, hass: mockHass({ dark, now }), clicks },
+    { tag, config, hass: mockHass({ dark, now, ...extra }), clicks },
   );
 
 // Moves the page's clock and gives the card a hass of that moment (the sun's state follows).

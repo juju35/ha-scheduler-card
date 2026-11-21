@@ -7,7 +7,7 @@ import { copyFileSync, existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { cardClip, click, launch, mountCard, openPage, PERIOD, root, setClock } from "./harness.mjs";
-import { FULL, GIFS } from "./list.mjs";
+import { CONDITIONS_HASS, FULL, GIFS } from "./list.mjs";
 import { at } from "./mock.mjs";
 
 const FPS = 10;
@@ -76,6 +76,14 @@ for (const g of GIFS) {
       await setClock(page, at("00:00") + i * 30 * 60000, dark);
       await step(page, (i / frames) * PERIOD, 1e6);
     });
+  } else if (g.file.startsWith("condition-status")) {
+    // show_condition_status: the green dot of conditions met pulsing (one 1.8 s loop), next to waiting and skipped;
+    // the classic header, so that only the dot moves and the loop is seamless.
+    await mountCard(page, { tag: "scheduler-card", config: { show_condition_status: true, illustration: false }, dark, hass: CONDITIONS_HASS });
+    await page.waitForTimeout(300);
+    const clip = await cardClip(page, FULL);
+    const frames = Math.round(1.8 * FPS);
+    await record(page, dir, frames, clip, async (i) => step(page, (i / FPS) * 1000, 1e6));
   } else {
     // 12 s: the timeline, a click on the heating row, its tab bar to the garden lights, then back.
     await mountCard(page, { tag: "scheduler-card", config: {}, dark });

@@ -41,6 +41,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - Mini card: the same illustrated header (the next action on its sky), then the next actions of all your schedules (time, coloured icon, name, action), and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
 - Popups close with their button, a click anywhere else, Escape, or when the card leaves the page; the weekly grid folds back to today's timeline the same way
 - Filters by `tags` (also `none`, `enabled`, `disabled`), `exclude_tags` and `entities`, sorting with `sort_by`, custom `names`, disabled schedules hidden with `show_disabled: false`, read-only cards with `editable: false`
+- Whether a schedule will run with `show_condition_status: true`: the dot of its icon tells, for the slot running now (or else its next one), whether its conditions hold — green when they do, an amber hourglass when they don't but are tracked (the slot starts as soon as they hold), a red bar when they don't and the slot is skipped; its tooltip lists the conditions not met
 - One switch for all the card's schedules with `show_header_toggle: true`: on while any is enabled, a click from a mixed state disables them all, as Home Assistant's header toggles
 - The entities a new schedule can act on narrowed with `include` / `exclude`, and your own actions with `customize`, fixed or with `variables` (a number or a list chosen in the editor, merged into the action's data)
 - Conditions guided by their entity: its own entity filters (`condition_include` / `condition_exclude`, with `*` wildcards), a list of the entity's states shown in words (on/off, a select's options, zones, HVAC modes…) while the real state is saved, a number field with the entity's unit and range for numbers and below / above, a free value otherwise or with **Other value…**, and your own states with `condition_states`
@@ -125,6 +126,8 @@ sort_by: next
 show_disabled: true
 show_badges: true
 show_header_toggle: false
+show_condition_status: false
+condition_status_animation: true
 editable: true
 time_step: 15
 include:
@@ -188,6 +191,8 @@ zoom: true
 | `show_disabled` | both | `true` | Also show the disabled schedules (always last); `false` hides them |
 | `sort_by` | both | `name` | Order of the schedules: `name`, `next` (soonest next action first) or `state` (running first); disabled ones always last |
 | `show_badges` | both | `true` | The badges under each tile (sun, days, condition, dates, after the last slot); `false` hides them |
+| `show_condition_status` | both | `false` | The dot of each tile's icon tells whether the conditions of the slot running now, or else of the next one, hold: green (met), amber hourglass (not met, tracked: the slot waits and starts as soon as they hold) or red bar (not met, not tracked: the slot is skipped). As the Scheduler component: is / is not / below / above, all or any of them; an unavailable or unknown entity does not meet its condition. The tooltip lists the conditions not met. Without conditions on that slot, the dot stays as before. On the full card and the mini card's expanded view |
+| `condition_status_animation` | both | `true` | The green dot of conditions met pulses; `false` keeps it still (wall tablets). It stays still with `prefers-reduced-motion` too |
 | `show_header_toggle` | both | `false` | A switch under the header that enables or disables every schedule of the card's `tags`, `exclude_tags` and `entities` (disabled ones included, even hidden by `show_disabled: false`), and nothing else. On while any of them is enabled, as Home Assistant's header toggles: from a mixed state a click disables them all. Only their enabled state changes. On the full card and the mini card's expanded view |
 | `editable` | both | `true` | The **New schedule** button, the slot editor, the options and the clickable, draggable grid, and the switches; `false` for a read-only card (the switches are greyed) |
 | `time_step` | both | `15` | Minutes: the step of a dragged slot edge, of a split, and of the time fields |
@@ -276,6 +281,12 @@ Switching views: a click on a schedule opens its weekly grid, the tabs switch sc
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/view-switch.gif" alt="view switch animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/view-switch-dark.gif" alt="view switch animation, dark theme" width="400"> |
 
+Condition status (`show_condition_status: true`): the heating's conditions met (pulsing), the water heater waiting for its tracked condition, the garden lights skipped:
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/condition-status.gif" alt="condition status animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/condition-status-dark.gif" alt="condition status animation, dark theme" width="400"> |
+
 ### Scheduler Card
 
 Today's timeline:
@@ -319,6 +330,12 @@ At night (`illustration_theme: night`, or automatic with a dark theme):
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-night.png" alt="night illustration" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-night-dark.png" alt="night illustration, dark theme" width="400"> |
+
+Condition status: met, waiting, skipped:
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-conditions.png" alt="condition status" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-conditions-dark.png" alt="condition status, dark theme" width="400"> |
 
 Classic header (`illustration: false`):
 

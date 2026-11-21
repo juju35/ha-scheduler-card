@@ -130,8 +130,18 @@ const schedulesAt = (now) =>
 // The mock's sun: day between sunrise and sunset of the mock day.
 const sunState = (ms) => (localMin(ms) >= minutes(SUNRISE) && localMin(ms) < minutes(SUNSET) ? "above_horizon" : "below_horizon");
 
-export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: only, sun = true } = {}) => {
+// `values`: entity states to change ({ entity_id: state }); `conditions`: per schedule slug, conditions to put on
+// its slots and whether they are tracked ({ slug: { conditions?, track? } }), for the condition status capture.
+export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: only, sun = true, values = {}, conditions = null } = {}) => {
   const schedules = schedulesAt(now);
+  const items = conditions
+    ? ws.map((item) => {
+        const c = conditions[item.entity_id.replace("switch.schedule_", "")];
+        if (!c) return item;
+        const conds = c.conditions ?? item.timeslots[0]?.conditions ?? [];
+        return { ...item, timeslots: item.timeslots.map((ts) => ({ ...ts, conditions: conds, condition_type: conds.length ? "and" : null, track_conditions: !!c.track })) };
+      })
+    : ws;
   const states = { ...TARGETS, ...(only ? Object.fromEntries(Object.entries(schedules).filter(([id]) => only.includes(id))) : schedules) };
   states["binary_sensor.workday_sensor"] = st("binary_sensor.workday_sensor", "on", { workdays: ["mon", "tue", "wed", "thu", "fri"] });
   if (sun)
@@ -139,6 +149,7 @@ export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: 
       next_rising: `2026-06-16T${SUNRISE}:00+02:00`,
       next_setting: `2026-06-15T${SUNSET}:00+02:00`,
     });
+  for (const [id, value] of Object.entries(values)) states[id] = { ...states[id], state: value };
   return {
     states,
     entities: {},
@@ -147,6 +158,6 @@ export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: 
     config: { time_zone: TIME_ZONE, unit_system: { temperature: "°C" } },
     themes: { darkMode: dark },
     // The `scheduler` websocket command's answer (plain data: the harness wraps it in callWS).
-    _ws: ws,
+    _ws: items,
   };
 };
