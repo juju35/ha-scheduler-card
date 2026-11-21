@@ -34,6 +34,13 @@ test("the component's matches: is / not / below / above, an unavailable entity o
   assert.equal(sc.condMet(hass, { entity_id: "sensor.none", match_type: "not", value: "on" }), false);
 });
 
+test("#19: `attribute: \"state\"`, as the component stores it, reads the entity's state", () => {
+  const hass = { states: { "binary_sensor.home_day": { state: "on", attributes: {} }, "sensor.t": { state: "12", attributes: { state: "x" } } } };
+  assert.equal(sc.condMet(hass, { entity_id: "binary_sensor.home_day", attribute: "state", match_type: "is", value: "on" }), true);
+  assert.equal(sc.condMet(hass, { entity_id: "binary_sensor.home_day", attribute: "state", match_type: "not", value: "on" }), false);
+  assert.equal(sc.condMet(hass, { entity_id: "sensor.t", attribute: "state", match_type: "below", value: 15 }), true);
+});
+
 test("off by default: the tiles look as before", () => {
   assert.doesNotMatch(card().html(), /class="on cs/);
 });

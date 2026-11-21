@@ -4170,11 +4170,12 @@ const upcoming = (models, now, hass, n = 3) =>
     .slice(0, n);
 
 // Whether a condition of the scheduler component holds now: is / not / below / above, on the entity's state (or
-// its `attribute`). An unavailable or unknown entity, or a missing attribute, does not meet it.
+// its `attribute`; the component stores `attribute: "state"` for the state itself). An unavailable or unknown entity,
+// or a missing attribute, does not meet it.
 const condMet = (hass, c) => {
   const st = hass?.states?.[c?.entity_id];
   if (!st || st.state === "unavailable" || st.state === "unknown") return false;
-  const v = c.attribute ? st.attributes?.[c.attribute] : st.state;
+  const v = c.attribute && c.attribute !== "state" ? st.attributes?.[c.attribute] : st.state;
   if (v === undefined || v === null) return false;
   const n = Number(v);
   const want = Number(c.value);
