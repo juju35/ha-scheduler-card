@@ -180,6 +180,12 @@ const STRINGS = {
     err_condition: "Complete or remove each condition.",
     err_dates: "The end date must come after the start date.",
     show_badges: "Badges",
+    show_condition_status: "Condition status",
+    condition_status_animation: "Pulse when conditions are met",
+    cstat_met: "Conditions met",
+    cstat_wait: "Waiting for its conditions",
+    cstat_skip: "Skipped: conditions not met",
+    cstat_unavailable: "unavailable",
     sort_by: "Sort",
     sort_name: "Name",
     sort_next: "Next action",
@@ -339,6 +345,12 @@ const STRINGS = {
     err_condition: "Complétez ou retirez chaque condition.",
     err_dates: "La date de fin doit suivre la date de début.",
     show_badges: "Pastilles",
+    show_condition_status: "État des conditions",
+    condition_status_animation: "Pulsation quand les conditions sont remplies",
+    cstat_met: "Conditions remplies",
+    cstat_wait: "En attente de ses conditions",
+    cstat_skip: "Sauté : conditions non remplies",
+    cstat_unavailable: "indisponible",
     sort_by: "Tri",
     sort_name: "Nom",
     sort_next: "Prochaine action",
@@ -498,6 +510,12 @@ const STRINGS = {
     err_condition: "Jede Bedingung ausfüllen oder entfernen.",
     err_dates: "Das Enddatum muss nach dem Startdatum liegen.",
     show_badges: "Plaketten",
+    show_condition_status: "Bedingungsstatus",
+    condition_status_animation: "Pulsieren, wenn die Bedingungen erfüllt sind",
+    cstat_met: "Bedingungen erfüllt",
+    cstat_wait: "Wartet auf seine Bedingungen",
+    cstat_skip: "Übersprungen: Bedingungen nicht erfüllt",
+    cstat_unavailable: "nicht verfügbar",
     sort_by: "Sortierung",
     sort_name: "Name",
     sort_next: "Nächste Aktion",
@@ -657,6 +675,12 @@ const STRINGS = {
     err_condition: "Completa o quita cada condición.",
     err_dates: "La fecha de fin debe ser posterior a la de inicio.",
     show_badges: "Insignias",
+    show_condition_status: "Estado de las condiciones",
+    condition_status_animation: "Latido cuando se cumplen las condiciones",
+    cstat_met: "Condiciones cumplidas",
+    cstat_wait: "Esperando sus condiciones",
+    cstat_skip: "Omitido: condiciones no cumplidas",
+    cstat_unavailable: "no disponible",
     sort_by: "Orden",
     sort_name: "Nombre",
     sort_next: "Próxima acción",
@@ -818,6 +842,12 @@ const STRINGS = {
     err_condition: "Попуните или уклоните сваки услов.",
     err_dates: "Датум краја мора бити после датума почетка.",
     show_badges: "Значке",
+    show_condition_status: "Стање услова",
+    condition_status_animation: "Пулсирање када су услови испуњени",
+    cstat_met: "Услови испуњени",
+    cstat_wait: "Чека своје услове",
+    cstat_skip: "Прескочено: услови нису испуњени",
+    cstat_unavailable: "недоступно",
     sort_by: "Редослед",
     sort_name: "Назив",
     sort_next: "Следећа радња",
@@ -979,6 +1009,12 @@ const STRINGS = {
     err_condition: "Popunite ili uklonite svaki uslov.",
     err_dates: "Datum kraja mora biti posle datuma početka.",
     show_badges: "Značke",
+    show_condition_status: "Stanje uslova",
+    condition_status_animation: "Pulsiranje kada su uslovi ispunjeni",
+    cstat_met: "Uslovi ispunjeni",
+    cstat_wait: "Čeka svoje uslove",
+    cstat_skip: "Preskočeno: uslovi nisu ispunjeni",
+    cstat_unavailable: "nedostupno",
     sort_by: "Redosled",
     sort_name: "Naziv",
     sort_next: "Sledeća radnja",
@@ -1138,6 +1174,12 @@ const STRINGS = {
     err_condition: "Completa o rimuovi ogni condizione.",
     err_dates: "La data di fine deve seguire quella di inizio.",
     show_badges: "Badge",
+    show_condition_status: "Stato delle condizioni",
+    condition_status_animation: "Pulsazione quando le condizioni sono soddisfatte",
+    cstat_met: "Condizioni soddisfatte",
+    cstat_wait: "In attesa delle sue condizioni",
+    cstat_skip: "Saltato: condizioni non soddisfatte",
+    cstat_unavailable: "non disponibile",
     sort_by: "Ordine",
     sort_name: "Nome",
     sort_next: "Prossima azione",
@@ -1297,6 +1339,12 @@ const STRINGS = {
     err_condition: "Vul elke voorwaarde in of verwijder ze.",
     err_dates: "De einddatum moet na de begindatum liggen.",
     show_badges: "Badges",
+    show_condition_status: "Status van de voorwaarden",
+    condition_status_animation: "Pulseren als aan de voorwaarden is voldaan",
+    cstat_met: "Voorwaarden vervuld",
+    cstat_wait: "Wacht op zijn voorwaarden",
+    cstat_skip: "Overgeslagen: voorwaarden niet vervuld",
+    cstat_unavailable: "niet beschikbaar",
     sort_by: "Sorteren",
     sort_name: "Naam",
     sort_next: "Volgende actie",
@@ -1456,6 +1504,12 @@ const STRINGS = {
     err_condition: "Preencha ou remova cada condição.",
     err_dates: "A data de fim deve ser posterior à de início.",
     show_badges: "Distintivos",
+    show_condition_status: "Estado das condições",
+    condition_status_animation: "Pulsar quando as condições são cumpridas",
+    cstat_met: "Condições cumpridas",
+    cstat_wait: "À espera das suas condições",
+    cstat_skip: "Ignorado: condições não cumpridas",
+    cstat_unavailable: "indisponível",
     sort_by: "Ordenação",
     sort_name: "Nome",
     sort_next: "Próxima ação",
@@ -1619,6 +1673,12 @@ const STRINGS = {
     err_condition: "Uzupełnij lub usuń każdy warunek.",
     err_dates: "Data końcowa musi być po dacie początkowej.",
     show_badges: "Plakietki",
+    show_condition_status: "Stan warunków",
+    condition_status_animation: "Pulsowanie, gdy warunki są spełnione",
+    cstat_met: "Warunki spełnione",
+    cstat_wait: "Czeka na swoje warunki",
+    cstat_skip: "Pominięty: warunki niespełnione",
+    cstat_unavailable: "niedostępny",
     sort_by: "Sortowanie",
     sort_name: "Nazwa",
     sort_next: "Następna akcja",
@@ -1780,6 +1840,12 @@ const STRINGS = {
     err_condition: "Completează sau elimină fiecare condiție.",
     err_dates: "Data de sfârșit trebuie să fie după data de început.",
     show_badges: "Insigne",
+    show_condition_status: "Starea condițiilor",
+    condition_status_animation: "Pulsare când condițiile sunt îndeplinite",
+    cstat_met: "Condiții îndeplinite",
+    cstat_wait: "Își așteaptă condițiile",
+    cstat_skip: "Omis: condiții neîndeplinite",
+    cstat_unavailable: "indisponibil",
     sort_by: "Sortare",
     sort_name: "Nume",
     sort_next: "Următoarea acțiune",
@@ -1939,6 +2005,12 @@ const STRINGS = {
     err_condition: "Udfyld eller fjern hver betingelse.",
     err_dates: "Slutdatoen skal ligge efter startdatoen.",
     show_badges: "Mærker",
+    show_condition_status: "Status for betingelser",
+    condition_status_animation: "Puls, når betingelserne er opfyldt",
+    cstat_met: "Betingelser opfyldt",
+    cstat_wait: "Venter på sine betingelser",
+    cstat_skip: "Sprunget over: betingelser ikke opfyldt",
+    cstat_unavailable: "utilgængelig",
     sort_by: "Sortering",
     sort_name: "Navn",
     sort_next: "Næste handling",
@@ -2098,6 +2170,12 @@ const STRINGS = {
     err_condition: "Fyll i eller ta bort varje villkor.",
     err_dates: "Slutdatumet måste ligga efter startdatumet.",
     show_badges: "Märken",
+    show_condition_status: "Villkorsstatus",
+    condition_status_animation: "Pulsera när villkoren är uppfyllda",
+    cstat_met: "Villkor uppfyllda",
+    cstat_wait: "Väntar på sina villkor",
+    cstat_skip: "Hoppas över: villkor ej uppfyllda",
+    cstat_unavailable: "otillgänglig",
     sort_by: "Sortering",
     sort_name: "Namn",
     sort_next: "Nästa åtgärd",
@@ -2257,6 +2335,12 @@ const STRINGS = {
     err_condition: "Попълнете или премахнете всяко условие.",
     err_dates: "Крайната дата трябва да е след началната.",
     show_badges: "Значки",
+    show_condition_status: "Състояние на условията",
+    condition_status_animation: "Пулсиране при изпълнени условия",
+    cstat_met: "Условията са изпълнени",
+    cstat_wait: "Изчаква условията си",
+    cstat_skip: "Пропуснат: условията не са изпълнени",
+    cstat_unavailable: "недостъпно",
     sort_by: "Подреждане",
     sort_name: "Име",
     sort_next: "Следващо действие",
@@ -2420,6 +2504,12 @@ const STRINGS = {
     err_condition: "Заполните или удалите каждое условие.",
     err_dates: "Дата окончания должна быть позже даты начала.",
     show_badges: "Значки",
+    show_condition_status: "Состояние условий",
+    condition_status_animation: "Пульсация, когда условия выполнены",
+    cstat_met: "Условия выполнены",
+    cstat_wait: "Ожидает своих условий",
+    cstat_skip: "Пропущено: условия не выполнены",
+    cstat_unavailable: "недоступно",
     sort_by: "Сортировка",
     sort_name: "Название",
     sort_next: "Следующее действие",
@@ -2583,6 +2673,12 @@ const STRINGS = {
     err_condition: "Заповніть або видаліть кожну умову.",
     err_dates: "Дата завершення має бути пізніше дати початку.",
     show_badges: "Значки",
+    show_condition_status: "Стан умов",
+    condition_status_animation: "Пульсація, коли умови виконано",
+    cstat_met: "Умови виконано",
+    cstat_wait: "Очікує своїх умов",
+    cstat_skip: "Пропущено: умови не виконано",
+    cstat_unavailable: "недоступно",
     sort_by: "Сортування",
     sort_name: "Назва",
     sort_next: "Наступна дія",
@@ -2742,6 +2838,12 @@ const STRINGS = {
     err_condition: "Töltsön ki vagy távolítson el minden feltételt.",
     err_dates: "A záró dátumnak a kezdő dátum után kell lennie.",
     show_badges: "Jelvények",
+    show_condition_status: "Feltételek állapota",
+    condition_status_animation: "Pulzálás, ha a feltételek teljesülnek",
+    cstat_met: "Feltételek teljesülnek",
+    cstat_wait: "A feltételeire vár",
+    cstat_skip: "Kihagyva: a feltételek nem teljesülnek",
+    cstat_unavailable: "nem elérhető",
     sort_by: "Rendezés",
     sort_name: "Név",
     sort_next: "Következő művelet",
@@ -2905,6 +3007,12 @@ const STRINGS = {
     err_condition: "Vyplňte alebo odstráňte každú podmienku.",
     err_dates: "Dátum konca musí byť po dátume začiatku.",
     show_badges: "Odznaky",
+    show_condition_status: "Stav podmienok",
+    condition_status_animation: "Pulzovanie, keď sú podmienky splnené",
+    cstat_met: "Podmienky splnené",
+    cstat_wait: "Čaká na svoje podmienky",
+    cstat_skip: "Preskočené: podmienky nesplnené",
+    cstat_unavailable: "nedostupné",
     sort_by: "Zoradenie",
     sort_name: "Názov",
     sort_next: "Ďalšia akcia",
@@ -3068,6 +3176,12 @@ const STRINGS = {
     err_condition: "Vyplňte nebo odeberte každou podmínku.",
     err_dates: "Datum konce musí být po datu začátku.",
     show_badges: "Odznaky",
+    show_condition_status: "Stav podmínek",
+    condition_status_animation: "Pulzování, když jsou podmínky splněny",
+    cstat_met: "Podmínky splněny",
+    cstat_wait: "Čeká na své podmínky",
+    cstat_skip: "Přeskočeno: podmínky nesplněny",
+    cstat_unavailable: "nedostupné",
     sort_by: "Řazení",
     sort_name: "Název",
     sort_next: "Další akce",
@@ -3231,6 +3345,12 @@ const STRINGS = {
     err_condition: "Izpolnite ali odstranite vsak pogoj.",
     err_dates: "Končni datum mora biti po začetnem.",
     show_badges: "Značke",
+    show_condition_status: "Stanje pogojev",
+    condition_status_animation: "Utripanje, ko so pogoji izpolnjeni",
+    cstat_met: "Pogoji izpolnjeni",
+    cstat_wait: "Čaka na svoje pogoje",
+    cstat_skip: "Preskočeno: pogoji niso izpolnjeni",
+    cstat_unavailable: "ni na voljo",
     sort_by: "Razvrščanje",
     sort_name: "Ime",
     sort_next: "Naslednje dejanje",
@@ -3392,6 +3512,12 @@ const STRINGS = {
     err_condition: "Aizpildiet vai noņemiet katru nosacījumu.",
     err_dates: "Beigu datumam jābūt pēc sākuma datuma.",
     show_badges: "Žetoni",
+    show_condition_status: "Nosacījumu stāvoklis",
+    condition_status_animation: "Pulsēt, kad nosacījumi ir izpildīti",
+    cstat_met: "Nosacījumi izpildīti",
+    cstat_wait: "Gaida savus nosacījumus",
+    cstat_skip: "Izlaists: nosacījumi nav izpildīti",
+    cstat_unavailable: "nav pieejams",
     sort_by: "Kārtošana",
     sort_name: "Nosaukums",
     sort_next: "Nākamā darbība",
@@ -3551,6 +3677,12 @@ const STRINGS = {
     err_condition: "Συμπληρώστε ή αφαιρέστε κάθε συνθήκη.",
     err_dates: "Η ημερομηνία λήξης πρέπει να είναι μετά την έναρξη.",
     show_badges: "Σήματα",
+    show_condition_status: "Κατάσταση συνθηκών",
+    condition_status_animation: "Παλμός όταν πληρούνται οι συνθήκες",
+    cstat_met: "Οι συνθήκες πληρούνται",
+    cstat_wait: "Αναμένει τις συνθήκες του",
+    cstat_skip: "Παραλείφθηκε: οι συνθήκες δεν πληρούνται",
+    cstat_unavailable: "μη διαθέσιμο",
     sort_by: "Ταξινόμηση",
     sort_name: "Όνομα",
     sort_next: "Επόμενη ενέργεια",
@@ -3978,6 +4110,7 @@ const scheduleModel = (hass, config, id, tr, loc, item = null) => {
     current: num(a.current_slot),
     tags: Array.isArray(a.tags) ? a.tags : [],
     opts: item ? optionsOf(item) : null,
+    item,
     from: item?.start_date || null,
     to: item?.end_date || null,
   };
@@ -4035,6 +4168,37 @@ const upcoming = (models, now, hass, n = 3) =>
     .flatMap((m) => occurrences(m, now, hass).slice(0, n))
     .sort((a, b) => a.at - b.at || a.m.name.localeCompare(b.m.name))
     .slice(0, n);
+
+// Whether a condition of the scheduler component holds now: is / not / below / above, on the entity's state (or
+// its `attribute`). An unavailable or unknown entity, or a missing attribute, does not meet it.
+const condMet = (hass, c) => {
+  const st = hass?.states?.[c?.entity_id];
+  if (!st || st.state === "unavailable" || st.state === "unknown") return false;
+  const v = c.attribute ? st.attributes?.[c.attribute] : st.state;
+  if (v === undefined || v === null) return false;
+  const n = Number(v);
+  const want = Number(c.value);
+  const numeric = String(v).trim() !== "" && String(c.value ?? "").trim() !== "" && Number.isFinite(n) && Number.isFinite(want);
+  const same = numeric ? n === want : String(v) === String(c.value);
+  if (c.match_type === "not") return !same;
+  if (c.match_type === "below") return numeric && n < want;
+  if (c.match_type === "above") return numeric && n > want;
+  return same;
+};
+
+// The state of an enabled schedule's conditions (#17), for the slot running now or else its next one: `met`, or,
+// when they do not hold, `wait` (track_conditions: the slot starts as soon as they do) or `skip` (the slot is
+// skipped). Null without conditions on that slot, or without the full schedule. `failed`: the conditions not met.
+const condState = (hass, m, now) => {
+  if (!m.enabled || !m.item) return null;
+  const index = m.current ?? occurrences(m, now, hass)[0]?.slot.i;
+  const slot = Array.isArray(m.item.timeslots) ? m.item.timeslots[index] : null;
+  const conds = Array.isArray(slot?.conditions) ? slot.conditions.filter((c) => c?.entity_id) : [];
+  if (!conds.length) return null;
+  const failed = conds.filter((c) => !condMet(hass, c));
+  const met = slot.condition_type === "or" ? failed.length < conds.length : !failed.length;
+  return { state: met ? "met" : slot.track_conditions ? "wait" : "skip", failed, total: conds.length };
+};
 
 // The slots of a schedule on a day, with their spans.
 const daySegments = (m) => segmentsOf(m.slots, m.infos);
@@ -4671,6 +4835,14 @@ const STYLE = `
             box-shadow: 0 0 0 2px var(--secondary-background-color, #f1f1f1); }
   .row.enabled .ic .on { background: var(--sc-ok); }
   .row.active .ic .on { background: var(--c); }
+  .ic .on.cs { isolation: isolate; width: 14px; height: 14px; right: -3px; bottom: -3px; display: grid; place-items: center; }
+  .ic .on.cs svg { width: 12px; height: 12px; fill: none; stroke: #fff; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .row .ic .on.cs-met { background: var(--sc-ok); }
+  .row .ic .on.cs-wait { background: var(--sc-warn); }
+  .row .ic .on.cs-skip { background: var(--sc-danger); }
+  .ic .on.pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--sc-ok); animation: sc-ping 1.8s ease-out infinite; z-index: -1; }
+  @keyframes sc-ping { from { opacity: .7; transform: scale(1); } to { opacity: 0; transform: scale(2.1); } }
+  @media (prefers-reduced-motion: reduce) { .ic .on.pulse::after { animation: none; } }
   .row .txt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .row .nm { font-size: 14px; font-weight: 600; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row .stl { font-size: 12px; line-height: 1.25; color: var(--secondary-text-color); overflow-wrap: break-word; }
@@ -5085,8 +5257,18 @@ class SchedulerCard extends HTMLElement {
       h.states[WORKDAY_ENTITY],
       ...ids.map((id) => h.states[id]),
       ...targets.map((id) => h.states[id]),
+      // show_condition_status: the entities of the schedules' conditions too, so that the dots follow them.
+      ...(this._config?.show_condition_status ? this._condEntities().map((id) => h.states[id]) : []),
       Math.floor(this._nowMs() / 60000),
     ];
+  }
+
+  // The entities the conditions of the schedules read (from their full schedules), sorted.
+  _condEntities() {
+    const ids = new Set();
+    for (const item of this._items?.values?.() || [])
+      for (const ts of Array.isArray(item?.timeslots) ? item.timeslots : []) for (const c of Array.isArray(ts?.conditions) ? ts.conditions : []) if (c?.entity_id) ids.add(c.entity_id);
+    return [...ids].sort();
   }
 
   _update(sig) {
@@ -5395,13 +5577,36 @@ class SchedulerCard extends HTMLElement {
     return parts;
   }
 
+  // show_condition_status (#17): the icon's dot says whether the conditions of the slot running now (or the next one)
+  // hold — met (green, pulsing unless condition_status_animation: false), waiting (amber hourglass: tracked
+  // conditions, the slot starts once they hold) or skipped (red: the slot will not run). Its tooltip names the
+  // conditions not met.
+  _condDot(m, now) {
+    const cs = this._config.show_condition_status ? condState(this._hass, m, now) : null;
+    if (!cs) return { html: '<span class="on"></span>', text: "" };
+    const lines = [this._t(`cstat_${cs.state}`)];
+    for (const c of cs.failed) {
+      const st = this._hass.states[c.entity_id];
+      const label = this._condLabel({ entity: c.entity_id, match: MATCH_TYPES.includes(c.match_type) ? c.match_type : "is", value: c.value });
+      lines.push(`✗ ${label}${!st || st.state === "unavailable" || st.state === "unknown" ? ` (${this._t("cstat_unavailable")})` : ""}`);
+    }
+    const text = lines.join("\n");
+    const glyph = { met: "M4 7.3l2 2 4-4.3", wait: "M4.6 3.6h4.8M4.6 10.4h4.8M5.2 3.6c0 2 3.6 2.2 3.6 3.4s-3.6 1.4-3.6 3.4M8.8 3.6c0 2-3.6 2.2-3.6 3.4s3.6 1.4 3.6 3.4", skip: "M4.3 7h5.4" }[cs.state];
+    const pulse = cs.state === "met" && this._config.condition_status_animation !== false ? " pulse" : "";
+    return {
+      html: `<span class="on cs cs-${cs.state}${pulse}" title="${esc(text)}"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="${glyph}"/></svg></span>`,
+      text: lines[0],
+    };
+  }
+
   _row(m, now) {
     const active = m.enabled && m.current !== null;
-    const label = `${m.name}: ${this._stateLine(m, now)}`;
+    const dot = this._condDot(m, now);
+    const label = [`${m.name}: ${this._stateLine(m, now)}`, dot.text].filter(Boolean).join(" · ");
     return `<div class="row${active ? " active" : ""}${m.enabled ? " enabled" : ""}" role="button" tabindex="0" data-key="${esc(m.id)}" data-open="${esc(m.id)}"
         style="--c:${m.base}" aria-label="${esc(label)}">
       <div class="line">
-        <span class="ic"><ha-icon icon="${esc(m.icon)}"></ha-icon><span class="on"></span></span>
+        <span class="ic"><ha-icon icon="${esc(m.icon)}"></ha-icon>${dot.html}</span>
         <span class="txt"><span class="nm">${esc(m.name)}</span><span class="stl">${esc(this._stateLine(m, now))}</span></span>
         <ha-switch data-toggle="${esc(m.id)}"${m.enabled ? " checked" : ""}${this._config.editable === false ? " disabled" : ""} aria-label="${esc(m.name)}"></ha-switch>
       </div>
@@ -6654,7 +6859,7 @@ class SchedulerMiniCard extends SchedulerCard {
 // ---------------------------------------------------------------------------
 
 // Options on by default (left out of the YAML while on).
-const ON_BY_DEFAULT = ["illustration", "show_disabled", "editable", "show_badges", "zoom"];
+const ON_BY_DEFAULT = ["illustration", "show_disabled", "editable", "show_badges", "zoom", "condition_status_animation"];
 const LANGUAGES = [
   ["en", "English"], ["fr", "Français"], ["de", "Deutsch"], ["es", "Español"], ["sr", "Српски"], ["sr-Latn", "Srpski (latinica)"],
   ["it", "Italiano"], ["nl", "Nederlands"], ["pt", "Português (Portugal)"], ["pl", "Polski"], ["ro", "Română"], ["da", "Dansk"],
@@ -6690,7 +6895,7 @@ class SchedulerCardEditor extends HTMLElement {
 
   _schema() {
     const tr = (k) => t(this._hass, this._config, k);
-    const toggles = ["illustration", "show_disabled", "editable", "show_badges", "show_header_toggle"];
+    const toggles = ["illustration", "show_disabled", "editable", "show_badges", "show_header_toggle", "show_condition_status", "condition_status_animation"];
     if (this.constructor.mini) toggles.push("zoom");
     const grid = [
       {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.0 - 2026-11-21
+
+### Features
+- **Condition status** (#17): with `show_condition_status: true` (also in the visual editor), the dot of each tile's icon tells whether the conditions of the slot running now (or else the next one) hold — green when they do, an amber hourglass when they don't but are tracked (the slot waits and starts as soon as they hold), a red bar when they don't and the slot is skipped. Evaluated as the Scheduler component does (is / is not / below / above, all or any of them; an unavailable entity does not meet its condition), again whenever one of their entities changes. The tooltip lists the conditions not met. The green dot pulses; `condition_status_animation: false` keeps it still. Off by default: the tiles look as before.
+
+### Maintenance
+- New captures: the condition status (still and GIF of the pulse); the screenshot mock takes entity values and conditions per schedule.
+
 ## 1.6.0 - 2026-11-20
 
 ### Features
