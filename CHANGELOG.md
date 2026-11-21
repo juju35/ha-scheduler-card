@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.1 - 2026-11-21
+
+### Fixes
+- **Condition status** (#19): a condition stored with `attribute: "state"` — as the Scheduler component stores every condition on an entity's state — was read as an attribute named `state`, which does not exist, so every condition counted as not met (never a green dot, all conditions listed in the tooltip). `attribute: "state"` now means the entity's state, as in the component.
+
 ## 1.7.0 - 2026-11-21
 
 ### Features
