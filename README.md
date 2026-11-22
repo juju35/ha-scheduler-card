@@ -29,13 +29,13 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 - The round header icon shows the **status** by its colour: teal while a schedule is running, grey when idle, amber when no schedule matches the card's filters
 - **Today's timeline**: enabled / disabled chips, then one tile per schedule with
   - the icon of the entity it acts on in a round tinted badge (grey when disabled), and a status dot: green when enabled, the schedule's colour while a slot runs, grey when disabled
-  - its name and a state line: « 20 °C now · 17 °C at 22:30 », « Off · on at 18:00 », « Open · close at 18:45 », « Done today · next 02:00 », « Disabled »
+  - its name and a state line: « 20 °C now · 17 °C at 22:30 », « Off · on at 18:00 », « Open · close at 18:45 », « Done today · next 02:00 », « Disabled »; with `show_entities: true`, the names of the entities it acts on under it
   - Home Assistant's own **switch** to enable or disable it
   - a **0–24 h bar** of today's slots and a "now" marker
   - **badges**: a time relative to the sun (« Sunset −00:30 »), workdays or weekend, its first condition (« Family is Home »), its dates (« Until Dec 31 », « Dec 20 → Jan 4 ») and what happens after its last slot (« Once · then stop »); a schedule starting later reads « Starts Sun, Dec 20 » (`show_badges: false` hides the badges)
 - A tinted **New schedule** button: name, **time slots or a single time** (« turn off at 23:00 »), one entity or **several of the same kind**, action, start and end (fixed or **relative to sunrise / sunset**), days, and an **Options** tab; created with `scheduler.add`
 - Click a schedule for its **weekly grid**: text tabs to switch schedule, rows Monday to Sunday with the slots as **blocks labelled with their value**, today highlighted with a "now" marker, the value that covers the rest of the day drawn as the background (« 17 °C (default) »), a legend and the **weekly total** (« 20 °C 35 h / week »)
-- **Slot editor** in a popup at the top of the card: start and end, each a fixed time or an offset **before / after sunrise or sunset** (with today's time), action, and days as **Every day / Workdays / Weekend** (the Workday sensor's, holidays skipped) or chosen days; saved with `scheduler.edit`; click an empty spot of the grid (or **Add slot**) to add a slot at that hour; **Split** a slot in two or **Merge** it with the next one; overlapping slots are refused, the last slot's deletion removes the schedule after a confirmation
+- **Slot editor** in a popup at the top of the card: the schedule's **entities** (name and icon), with a **Change** button to pick others of the same kind (applied to every slot); start and end, each a fixed time or an offset **before / after sunrise or sunset** (with today's time), action — **entity by entity** when the slot's entities do not share the same action (« Garden lights · On 100 % », « Terrace wall light · On 15 % ») — and days as **Every day / Workdays / Weekend** (the Workday sensor's, holidays skipped) or chosen days; saved with `scheduler.edit`; click an empty spot of the grid (or **Add slot**) to add a slot at that hour; **Split** a slot in two or **Merge** it with the next one; overlapping slots are refused, the last slot's deletion removes the schedule after a confirmation
 - **Options** of a schedule (a tab of the slot editor, or the **Options** button of the weekly grid): its **name** and **tags**, **conditions** on other entities (is / is not / below / above, all or any of them, optionally re-checked as soon as they change), a **period** between two dates, and **after the last slot**: repeat, stop (disable it) or delete it; and **Duplicate** (`scheduler.copy`)
 - **Drag the edges** of a slot on the weekly grid to move its start or end, by the time step (`time_step`, 15 min by default)
 - Mini card: the same illustrated header (the next action on its sky), then the next actions of all your schedules (time, coloured icon, name, action), and a detail button at the top right that unfolds the full card; a click anywhere outside the card folds it back
@@ -128,6 +128,7 @@ show_badges: true
 show_header_toggle: false
 show_condition_status: false
 condition_status_animation: true
+show_entities: false
 editable: true
 time_step: 15
 include:
@@ -193,6 +194,7 @@ zoom: true
 | `show_badges` | both | `true` | The badges under each tile (sun, days, condition, dates, after the last slot); `false` hides them |
 | `show_condition_status` | both | `false` | The dot of each tile's icon tells whether the conditions of the slot running now, or else of the next one, hold: green (met), amber hourglass (not met, tracked: the slot waits and starts as soon as they hold) or red bar (not met, not tracked: the slot is skipped). As the Scheduler component: is / is not / below / above, all or any of them; an unavailable or unknown entity does not meet its condition. The tooltip lists the conditions not met. Without conditions on that slot, the dot stays as before. On the full card and the mini card's expanded view |
 | `condition_status_animation` | both | `true` | The green dot of conditions met pulses; `false` keeps it still (wall tablets). It stays still with `prefers-reduced-motion` too |
+| `show_entities` | both | `false` | The names of the entities each schedule acts on, under its tile's state line. On the full card and the mini card's expanded view |
 | `show_header_toggle` | both | `false` | A switch under the header that enables or disables every schedule of the card's `tags`, `exclude_tags` and `entities` (disabled ones included, even hidden by `show_disabled: false`), and nothing else. On while any of them is enabled, as Home Assistant's header toggles: from a mixed state a click disables them all. Only their enabled state changes. On the full card and the mini card's expanded view |
 | `editable` | both | `true` | The **New schedule** button, the slot editor, the options and the clickable, draggable grid, and the switches; `false` for a read-only card (the switches are greyed) |
 | `time_step` | both | `15` | Minutes: the step of a dragged slot edge, of a split, and of the time fields |
@@ -307,6 +309,13 @@ Slot editor, at the top of the card:
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit.png" alt="slot editor" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-dark.png" alt="slot editor, dark theme" width="400"> |
 
+A schedule on two lights with their own brightness: its entities above the times, with the picker opened by **Change**, and the slot's action entity by entity:
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-entities.png" alt="entities in the slot editor" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-entities-dark.png" alt="entities in the slot editor, dark theme" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-actions.png" alt="actions entity by entity" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-edit-actions-dark.png" alt="actions entity by entity, dark theme" width="400"> |
+
 A slot starting after sunrise, with today's time, and the day presets:
 
 | Light | Dark |
@@ -336,6 +345,12 @@ Condition status: met, waiting, skipped:
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-conditions.png" alt="condition status" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-conditions-dark.png" alt="condition status, dark theme" width="400"> |
+
+The entities of each schedule under its state line (`show_entities: true`):
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-entities.png" alt="entities on the tiles" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/screenshots/card-entities-dark.png" alt="entities on the tiles, dark theme" width="400"> |
 
 Classic header (`illustration: false`):
 
@@ -371,7 +386,7 @@ The state line tells what runs now and what comes next: the value of the running
 
 ### Editing
 
-Before editing, the card reads the full schedule (actions with their entities and data, conditions, dates) with the `scheduler` websocket command (to find it by entity) and `scheduler/item`. Saving sends the whole list of slots back with `scheduler.edit`, sorted by start, with the conditions and the start and end dates of the schedule unchanged; times relative to the sun stay as they are unless you change them. The days apply to the whole schedule, as in the Scheduler component; a workday or weekend schedule keeps that setting while its days are unchanged. A new schedule is created with `scheduler.add` (repeating, with the card's `tags`); deleting a schedule's last slot removes the schedule with `scheduler.remove`.
+Before editing, the card reads the full schedule (actions with their entities and data, conditions, dates) with the `scheduler` websocket command (to find it by entity) and `scheduler/item`. Saving sends the whole list of slots back with `scheduler.edit`, sorted by start, with the conditions and the start and end dates of the schedule unchanged; times relative to the sun stay as they are unless you change them. An action you leave untouched is sent back exactly as it was read, so a slot driving several entities with different data keeps each of them; such a slot is edited entity by entity. Other entities (of the same kind, so that the actions stay valid) replace the old ones in every slot: a kept entity keeps its own action, an added one takes the action of the slot's first entity — the schedule, its entity, conditions, tags and dates stay the same. The days apply to the whole schedule, as in the Scheduler component; a workday or weekend schedule keeps that setting while its days are unchanged. A new schedule is created with `scheduler.add` (repeating, with the card's `tags`); deleting a schedule's last slot removes the schedule with `scheduler.remove`.
 
 ### Illustration
 

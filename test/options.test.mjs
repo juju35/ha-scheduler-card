@@ -89,7 +89,7 @@ test("the entities a new schedule can act on: include / exclude by id or domain;
   const h = hassWith();
   assert.ok(sc.pickable(h, {}).includes("light.garden"));
   assert.ok(!sc.pickable(h, {}).some((id) => id.startsWith("switch.schedule_")));
-  eq(sc.pickable(h, { include: ["light", "climate.bedroom"] }), ["climate.bedroom", "light.garden"]);
+  eq(sc.pickable(h, { include: ["light", "climate.bedroom"] }), ["climate.bedroom", "light.garden", "light.porch", "light.terrace"]);
   assert.ok(!sc.pickable(h, { exclude: "climate" }).some((id) => id.startsWith("climate.")));
   const custom = { customize: { "light.garden": [{ name: "Dim", service: "light.turn_on", service_data: { brightness_pct: 20 } }], light: [{ service: "light.toggle" }, { name: "bad" }] } };
   eq(sc.customActions(custom, "light.garden"), [

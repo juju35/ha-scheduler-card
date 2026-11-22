@@ -245,6 +245,9 @@ const STRINGS = {
     kind_single_hint: "One action at a set time, e.g. turn off at 23:00.",
     entities: "Entities",
     add_entity: "Add an entity of the same kind",
+    change_entities: "Change",
+    entities_note: "They apply to the whole schedule, like the days.",
+    show_entities: "Entities on the tiles",
     err_condition: "Complete or remove each condition.",
     err_dates: "The end date must come after the start date.",
     show_badges: "Badges",
@@ -410,6 +413,9 @@ const STRINGS = {
     kind_single_hint: "Une action à une heure donnée, par ex. éteindre à 23:00.",
     entities: "Entités",
     add_entity: "Ajouter une entité du même type",
+    change_entities: "Modifier",
+    entities_note: "Elles s'appliquent à tout le planning, comme les jours.",
+    show_entities: "Entités sur les tuiles",
     err_condition: "Complétez ou retirez chaque condition.",
     err_dates: "La date de fin doit suivre la date de début.",
     show_badges: "Pastilles",
@@ -575,6 +581,9 @@ const STRINGS = {
     kind_single_hint: "Eine Aktion zu einer festen Uhrzeit, z. B. um 23:00 ausschalten.",
     entities: "Entitäten",
     add_entity: "Entität derselben Art hinzufügen",
+    change_entities: "Ändern",
+    entities_note: "Sie gelten für den ganzen Zeitplan, wie die Tage.",
+    show_entities: "Entitäten auf den Kacheln",
     err_condition: "Jede Bedingung ausfüllen oder entfernen.",
     err_dates: "Das Enddatum muss nach dem Startdatum liegen.",
     show_badges: "Plaketten",
@@ -740,6 +749,9 @@ const STRINGS = {
     kind_single_hint: "Una acción a una hora fija, p. ej. apagar a las 23:00.",
     entities: "Entidades",
     add_entity: "Añadir una entidad del mismo tipo",
+    change_entities: "Cambiar",
+    entities_note: "Se aplican a toda la programación, como los días.",
+    show_entities: "Entidades en los mosaicos",
     err_condition: "Completa o quita cada condición.",
     err_dates: "La fecha de fin debe ser posterior a la de inicio.",
     show_badges: "Insignias",
@@ -907,6 +919,9 @@ const STRINGS = {
     kind_single_hint: "Једна радња у задато време, нпр. искључи у 23:00.",
     entities: "Ентитети",
     add_entity: "Додај ентитет исте врсте",
+    change_entities: "Измени",
+    entities_note: "Важе за цео распоред, као и дани.",
+    show_entities: "Ентитети на плочицама",
     err_condition: "Попуните или уклоните сваки услов.",
     err_dates: "Датум краја мора бити после датума почетка.",
     show_badges: "Значке",
@@ -1074,6 +1089,9 @@ const STRINGS = {
     kind_single_hint: "Jedna radnja u zadato vreme, npr. isključi u 23:00.",
     entities: "Entiteti",
     add_entity: "Dodaj entitet iste vrste",
+    change_entities: "Izmeni",
+    entities_note: "Važe za ceo raspored, kao i dani.",
+    show_entities: "Entiteti na pločicama",
     err_condition: "Popunite ili uklonite svaki uslov.",
     err_dates: "Datum kraja mora biti posle datuma početka.",
     show_badges: "Značke",
@@ -1239,6 +1257,9 @@ const STRINGS = {
     kind_single_hint: "Un’azione a un’ora fissa, es. spegnere alle 23:00.",
     entities: "Entità",
     add_entity: "Aggiungi un’entità dello stesso tipo",
+    change_entities: "Modifica",
+    entities_note: "Si applicano a tutta la programmazione, come i giorni.",
+    show_entities: "Entità sui riquadri",
     err_condition: "Completa o rimuovi ogni condizione.",
     err_dates: "La data di fine deve seguire quella di inizio.",
     show_badges: "Badge",
@@ -1404,6 +1425,9 @@ const STRINGS = {
     kind_single_hint: "Eén actie op een vast tijdstip, bijv. uitschakelen om 23:00.",
     entities: "Entiteiten",
     add_entity: "Entiteit van dezelfde soort toevoegen",
+    change_entities: "Wijzigen",
+    entities_note: "Ze gelden voor het hele schema, net als de dagen.",
+    show_entities: "Entiteiten op de tegels",
     err_condition: "Vul elke voorwaarde in of verwijder ze.",
     err_dates: "De einddatum moet na de begindatum liggen.",
     show_badges: "Badges",
@@ -1569,6 +1593,9 @@ const STRINGS = {
     kind_single_hint: "Uma ação a uma hora fixa, p. ex. desligar às 23:00.",
     entities: "Entidades",
     add_entity: "Adicionar entidade do mesmo tipo",
+    change_entities: "Alterar",
+    entities_note: "Aplicam-se a todo o agendamento, tal como os dias.",
+    show_entities: "Entidades nos mosaicos",
     err_condition: "Preencha ou remova cada condição.",
     err_dates: "A data de fim deve ser posterior à de início.",
     show_badges: "Distintivos",
@@ -1738,6 +1765,9 @@ const STRINGS = {
     kind_single_hint: "Jedna akcja o stałej godzinie, np. wyłącz o 23:00.",
     entities: "Encje",
     add_entity: "Dodaj encję tego samego rodzaju",
+    change_entities: "Zmień",
+    entities_note: "Dotyczą całego harmonogramu, tak jak dni.",
+    show_entities: "Encje na kafelkach",
     err_condition: "Uzupełnij lub usuń każdy warunek.",
     err_dates: "Data końcowa musi być po dacie początkowej.",
     show_badges: "Plakietki",
@@ -1905,6 +1935,9 @@ const STRINGS = {
     kind_single_hint: "O acțiune la o oră fixă, de ex. oprire la 23:00.",
     entities: "Entități",
     add_entity: "Adaugă o entitate de același tip",
+    change_entities: "Modifică",
+    entities_note: "Se aplică întregii programări, ca și zilele.",
+    show_entities: "Entități pe plăci",
     err_condition: "Completează sau elimină fiecare condiție.",
     err_dates: "Data de sfârșit trebuie să fie după data de început.",
     show_badges: "Insigne",
@@ -2070,6 +2103,9 @@ const STRINGS = {
     kind_single_hint: "Én handling på et fast tidspunkt, f.eks. sluk kl. 23:00.",
     entities: "Enheder",
     add_entity: "Tilføj en enhed af samme type",
+    change_entities: "Skift",
+    entities_note: "De gælder for hele tidsplanen, ligesom dagene.",
+    show_entities: "Enheder på fliserne",
     err_condition: "Udfyld eller fjern hver betingelse.",
     err_dates: "Slutdatoen skal ligge efter startdatoen.",
     show_badges: "Mærker",
@@ -2235,6 +2271,9 @@ const STRINGS = {
     kind_single_hint: "En åtgärd vid en fast tid, t.ex. stäng av kl. 23:00.",
     entities: "Entiteter",
     add_entity: "Lägg till en entitet av samma typ",
+    change_entities: "Ändra",
+    entities_note: "De gäller för hela schemat, liksom dagarna.",
+    show_entities: "Entiteter på rutorna",
     err_condition: "Fyll i eller ta bort varje villkor.",
     err_dates: "Slutdatumet måste ligga efter startdatumet.",
     show_badges: "Märken",
@@ -2400,6 +2439,9 @@ const STRINGS = {
     kind_single_hint: "Едно действие в определен час, напр. изключване в 23:00.",
     entities: "Обекти",
     add_entity: "Добави обект от същия вид",
+    change_entities: "Промени",
+    entities_note: "Важат за целия график, както и дните.",
+    show_entities: "Обекти в плочките",
     err_condition: "Попълнете или премахнете всяко условие.",
     err_dates: "Крайната дата трябва да е след началната.",
     show_badges: "Значки",
@@ -2569,6 +2611,9 @@ const STRINGS = {
     kind_single_hint: "Одно действие в заданное время, напр. выключить в 23:00.",
     entities: "Объекты",
     add_entity: "Добавить объект того же типа",
+    change_entities: "Изменить",
+    entities_note: "Они применяются ко всему расписанию, как и дни.",
+    show_entities: "Объекты на плитках",
     err_condition: "Заполните или удалите каждое условие.",
     err_dates: "Дата окончания должна быть позже даты начала.",
     show_badges: "Значки",
@@ -2738,6 +2783,9 @@ const STRINGS = {
     kind_single_hint: "Одна дія в заданий час, напр. вимкнути о 23:00.",
     entities: "Об’єкти",
     add_entity: "Додати об’єкт того ж типу",
+    change_entities: "Змінити",
+    entities_note: "Вони застосовуються до всього розкладу, як і дні.",
+    show_entities: "Об'єкти на плитках",
     err_condition: "Заповніть або видаліть кожну умову.",
     err_dates: "Дата завершення має бути пізніше дати початку.",
     show_badges: "Значки",
@@ -2903,6 +2951,9 @@ const STRINGS = {
     kind_single_hint: "Egy művelet adott időben, pl. kikapcsolás 23:00-kor.",
     entities: "Entitások",
     add_entity: "Azonos fajtájú entitás hozzáadása",
+    change_entities: "Módosítás",
+    entities_note: "A teljes ütemezésre vonatkoznak, mint a napok.",
+    show_entities: "Entitások a csempéken",
     err_condition: "Töltsön ki vagy távolítson el minden feltételt.",
     err_dates: "A záró dátumnak a kezdő dátum után kell lennie.",
     show_badges: "Jelvények",
@@ -3072,6 +3123,9 @@ const STRINGS = {
     kind_single_hint: "Jedna akcia v pevnom čase, napr. vypnúť o 23:00.",
     entities: "Entity",
     add_entity: "Pridať entitu rovnakého druhu",
+    change_entities: "Zmeniť",
+    entities_note: "Platia pre celý plán, rovnako ako dni.",
+    show_entities: "Entity na dlaždiciach",
     err_condition: "Vyplňte alebo odstráňte každú podmienku.",
     err_dates: "Dátum konca musí byť po dátume začiatku.",
     show_badges: "Odznaky",
@@ -3241,6 +3295,9 @@ const STRINGS = {
     kind_single_hint: "Jedna akce v pevný čas, např. vypnout ve 23:00.",
     entities: "Entity",
     add_entity: "Přidat entitu stejného druhu",
+    change_entities: "Změnit",
+    entities_note: "Platí pro celý plán, stejně jako dny.",
+    show_entities: "Entity na dlaždicích",
     err_condition: "Vyplňte nebo odeberte každou podmínku.",
     err_dates: "Datum konce musí být po datu začátku.",
     show_badges: "Odznaky",
@@ -3410,6 +3467,9 @@ const STRINGS = {
     kind_single_hint: "Eno dejanje ob določenem času, npr. izklop ob 23:00.",
     entities: "Entitete",
     add_entity: "Dodaj entiteto iste vrste",
+    change_entities: "Spremeni",
+    entities_note: "Veljajo za ves urnik, tako kot dnevi.",
+    show_entities: "Entitete na ploščicah",
     err_condition: "Izpolnite ali odstranite vsak pogoj.",
     err_dates: "Končni datum mora biti po začetnem.",
     show_badges: "Značke",
@@ -3577,6 +3637,9 @@ const STRINGS = {
     kind_single_hint: "Viena darbība noteiktā laikā, piem., izslēgt 23:00.",
     entities: "Entītijas",
     add_entity: "Pievienot tāda paša veida entītiju",
+    change_entities: "Mainīt",
+    entities_note: "Tās attiecas uz visu grafiku, tāpat kā dienas.",
+    show_entities: "Entītijas uz flīzēm",
     err_condition: "Aizpildiet vai noņemiet katru nosacījumu.",
     err_dates: "Beigu datumam jābūt pēc sākuma datuma.",
     show_badges: "Žetoni",
@@ -3742,6 +3805,9 @@ const STRINGS = {
     kind_single_hint: "Μία ενέργεια σε σταθερή ώρα, π.χ. απενεργοποίηση στις 23:00.",
     entities: "Οντότητες",
     add_entity: "Προσθήκη οντότητας ίδιου είδους",
+    change_entities: "Αλλαγή",
+    entities_note: "Ισχύουν για όλο το πρόγραμμα, όπως οι ημέρες.",
+    show_entities: "Οντότητες στα πλακίδια",
     err_condition: "Συμπληρώστε ή αφαιρέστε κάθε συνθήκη.",
     err_dates: "Η ημερομηνία λήξης πρέπει να είναι μετά την έναρξη.",
     show_badges: "Σήματα",
@@ -4309,6 +4375,26 @@ const cleanSlot = (s) => {
     return o;
   });
   return out;
+};
+
+// The entities a schedule acts on (#23): the `entity_id` of every slot's actions, in their order, without repeats.
+const scheduleEntities = (item) => {
+  const out = [];
+  for (const ts of Array.isArray(item?.timeslots) ? item.timeslots : [])
+    for (const a of Array.isArray(ts?.actions) ? ts.actions : []) if (a?.entity_id && !out.includes(a.entity_id)) out.push(a.entity_id);
+  return out;
+};
+
+// A slot's actions on the schedule's new entities `ents` (#23; `prev`: its entities before): each kept entity keeps
+// its own action, an added one takes the action of the slot's first entity (a slot that acted on only some of the
+// entities keeps acting on those); actions without an entity are kept as they are.
+const remapActions = (actions, ents, prev = []) => {
+  const list = Array.isArray(actions) ? actions : [];
+  const withId = list.filter((a) => a?.entity_id);
+  if (!withId.length || !ents.length) return list;
+  const byId = new Map(withId.map((a) => [a.entity_id, a]));
+  const kept = ents.filter((id) => byId.has(id) || !prev.includes(id));
+  return [...(kept.length ? kept : ents).map((id) => byId.get(id) || { ...withId[0], entity_id: id }), ...list.filter((a) => !a?.entity_id)];
 };
 
 // A timeslot's start and end (minutes; an end at midnight closes the day; null without an end).
@@ -4916,6 +5002,7 @@ const STYLE = `
   .row .nm { font-size: 14px; font-weight: 600; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row .stl { font-size: 12px; line-height: 1.25; color: var(--secondary-text-color); overflow-wrap: break-word; }
   .row.active .stl { color: color-mix(in srgb, var(--c) 60%, var(--primary-text-color, #212121)); }
+  .row .ens { font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row ha-switch { flex: none; }
   .bar { position: relative; margin-left: 50px; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--sc-na) 22%, transparent); }
   .bar .s { position: absolute; top: 0; height: 8px; border-radius: 4px; background: var(--b); }
@@ -5001,6 +5088,16 @@ const STYLE = `
   .pair input, .pair select { flex: 1 1 0; }
   .pair .u { flex: none; color: var(--secondary-text-color); }
   .note { font-size: 12px; color: var(--secondary-text-color); }
+  /* The schedule's entities above the times, and the actions entity by entity (#23). */
+  .ents-h { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+  .ents-h .ents { flex: 1 1 auto; min-width: 0; }
+  .ents-h .chg { flex: none; }
+  .pes { gap: 8px; }
+  .pe { display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 10px; min-width: 0;
+        background: color-mix(in srgb, var(--secondary-text-color) 7%, transparent); }
+  .pe-h { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 600; }
+  .pe-h ha-icon { --mdc-icon-size: 18px; color: var(--secondary-text-color); flex: none; }
+  .pe-h .en { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .err { font-size: 12px; color: color-mix(in srgb, var(--sc-danger) 60%, var(--primary-text-color, #212121)); }
   .dayset { display: flex; flex-wrap: wrap; gap: 4px; }
   .dt { all: unset; cursor: pointer; box-sizing: border-box; min-width: 34px; padding: 3px 7px; border-radius: 999px; text-align: center; font-size: 12px;
@@ -5671,12 +5768,14 @@ class SchedulerCard extends HTMLElement {
   _row(m, now) {
     const active = m.enabled && m.current !== null;
     const dot = this._condDot(m, now);
-    const label = [`${m.name}: ${this._stateLine(m, now)}`, dot.text].filter(Boolean).join(" · ");
+    // show_entities (#23): the names of the entities the schedule acts on, under its state line.
+    const ents = this._config.show_entities ? m.entities.map((id) => this._entityName(id)).join(", ") : "";
+    const label = [`${m.name}: ${this._stateLine(m, now)}`, ents, dot.text].filter(Boolean).join(" · ");
     return `<div class="row${active ? " active" : ""}${m.enabled ? " enabled" : ""}" role="button" tabindex="0" data-key="${esc(m.id)}" data-open="${esc(m.id)}"
         style="--c:${m.base}" aria-label="${esc(label)}">
       <div class="line">
         <span class="ic"><ha-icon icon="${esc(m.icon)}"></ha-icon>${dot.html}</span>
-        <span class="txt"><span class="nm">${esc(m.name)}</span><span class="stl">${esc(this._stateLine(m, now))}</span></span>
+        <span class="txt"><span class="nm">${esc(m.name)}</span><span class="stl">${esc(this._stateLine(m, now))}</span>${ents ? `<span class="ens">${esc(ents)}</span>` : ""}</span>
         <ha-switch data-toggle="${esc(m.id)}"${m.enabled ? " checked" : ""}${this._config.editable === false ? " disabled" : ""} aria-label="${esc(m.name)}"></ha-switch>
       </div>
       <div class="bar">${this._todayBits(m, now)}<span class="now" style="left:${((now.min / DAY) * 100).toFixed(2)}%"></span></div>
@@ -5989,28 +6088,32 @@ class SchedulerCard extends HTMLElement {
       .join("")}</select>`;
   }
 
-  _valueInput(opt, value, vals = {}) {
-    if (opt?.vars) return opt.vars.map((x, k) => this._varInput(x, k, vals?.[x.field])).join("");
+  // `pe`: the index of the entity whose action this is (#23), when the slot is edited entity by entity.
+  _valueInput(opt, value, vals = {}, pe = null) {
+    if (opt?.vars) return opt.vars.map((x, k) => this._varInput(x, k, vals?.[x.field], pe)).join("");
     if (!opt?.input) return "";
     const i = opt.input;
-    return `<label for="sc-val">${esc(this._t(i.field === "temperature" ? "act_temperature" : i.field === "position" ? "act_position" : "act_value"))}</label>
-      <div class="pair"><input id="sc-val" type="number" data-field="value" min="${i.min}" max="${i.max}" step="${i.step}" value="${esc(value ?? "")}">${i.unit ? `<span class="u">${esc(i.unit)}</span>` : ""}</div>`;
+    const id = pe === null ? "sc-val" : `sc-val-${pe}`;
+    const at = pe === null ? "" : ` data-pe="${pe}"`;
+    return `<label for="${id}">${esc(this._t(i.field === "temperature" ? "act_temperature" : i.field === "position" ? "act_position" : "act_value"))}</label>
+      <div class="pair"><input id="${id}" type="number" data-field="value"${at} min="${i.min}" max="${i.max}" step="${i.step}" value="${esc(value ?? "")}">${i.unit ? `<span class="u">${esc(i.unit)}</span>` : ""}</div>`;
   }
 
   // The field of a custom action's variable: a list of its options, or a number with its unit and range.
-  _varInput(x, k, value) {
-    const id = `sc-var${k}`;
+  _varInput(x, k, value, pe = null) {
+    const id = pe === null ? `sc-var${k}` : `sc-var${k}-${pe}`;
+    const at = pe === null ? "" : ` data-pe="${pe}"`;
     const label = `<label for="${id}">${esc(x.label)}</label>`;
     if (x.type === "list") {
       const opts = `${x.optional ? `<option value=""${value === "" ? " selected" : ""}>—</option>` : ""}${x.options
         .map((o, i) => `<option value="${i}"${String(i) === String(value) ? " selected" : ""}>${esc(o.label)}</option>`)
         .join("")}`;
       const icon = x.options[Number(value)]?.icon;
-      const sel = `<select id="${id}" data-var="${esc(x.field)}">${opts}</select>`;
+      const sel = `<select id="${id}" data-var="${esc(x.field)}"${at}>${opts}</select>`;
       return `${label}${icon ? `<div class="pair">${sel}<ha-icon class="u" icon="${esc(icon)}"></ha-icon></div>` : sel}`;
     }
     const n = (a) => (x[a] !== null && x[a] !== undefined ? ` ${a}="${x[a]}"` : "");
-    return `${label}<div class="pair"><input id="${id}" type="number" inputmode="decimal" data-var="${esc(x.field)}"${n("min")}${n("max")} step="${x.step}" value="${esc(value ?? "")}"${x.optional ? ' placeholder="—"' : ""}>${x.unit ? `<span class="u">${esc(x.unit)}</span>` : ""}</div>`;
+    return `${label}<div class="pair"><input id="${id}" type="number" inputmode="decimal" data-var="${esc(x.field)}"${at}${n("min")}${n("max")} step="${x.step}" value="${esc(value ?? "")}"${x.optional ? ' placeholder="—"' : ""}>${x.unit ? `<span class="u">${esc(x.unit)}</span>` : ""}</div>`;
   }
 
   // The slot under edit can be split in two (fixed times, with an end) or merged with the slot starting at its end.
@@ -6055,16 +6158,63 @@ class SchedulerCard extends HTMLElement {
         : `<button class="btn small danger" data-action="delete" style="--c:var(--sc-danger)">${esc(e.confirm ? this._t("confirm_delete") : this._t(single ? "delete_schedule" : "delete_slot"))}</button>`;
     const sm = this._canSplitMerge(e);
     const tools = `${sm.split ? `<button class="btn small plain" data-action="split">${esc(this._t("split"))}</button>` : ""}${sm.merge ? `<button class="btn small plain" data-action="merge">${esc(this._t("merge_next"))}</button>` : ""}`;
+    const action = d.per
+      ? `<label>${esc(this._t("action"))}</label><div class="stack pes">${d.per.map((p, k) => this._perField(p, k)).join("")}</div>`
+      : `<label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(e.options, d.action).replace("<select", '<select id="sc-act"')}
+        ${this._valueInput(opt, d.value, d.vals)}`;
     const body = `${this._tabs("main")}<div class="form">
+        ${this._entitiesField(e)}
         ${this._timeField("start", d, this._t("start"))}
         ${this._timeField("stop", d, this._t("end"), true)}
-        <label for="sc-act">${esc(this._t("action"))}</label>${this._actionSelect(e.options, d.action).replace("<select", '<select id="sc-act"')}
-        ${this._valueInput(opt, d.value, d.vals)}
+        ${action}
         ${this._daysField(d)}
         <div class="note full">${esc(this._t("days_note"))}</div>
       </div>
       ${this._foot(`${del}${tools}`)}`;
     return this._modal(title, m.name, m.icon, body, m.base);
+  }
+
+  // An entity's icon: its own, else its domain's.
+  _entityIcon(id) {
+    return this._hass.states[id]?.attributes?.icon || DOMAIN_ICONS[domainOf(id)] || "mdi:help-circle-outline";
+  }
+
+  // The entities of the schedule under edit (#23), above its times: their names and icons, and a Change button that
+  // turns the list into a picker (entities of the same kind, by `include` / `exclude`; at least one kept).
+  _entitiesField(e) {
+    const d = e.draft;
+    if (!e.targets?.length || !d.ents) return "";
+    const removable = e.entEdit && d.ents.length > 1;
+    const chips = d.ents
+      .map(
+        (id) => `<div class="ent" data-key="pent-${esc(id)}"><ha-icon icon="${esc(this._entityIcon(id))}"></ha-icon><span class="en">${esc(this._entityName(id))}</span>${
+          removable ? `<button class="x" data-unpent="${esc(id)}" title="${esc(this._t("remove"))}" aria-label="${esc(`${this._t("remove")} ${this._entityName(id)}`)}">${svgIcon(ICONS.close)}</button>` : ""
+        }</div>`,
+      )
+      .join("");
+    const more = e.entEdit ? pickable(this._hass, this._config).filter((id) => e.domains.includes(domainOf(id)) && !d.ents.includes(id)) : [];
+    const picker = more.length
+      ? `<input type="text" list="sc-pents" data-pent="1" placeholder="${esc(this._t("add_entity"))}" aria-label="${esc(this._t("add_entity"))}" autocomplete="off">
+         <datalist id="sc-pents">${more.map((id) => `<option value="${esc(id)}">${esc(this._entityName(id))}</option>`).join("")}</datalist>`
+      : "";
+    const change = e.entEdit ? "" : `<button class="btn small plain chg" data-action="change-entities">${esc(this._t("change_entities"))}</button>`;
+    return `<label>${esc(this._t("entities"))}</label><div class="stack">
+        <div class="ents-h"><div class="ents">${chips}</div>${change}</div>
+        ${picker}
+        <span class="note">${esc(this._t("entities_note"))}</span>
+      </div>`;
+  }
+
+  // The action of one entity (#23): its name and icon, its action and the action's values.
+  _perField(p, k) {
+    const options = this._edit.perOptions.get(p.entity)?.options || [];
+    const opt = options.find((o) => o.key === p.action);
+    const sel = this._actionSelect(options, p.action).replace("<select", `<select id="sc-pe${k}" data-pe="${k}" aria-label="${esc(`${this._t("action")} · ${this._entityName(p.entity)}`)}"`);
+    const vals = this._valueInput(opt, p.value, p.vals, k);
+    return `<div class="pe" data-key="pe-${esc(p.entity)}">
+        <div class="pe-h"><ha-icon icon="${esc(this._entityIcon(p.entity))}"></ha-icon><span class="en">${esc(this._entityName(p.entity))}</span></div>
+        ${sel}${vals ? `<div class="form pe-v">${vals}</div>` : ""}
+      </div>`;
   }
 
   _newHtml() {
@@ -6217,25 +6367,15 @@ class SchedulerCard extends HTMLElement {
     if (!e || e.id !== id) return;
     const sun = sunTimes(this._hass);
     const slot = index !== null ? item.timeslots?.[index] : null;
-    const targets = (slot || item.timeslots?.[0])?.actions?.map((a) => a.entity_id).filter(Boolean) || m.entities;
+    // The entities of the schedule (#23): those of every slot's actions, in their order.
+    const targets = scheduleEntities(item);
+    if (!targets.length) targets.push(...((slot || item.timeslots?.[0])?.actions?.map((a) => a.entity_id).filter(Boolean) || m.entities));
     const target = targets[0] || m.target;
-    // The schedule's own actions first, then those of its entity.
-    // A stored action set by a custom action with variables is shown as that action, with its values.
-    const entityActions = this._labelled(this._entityActions(target), target);
-    const varsOf = (a) => {
-      let best = null;
-      for (const o of entityActions) {
-        const r = o.vars && matchVars(o, a?.service, a?.service_data);
-        if (r && (!best || Object.keys(r.keep).length < Object.keys(best.keep).length)) best = { ...r, key: o.key };
-      }
-      return best;
-    };
-    const own = [];
-    for (const ts of item.timeslots || []) {
-      const a = ts.actions?.[0];
-      if (a && !varsOf(a) && !own.some((o) => actionKey(o.service, o.data) === actionKey(a.service, a.service_data))) own.push({ service: a.service, data: a.service_data || {} });
-    }
-    const options = [...this._labelled(own, target), ...entityActions].filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
+    const { options, varsOf } = this._slotOptions(item, target);
+    // A slot whose actions differ from one entity to another (#23) is edited entity by entity.
+    const acts = (slot?.actions || []).filter((a) => a?.entity_id);
+    const perEntity = acts.length > 1 && acts.some((a) => actionKey(a.service, a.service_data) !== actionKey(acts[0].service, acts[0].service_data));
+    const perOptions = new Map();
     const days = new Set([0, 1, 2, 3, 4, 5, 6].filter((wd) => runsOn(item.weekdays, wd, this._hass)));
     const wds = Array.isArray(item.weekdays) ? item.weekdays : [];
     const dayMode = wds.length === 1 && ["daily", "workday", "weekend"].includes(wds[0]) ? wds[0] : "custom";
@@ -6253,20 +6393,72 @@ class SchedulerCard extends HTMLElement {
     const opt = options.find((o) => o.key === draft.action);
     if (opt?.input) draft.value = String(opt.input.min);
     if (opt?.vars && !draft.vals) draft.vals = varDefaults(opt);
+    draft.ents = [...targets];
+    if (perEntity) draft.per = acts.map((a) => this._perDraft(a.entity_id, a, perOptions, item));
     const opts = optionsOf(item);
     this._edit = {
       ...e,
       loading: false,
       item,
       options,
+      perOptions,
       targets,
+      domains: [...new Set(targets.map(domainOf))],
       draft,
-      initial: { ...draft, days: new Set(days) },
+      initial: { ...draft, days: new Set(days), per: draft.per ? JSON.parse(JSON.stringify(draft.per)) : undefined },
       initialRaw: { start: this._raw(draft, "start"), stop: this._raw(draft, "stop") },
       opts,
       initialOpts: JSON.parse(JSON.stringify(opts)),
     };
     this._update(this._sig);
+  }
+
+  // The actions offered for an entity of a schedule: the schedule's own actions first, then those of the entity. A
+  // stored action set by a custom action with variables is shown as that action, with its values (`varsOf`).
+  _slotOptions(item, target) {
+    const entityActions = this._labelled(this._entityActions(target), target);
+    const varsOf = (a) => {
+      let best = null;
+      for (const o of entityActions) {
+        const r = o.vars && matchVars(o, a?.service, a?.service_data);
+        if (r && (!best || Object.keys(r.keep).length < Object.keys(best.keep).length)) best = { ...r, key: o.key };
+      }
+      return best;
+    };
+    const own = [];
+    for (const ts of item.timeslots || []) {
+      const list = (ts.actions || []).filter((a) => !a?.entity_id || a.entity_id === target);
+      const a = list[0] || ts.actions?.[0];
+      if (a && !varsOf(a) && !own.some((o) => actionKey(o.service, o.data) === actionKey(a.service, a.service_data))) own.push({ service: a.service, data: a.service_data || {} });
+    }
+    const options = [...this._labelled(own, target), ...entityActions].filter((o, k, all) => all.findIndex((x) => x.key === o.key) === k);
+    return { options, varsOf };
+  }
+
+  // The draft of one entity's action (#23), from its stored action `a` (or a copy of another entity's draft `from`);
+  // its options are kept in `perOptions`.
+  _perDraft(entity, a, perOptions, item, from = null) {
+    if (!perOptions.has(entity)) perOptions.set(entity, this._slotOptions(item, entity));
+    const { options, varsOf } = perOptions.get(entity);
+    if (from) {
+      const p = { ...JSON.parse(JSON.stringify(from)), entity };
+      if (!options.some((o) => o.key === p.action)) {
+        p.action = options[0]?.key || "";
+        const opt = options[0];
+        p.value = opt?.input ? String(opt.input.min) : "";
+        p.vals = opt?.vars ? varDefaults(opt) : undefined;
+        delete p.keep;
+      }
+      return p;
+    }
+    const v = varsOf(a);
+    const p = { entity, action: v ? v.key : actionKey(a.service, a.service_data), value: "" };
+    if (v) Object.assign(p, { vals: v.vals, keep: { key: v.key, data: v.keep, vals: { ...v.vals } } });
+    if (!options.some((o) => o.key === p.action)) p.action = options[0]?.key || "";
+    const opt = options.find((o) => o.key === p.action);
+    if (opt?.input) p.value = String(num(a.service_data?.[opt.input.field]) ?? opt.input.min);
+    if (opt?.vars && !p.vals) p.vals = varDefaults(opt);
+    return p;
   }
 
   // The draft fields of a start or end: its fixed time, its mode (time, sunrise, sunset), the offset's sign and length.
@@ -6317,24 +6509,55 @@ class SchedulerCard extends HTMLElement {
     const stopRaw = this._raw(d, "stop");
     const stop = stopRaw ? parseTime(stopRaw, sun) : null;
     if (stop && stop.min === start.min) return { error: this._t("err_same") };
-    const act = this._actionData(
-      e.options.find((o) => o.key === d.action),
-      d.value,
-      d,
-    );
-    if (!act) return { error: this._t("err_action") };
+    const ents = d.ents?.length ? d.ents : e.targets || [];
+    if (e.targets?.length && !ents.length) return { error: this._t("err_entity") };
+    const entsChanged = JSON.stringify(ents) !== JSON.stringify(e.targets || []);
     const slots = (e.item.timeslots || []).map(cleanSlot);
     const old = e.index !== null ? slots[e.index] : null;
+    const built = (act, id) => ({ service: act.service, ...(id ? { entity_id: id } : {}), ...(Object.keys(act.data).length ? { service_data: act.data } : {}) });
+    const same = (a, b) => JSON.stringify([a.action, a.value, a.vals]) === JSON.stringify([b.action, b.value, b.vals]);
+    let actions;
+    if (d.per) {
+      // Entity by entity: an action left as it was read is sent back exactly as stored.
+      actions = [];
+      for (const p of d.per) {
+        const was = e.initial?.per?.find((x) => x.entity === p.entity);
+        const stored = old?.actions?.find((a) => a.entity_id === p.entity);
+        if (was && stored && same(p, was)) {
+          actions.push(stored);
+          continue;
+        }
+        const act = this._actionData(
+          e.perOptions.get(p.entity)?.options.find((o) => o.key === p.action),
+          p.value,
+          p,
+        );
+        if (!act) return { error: this._t("err_action") };
+        actions.push(built(act, p.entity));
+      }
+      actions.push(...(old?.actions || []).filter((a) => !a.entity_id));
+    } else if (old && e.initial && same(d, e.initial)) {
+      // The action left as it was read: the stored actions are sent back as they are, on the entities chosen.
+      actions = entsChanged ? remapActions(old.actions, ents, e.targets) : old.actions;
+    } else {
+      const act = this._actionData(
+        e.options.find((o) => o.key === d.action),
+        d.value,
+        d,
+      );
+      if (!act) return { error: this._t("err_action") };
+      const own = old ? remapActions(old.actions, ents, e.targets).filter((a) => a.entity_id).map((a) => a.entity_id) : ents;
+      actions = own.length ? own.map((id) => built(act, id)) : [built(act)];
+    }
+    // Other entities apply to every slot of the schedule.
+    if (entsChanged) for (const s of slots) s.actions = remapActions(s.actions, ents, e.targets);
     const base = old || slots[0] || {};
     const slot = {};
     // An unchanged time is sent back as stored.
     slot.start = old && startRaw === e.initialRaw?.start ? old.start : startRaw;
     if (stopRaw) slot.stop = old?.stop && stopRaw === e.initialRaw?.stop ? old.stop : stopRaw;
     for (const k of ["conditions", "condition_type", "track_conditions"]) if (base[k] !== undefined) slot[k] = base[k];
-    const targets = e.targets?.length ? e.targets : [];
-    slot.actions = targets.length
-      ? targets.map((id) => ({ service: act.service, entity_id: id, ...(Object.keys(act.data).length ? { service_data: act.data } : {}) }))
-      : [{ service: act.service, ...(Object.keys(act.data).length ? { service_data: act.data } : {}) }];
+    slot.actions = actions;
     const all = [...slots.filter((_s, k) => k !== e.index), slot].sort((x, y) => slotRange(x, sun)[0] - slotRange(y, sun)[0]);
     if (slotsClash(all, all.indexOf(slot), sun)) return { error: this._t("err_overlap") };
     return { slots: all };
@@ -6583,6 +6806,38 @@ class SchedulerCard extends HTMLElement {
       this._update(this._sig);
       return;
     }
+    if (el.dataset.pent && change) {
+      // An entity added to the schedule (#23): of the same kind as its entities; edited entity by entity, it takes
+      // the action of the first one.
+      const id = String(el.value || "").trim();
+      const d = e.draft;
+      if (this._hass.states[id] && d.ents && !d.ents.includes(id) && e.domains?.includes(domainOf(id)) && pickable(this._hass, this._config).includes(id)) {
+        d.ents.push(id);
+        if (d.per?.length) d.per.push(this._perDraft(id, null, e.perOptions, e.item, d.per[0]));
+      }
+      el.value = "";
+      this._update(this._sig);
+      return;
+    }
+    if (el.dataset.pe !== undefined && e.draft?.per) {
+      const p = e.draft.per[Number(el.dataset.pe)];
+      if (!p) return;
+      if (el.dataset.var !== undefined) {
+        p.vals = { ...(p.vals || {}), [el.dataset.var]: el.value };
+        if (change && el.tagName === "SELECT") this._update(this._sig);
+        return;
+      }
+      const f = el.dataset.field;
+      if (!f) return;
+      p[f] = el.value;
+      if (f === "action") {
+        const opt = e.perOptions.get(p.entity)?.options.find((o) => o.key === p.action);
+        p.value = opt?.input ? String(num(p.value) ?? opt.input.min) : "";
+        p.vals = opt?.vars ? (p.keep?.key === opt.key ? { ...p.keep.vals } : varDefaults(opt, p.vals)) : undefined;
+        this._update(this._sig);
+      }
+      return;
+    }
     if (el.dataset.more && change) {
       const id = String(el.value || "").trim();
       const d = e.draft;
@@ -6667,6 +6922,14 @@ class SchedulerCard extends HTMLElement {
       this._update(this._sig);
       return;
     }
+    const unpent = find("unpent");
+    if (unpent && e.draft?.ents?.length > 1) {
+      const id = unpent.dataset.unpent;
+      e.draft.ents = e.draft.ents.filter((x) => x !== id);
+      if (e.draft.per) e.draft.per = e.draft.per.filter((p) => p.entity !== id);
+      this._update(this._sig);
+      return;
+    }
     const unent = find("unent");
     if (unent) {
       e.draft.more = e.draft.more.filter((x) => x !== unent.dataset.unent);
@@ -6675,6 +6938,9 @@ class SchedulerCard extends HTMLElement {
     }
     if (action === "add-cond") {
       e.opts.conds.push({ entity: "", match: "is", value: "" });
+      this._update(this._sig);
+    } else if (action === "change-entities") {
+      e.entEdit = true;
       this._update(this._sig);
     } else if (action === "close" || (action === "backdrop" && path[0] === path.find((n) => n.dataset?.action === "backdrop"))) this._closeEdit();
     else if (action === "save") this._save();
@@ -6964,7 +7230,7 @@ class SchedulerCardEditor extends HTMLElement {
 
   _schema() {
     const tr = (k) => t(this._hass, this._config, k);
-    const toggles = ["illustration", "show_disabled", "editable", "show_badges", "show_header_toggle", "show_condition_status", "condition_status_animation"];
+    const toggles = ["illustration", "show_disabled", "editable", "show_badges", "show_header_toggle", "show_condition_status", "condition_status_animation", "show_entities"];
     if (this.constructor.mini) toggles.push("zoom");
     const grid = [
       {
@@ -7012,7 +7278,7 @@ class SchedulerCardEditor extends HTMLElement {
             v === undefined ||
             v === null ||
             (ON_BY_DEFAULT.includes(k) && v === true) ||
-            (k === "show_header_toggle" && v === false) ||
+            ((k === "show_header_toggle" || k === "show_entities") && v === false) ||
             (k === "illustration_theme" && v === "auto") ||
             (k === "sort_by" && v === "name") ||
             (k === "time_step" && v === 15) ||

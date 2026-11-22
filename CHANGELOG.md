@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.0 - 2026-11-22
+
+### Features
+- **Entities of a schedule in the slot editor** (#23): a line above the times shows the entities the schedule acts on (name and icon); its **Change** button turns it into a picker of entities of the same kind (by `include` / `exclude`, at least one kept). Other entities replace the old ones in every slot, saved with `scheduler.edit`: a kept entity keeps its own action, an added one takes the action of the slot's first entity, and the schedule, its conditions, tags and dates stay the same.
+- **Actions entity by entity** (#23): when the actions of a slot do not all share the same service and data, the **Action** field lists them entity by entity, each one editable.
+- `show_entities: true` (also in the visual editor): the names of the entities each schedule acts on, under its tile's state line. Off by default.
+
+### Fixes
+- Saving a slot no longer rewrites its actions with the first entity's data: an action left untouched is sent back exactly as it was read, so a slot driving a light group at full brightness and another light dimmed keeps both values when only its times or days change.
+
+### Maintenance
+- New captures: the entities in the slot editor, the actions entity by entity, and the entities on the tiles; the screenshot mock takes the actions of a schedule (the garden lights on two lights).
+
 ## 1.7.3 - 2026-11-22
 
 ### Performance
