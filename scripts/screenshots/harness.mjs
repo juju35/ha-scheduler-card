@@ -97,7 +97,7 @@ export const openPage = async (browser, { theme, width, label = "", now = NOW })
   page.on("pageerror", (err) => console.error(`pageerror${label ? ` (${label})` : ""}: ${err.message}`));
   await page.clock.setFixedTime(new Date(now));
   await page.setContent(pageHtml(theme, width));
-  await page.addScriptTag({ content: HA_ELEMENTS(iconsFor(["mdi:fire", "mdi:blinds", "mdi:lightbulb", "mdi:water", "mdi:home"])) });
+  await page.addScriptTag({ content: HA_ELEMENTS(iconsFor(["mdi:fire", "mdi:blinds", "mdi:lightbulb", "mdi:water", "mdi:home", "mdi:wall-sconce-flat", "mdi:outdoor-lamp"])) });
   await page.addScriptTag({ content: PAGE_HASS });
   await page.addScriptTag({ content: cardJs() });
   return page;
@@ -115,10 +115,11 @@ const PAGE_HASS = `window.__mockHass = (h) => {
   return h;
 };`;
 
-// Creates the card in the page, then clicks each selector of `clicks` (a mouse click: no focus ring in the shot).
-export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks = [], hass: extra = {} }) =>
+// Creates the card in the page, then clicks each selector of `clicks` (a mouse click: no focus ring in the shot);
+// `scroll`: a selector of the card scrolled to its end afterwards (the slot editor's popup).
+export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks = [], hass: extra = {}, scroll = null }) =>
   page.evaluate(
-    async ({ tag, config, hass, clicks }) => {
+    async ({ tag, config, hass, clicks, scroll }) => {
       const el = document.createElement(tag);
       el.setConfig({ type: `custom:${tag}`, ...config });
       el.hass = window.__mockHass(hass);
@@ -127,8 +128,12 @@ export const mountCard = (page, { tag, config, dark = false, now = NOW, clicks =
         el.shadowRoot.querySelector(sel).dispatchEvent(new MouseEvent("click", { bubbles: true, composed: true, detail: 1 }));
         await new Promise((r) => setTimeout(r, 30));
       }
+      if (scroll) {
+        const box = el.shadowRoot.querySelector(scroll);
+        if (box) box.scrollTop = box.scrollHeight;
+      }
     },
-    { tag, config, hass: mockHass({ dark, now, ...extra }), clicks },
+    { tag, config, hass: mockHass({ dark, now, ...extra }), clicks, scroll },
   );
 
 // Moves the page's clock and gives the card a hass of that moment (the sun's state follows).

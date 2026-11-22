@@ -1,5 +1,5 @@
 // The captures of the README, shared by the screenshot scripts and the test that flags orphan files.
-import { at } from "./mock.mjs";
+import { at, MULTI_ACTIONS } from "./mock.mjs";
 
 const pair = (file, extra = {}) => [
   { file, theme: "light", ...extra },
@@ -7,6 +7,7 @@ const pair = (file, extra = {}) => [
 ];
 const HEATING = '.row[data-open="switch.schedule_living_room_heating"]';
 const AWAY = '.row[data-open="switch.schedule_away_mode"]';
+const GARDEN = '.row[data-open="switch.schedule_garden_lights"]';
 
 export const FULL = 460;
 
@@ -32,6 +33,18 @@ export const SHOTS = [
   ...pair("card-edit-sun", { tag: "scheduler-card", config: {}, clicks: [AWAY, '.blk[data-slot="0"]'], min: 620 }),
   // A schedule's options: name, tags, conditions, dates, after the last slot.
   ...pair("card-options", { tag: "scheduler-card", config: {}, clicks: [HEATING, '.blk[data-slot="3"]', '[data-mtab="options"]'], min: 760 }),
+  // The garden lights on two lights with their own brightness (#23): the schedule's entities above the times, with
+  // the picker opened by Change…
+  ...pair("card-edit-entities", {
+    tag: "scheduler-card",
+    config: {},
+    hass: { actions: MULTI_ACTIONS },
+    clicks: [GARDEN, '.blk[data-slot="0"]', '[data-action="change-entities"]'],
+  }),
+  // …and the slot's action, entity by entity (the popup scrolled down).
+  ...pair("card-edit-actions", { tag: "scheduler-card", config: {}, hass: { actions: MULTI_ACTIONS }, clicks: [GARDEN, '.blk[data-slot="0"]'], scroll: ".modal" }),
+  // show_entities: the entities' names under each tile's state line.
+  ...pair("card-entities", { tag: "scheduler-card", config: { show_entities: true }, hass: { actions: MULTI_ACTIONS } }),
   // A new schedule.
   ...pair("card-new", { tag: "scheduler-card", config: {}, clicks: ['[data-action="new"]'], min: 720 }),
   // At night: the timeline under a night sky (forced: automatic follows the theme alone).

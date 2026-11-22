@@ -22,6 +22,8 @@ const TARGETS = {
   }),
   "cover.living_room_blinds": st("cover.living_room_blinds", "open", { friendly_name: "Living room blinds", icon: "mdi:blinds", current_position: 100 }),
   "light.garden": st("light.garden", "off", { friendly_name: "Garden lights", icon: "mdi:lightbulb" }),
+  "light.terrace": st("light.terrace", "off", { friendly_name: "Terrace wall light", icon: "mdi:wall-sconce-flat" }),
+  "light.porch": st("light.porch", "off", { friendly_name: "Porch light", icon: "mdi:outdoor-lamp" }),
   "water_heater.boiler": st("water_heater.boiler", "off", { friendly_name: "Water heater", icon: "mdi:water", operation_list: ["eco", "electric"] }),
   "input_boolean.away_mode": st("input_boolean.away_mode", "off", { friendly_name: "Away mode", icon: "mdi:home" }),
   // Entities of the schedules' conditions.
@@ -130,11 +132,21 @@ const schedulesAt = (now) =>
 // The mock's sun: day between sunrise and sunset of the mock day.
 const sunState = (ms) => (localMin(ms) >= minutes(SUNRISE) && localMin(ms) < minutes(SUNSET) ? "above_horizon" : "below_horizon");
 
+// The garden lights on two lights with their own brightness (#23): the main lights at full, the terrace's wall light
+// dimmed, for the entity by entity editor.
+export const MULTI_ACTIONS = {
+  garden_lights: [
+    { service: "light.turn_on", entity_id: "light.garden", service_data: { brightness: 255 } },
+    { service: "light.turn_on", entity_id: "light.terrace", service_data: { brightness: 38.25 } },
+  ],
+};
+
 // `values`: entity states to change ({ entity_id: state }); `conditions`: per schedule slug, conditions to put on
-// its slots and whether they are tracked ({ slug: { conditions?, track? } }), for the condition status capture.
-export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: only, sun = true, values = {}, conditions = null } = {}) => {
+// its slots and whether they are tracked ({ slug: { conditions?, track? } }), for the condition status capture;
+// `actions`: per schedule slug, the actions of every one of its slots ({ slug: [action, …] }).
+export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: only, sun = true, values = {}, conditions = null, actions = null } = {}) => {
   const schedules = schedulesAt(now);
-  const items = conditions
+  let items = conditions
     ? ws.map((item) => {
         const c = conditions[item.entity_id.replace("switch.schedule_", "")];
         if (!c) return item;
@@ -142,6 +154,25 @@ export const mockHass = ({ language = "en", dark = false, now = NOW, schedules: 
         return { ...item, timeslots: item.timeslots.map((ts) => ({ ...ts, conditions: conds, condition_type: conds.length ? "and" : null, track_conditions: !!c.track })) };
       })
     : ws;
+  if (actions) {
+    items = items.map((item) => {
+      const a = actions[item.entity_id.replace("switch.schedule_", "")];
+      return a ? { ...item, timeslots: item.timeslots.map((ts) => ({ ...ts, actions: a.map((x) => ({ ...x })) })) } : item;
+    });
+    for (const [slug, a] of Object.entries(actions)) {
+      const s = schedules[`switch.schedule_${slug}`];
+      if (!s) continue;
+      const first = a[0];
+      schedules[`switch.schedule_${slug}`] = {
+        ...s,
+        attributes: {
+          ...s.attributes,
+          entities: [...new Set(a.map((x) => x.entity_id))],
+          actions: s.attributes.actions.map(() => ({ service: first.service, ...(first.service_data ? { data: first.service_data } : {}) })),
+        },
+      };
+    }
+  }
   const states = { ...TARGETS, ...(only ? Object.fromEntries(Object.entries(schedules).filter(([id]) => only.includes(id))) : schedules) };
   states["binary_sensor.workday_sensor"] = st("binary_sensor.workday_sensor", "on", { workdays: ["mon", "tue", "wed", "thu", "fri"] });
   if (sun)

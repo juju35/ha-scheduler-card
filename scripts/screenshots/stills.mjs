@@ -7,7 +7,7 @@ const browser = await launch();
 for (const s of SHOTS) {
   const width = s.width ?? FULL;
   const page = await openPage(browser, { theme: s.theme, width, label: s.file, now: s.now });
-  await mountCard(page, { tag: s.tag, config: s.config, dark: s.theme === "dark", now: s.now, clicks: s.clicks, hass: s.hass });
+  await mountCard(page, { tag: s.tag, config: s.config, dark: s.theme === "dark", now: s.now, clicks: s.clicks, hass: s.hass, scroll: s.scroll });
   await page.waitForTimeout(400);
   await freeze(page, 0.5);
   const out = `screenshots/${s.file}.png`;
