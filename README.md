@@ -55,7 +55,7 @@ The cards are built on top of the [Scheduler component](https://github.com/niels
 
 | Integration | What the cards use |
 |---|---|
-| [Scheduler component](https://github.com/nielsfaber/scheduler-component) by nielsfaber (Marketplace) | The `switch.schedule_*` entities and their attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `tags`); `switch.turn_on` / `switch.turn_off` to enable or disable a schedule; the `scheduler.add`, `scheduler.edit`, `scheduler.copy` and `scheduler.remove` services to create, edit, duplicate and delete; the `scheduler` and `scheduler/item` websocket commands for the full schedules (conditions, dates, repetition), read again on the component's `scheduler_updated` subscription |
+| <img src="https://raw.githubusercontent.com/juju35/ha-scheduler-card/main/images/scheduler.png" alt="" width="16"> [Scheduler component](https://github.com/nielsfaber/scheduler-component) by nielsfaber (Marketplace) | The `switch.schedule_*` entities and their attributes (`weekdays`, `timeslots`, `actions`, `entities`, `current_slot`, `tags`); `switch.turn_on` / `switch.turn_off` to enable or disable a schedule; the `scheduler.add`, `scheduler.edit`, `scheduler.copy` and `scheduler.remove` services to create, edit, duplicate and delete; the `scheduler` and `scheduler/item` websocket commands for the full schedules (conditions, dates, repetition), read again on the component's `scheduler_updated` subscription |
 
 The [Workday](https://www.home-assistant.io/integrations/workday/) sensor (`binary_sensor.workday_sensor`) is read for the schedules that run on workdays or at the weekend, as the Scheduler component does.
 
