@@ -49,6 +49,7 @@ export default {
   action: "Aktion",
   days: "Tage",
   days_note: "Die Tage gelten für den ganzen Zeitplan.",
+  days_note_new: "Andere Tage als die des Zeitplans: Das Zeitfenster wird als neuer Zeitplan gespeichert.",
   name: "Name",
   entity: "Entität",
   save: "Speichern",

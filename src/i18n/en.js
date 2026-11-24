@@ -49,6 +49,7 @@ export default {
   action: "Action",
   days: "Days",
   days_note: "The days apply to the whole schedule.",
+  days_note_new: "Other days than the schedule's: the slot is saved as a new schedule.",
   name: "Name",
   entity: "Entity",
   save: "Save",

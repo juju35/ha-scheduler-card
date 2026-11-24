@@ -49,6 +49,7 @@ export default {
   action: "Åtgärd",
   days: "Dagar",
   days_note: "Dagarna gäller hela schemat.",
+  days_note_new: "Andra dagar än schemats: intervallet sparas som ett nytt schema.",
   name: "Namn",
   entity: "Entitet",
   save: "Spara",

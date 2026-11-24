@@ -53,6 +53,7 @@ export default {
   action: "Akcia",
   days: "Dni",
   days_note: "Dni platia pre celý plán.",
+  days_note_new: "Iné dni ako v pláne: interval sa uloží ako nový plán.",
   name: "Názov",
   entity: "Entita",
   save: "Uložiť",

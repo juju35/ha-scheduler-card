@@ -49,6 +49,7 @@ export default {
   action: "Ação",
   days: "Dias",
   days_note: "Os dias aplicam-se a todo o agendamento.",
+  days_note_new: "Dias diferentes dos do horário: o intervalo é guardado como um novo horário.",
   name: "Nome",
   entity: "Entidade",
   save: "Guardar",

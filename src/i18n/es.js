@@ -49,6 +49,7 @@ export default {
   action: "Acción",
   days: "Días",
   days_note: "Los días se aplican a toda la programación.",
+  days_note_new: "Días distintos de los del horario: la franja se guarda como un horario nuevo.",
   name: "Nombre",
   entity: "Entidad",
   save: "Guardar",

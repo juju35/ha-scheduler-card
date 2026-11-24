@@ -49,6 +49,7 @@ export default {
   action: "Actie",
   days: "Dagen",
   days_note: "De dagen gelden voor het hele schema.",
+  days_note_new: "Andere dagen dan die van het schema: het tijdvak wordt als nieuw schema opgeslagen.",
   name: "Naam",
   entity: "Entiteit",
   save: "Opslaan",

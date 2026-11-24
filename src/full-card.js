@@ -953,7 +953,7 @@ export class SchedulerCard extends HTMLElement {
         ${this._timeField("stop", d, this._t("end"), true)}
         ${action}
         ${this._daysField(d)}
-        <div class="note full">${esc(this._t("days_note"))}</div>
+        <div class="note full">${esc(this._t(this._newFromSlot(e) ? "days_note_new" : "days_note"))}</div>
       </div>
       ${this._foot(`${del}${tools}`)}`;
     return this._modal(title, m.name, m.icon, body, m.base);
@@ -1133,7 +1133,7 @@ export class SchedulerCard extends HTMLElement {
     return item || found;
   }
 
-  async _openSlot(id, index, atMin = null, optsOnly = false) {
+  async _openSlot(id, index, atMin = null, optsOnly = false, wd = null) {
     const m = this._all.find((x) => x.id === id);
     if (!m || this._config.editable === false) return;
     this._edit = { mode: "slot", id, index, loading: true, optsOnly, tab: optsOnly ? "options" : "main" };
@@ -1175,6 +1175,9 @@ export class SchedulerCard extends HTMLElement {
       const start = atMin ?? 12 * 60;
       draft = { ...this._timeDraft("start", `${hm(start)}:00`, sun), ...this._timeDraft("stop", `${hm(Math.min(DAY - 1, start + 60))}:00`, sun), action: options[0]?.key || "", value: "", days, dayMode };
     }
+    const initialDays = { days: new Set(days), dayMode };
+    // A click on a day the schedule does not run: that day alone, for a new schedule (see _newFromSlot).
+    if (!slot && wd !== null && !days.has(wd)) Object.assign(draft, { days: new Set([wd]), dayMode: "custom" });
     const opt = options.find((o) => o.key === draft.action);
     if (opt?.input) draft.value = String(opt.input.min);
     if (opt?.vars && !draft.vals) draft.vals = varDefaults(opt);
@@ -1190,7 +1193,7 @@ export class SchedulerCard extends HTMLElement {
       targets,
       domains: [...new Set(targets.map(domainOf))],
       draft,
-      initial: { ...draft, days: new Set(days), per: draft.per ? JSON.parse(JSON.stringify(draft.per)) : undefined },
+      initial: { ...draft, ...initialDays, per: draft.per ? JSON.parse(JSON.stringify(draft.per)) : undefined },
       initialRaw: { start: this._raw(draft, "start"), stop: this._raw(draft, "stop") },
       opts,
       initialOpts: JSON.parse(JSON.stringify(opts)),
@@ -1416,6 +1419,16 @@ export class SchedulerCard extends HTMLElement {
       payload = { entity_id: e.id };
       const err = this._applyOptions(e, payload, (e.item.timeslots || []).map(cleanSlot));
       if (err) return this._fail(this._t(err));
+    } else if (this._newFromSlot(e)) {
+      // A slot added on other days than the schedule's: a schedule of its own with the same entities and options
+      // (but not the name), rather than a slot of this one, whose slots run on all its days and would clash.
+      if (e.draft.dayMode === "custom" && !e.draft.days.size) return this._fail(this._t("err_days"));
+      const r = this._slotsAfterEdit({ ...e, item: { ...e.item, timeslots: [] } });
+      if (r.error) return this._fail(r.error);
+      service = "add";
+      payload = { weekdays: this._weekdaysOf(e) };
+      const err = this._applyOptions({ ...e, opts: { ...e.opts, name: "" } }, payload, r.slots, true);
+      if (err) return this._fail(this._t(err));
     } else {
       if (!e.draft) return;
       if (e.draft.dayMode === "custom" && !e.draft.days.size) return this._fail(this._t("err_days"));
@@ -1433,6 +1446,13 @@ export class SchedulerCard extends HTMLElement {
     if (this._edit !== e) return;
     if (error) return this._fail(error);
     this._closeEdit();
+  }
+
+  // Is the slot being added on other days than its schedule's? It is then saved as a new schedule.
+  _newFromSlot(e) {
+    if (e?.mode !== "slot" || e.index !== null || e.optsOnly || !e.draft || !e.initial) return false;
+    const on = (x) => [0, 1, 2, 3, 4, 5, 6].filter((wd) => (x.dayMode && x.dayMode !== "custom" ? runsOn([x.dayMode], wd, this._hass) : x.days.has(wd))).join();
+    return on(e.draft) !== on(e.initial);
   }
 
   // The weekdays to send: a preset (daily, workday, weekend) as such; chosen days unchanged keep the schedule's own.
@@ -1759,7 +1779,8 @@ export class SchedulerCard extends HTMLElement {
     if (track && this._view && typeof track.getBoundingClientRect === "function") {
       const r = track.getBoundingClientRect();
       const x = r.width ? (ev.clientX - r.left) / r.width : 0.5;
-      return this._openSlot(this._view, null, Math.max(0, Math.min(DAY - 60, Math.floor((x * DAY) / 30) * 30)));
+      const wd = Number(track.closest?.(".day")?.dataset.key?.slice(4));
+      return this._openSlot(this._view, null, Math.max(0, Math.min(DAY - 60, Math.floor((x * DAY) / 30) * 30)), false, Number.isInteger(wd) ? wd : null);
     }
     const row = path.find((n) => n.dataset?.open);
     if (row) this._showWeek(row.dataset.open);

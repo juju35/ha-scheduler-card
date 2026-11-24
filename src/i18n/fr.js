@@ -49,6 +49,7 @@ export default {
   action: "Action",
   days: "Jours",
   days_note: "Les jours s'appliquent à tout le planning.",
+  days_note_new: "Jours différents de ceux du planning : la plage est enregistrée comme un nouveau planning.",
   name: "Nom",
   entity: "Entité",
   save: "Enregistrer",

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.2 - 2026-11-24
+
+### Fixes
+- **Adding a slot on other days than the schedule's** no longer fails with "This slot overlaps another one": the slots of a schedule all run on its days, so a slot meant for, say, Monday next to a weekend schedule was checked against the weekend slots. A click on a day the schedule does not run on the weekly grid now opens **Add slot** with that day alone, and a slot added on other days than the schedule's is saved as a new schedule (`scheduler.add`) with the same entities, conditions and tags (not the name); the popup says so under the days.
+
 ## 1.8.1 - 2026-11-24
 
 ### Maintenance

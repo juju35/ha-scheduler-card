@@ -49,6 +49,7 @@ export default {
   action: "Azione",
   days: "Giorni",
   days_note: "I giorni valgono per tutta la programmazione.",
+  days_note_new: "Giorni diversi da quelli della programmazione: la fascia viene salvata come nuova programmazione.",
   name: "Nome",
   entity: "Entità",
   save: "Salva",

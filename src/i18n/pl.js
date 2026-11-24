@@ -53,6 +53,7 @@ export default {
   action: "Akcja",
   days: "Dni",
   days_note: "Dni dotyczą całego harmonogramu.",
+  days_note_new: "Inne dni niż w harmonogramie: przedział zostanie zapisany jako nowy harmonogram.",
   name: "Nazwa",
   entity: "Encja",
   save: "Zapisz",
