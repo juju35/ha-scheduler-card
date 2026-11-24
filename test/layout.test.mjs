@@ -4,12 +4,12 @@
 // the scenery, the titles keep a few characters, the header icon keeps its 40 px, and the popups open at the top of
 // the card. Skipped when Playwright or Chromium is not installed, except in CI, where it must run.
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { after, before, test } from "node:test";
 import { HA_ELEMENTS } from "../scripts/screenshots/harness.mjs";
 import { mockHass, NOW } from "../scripts/screenshots/mock.mjs";
+import { source } from "./source.mjs";
 
-const src = readFileSync(new URL("../src/scheduler-card.js", import.meta.url), "utf8");
+const src = source;
 const THEMES = {
   light: { "--card-background-color": "#fff", "--primary-text-color": "#212121", "--secondary-text-color": "#727272", "--secondary-background-color": "#f1f1f1" },
   dark: { "--card-background-color": "#1c1c1c", "--primary-text-color": "#e1e1e1", "--secondary-text-color": "#9b9b9b", "--secondary-background-color": "#282828" },
