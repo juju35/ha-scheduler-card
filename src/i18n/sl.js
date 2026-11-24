@@ -53,6 +53,7 @@ export default {
   action: "Dejanje",
   days: "Dnevi",
   days_note: "Dnevi veljajo za celoten urnik.",
+  days_note_new: "Drugi dnevi kot v urniku: interval se shrani kot nov urnik.",
   name: "Ime",
   entity: "Entiteta",
   save: "Shrani",

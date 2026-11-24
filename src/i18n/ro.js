@@ -51,6 +51,7 @@ export default {
   action: "Acțiune",
   days: "Zile",
   days_note: "Zilele se aplică întregii programări.",
+  days_note_new: "Alte zile decât cele ale programului: intervalul este salvat ca un program nou.",
   name: "Nume",
   entity: "Entitate",
   save: "Salvează",

@@ -51,6 +51,7 @@ export default {
   action: "Darbība",
   days: "Dienas",
   days_note: "Dienas attiecas uz visu grafiku.",
+  days_note_new: "Citas dienas nekā grafikā: intervāls tiek saglabāts kā jauns grafiks.",
   name: "Nosaukums",
   entity: "Entītija",
   save: "Saglabāt",

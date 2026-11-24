@@ -49,6 +49,7 @@ export default {
   action: "Művelet",
   days: "Napok",
   days_note: "A napok a teljes ütemezésre vonatkoznak.",
+  days_note_new: "A beosztás napjaitól eltérő napok: az idősáv új beosztásként mentődik.",
   name: "Név",
   entity: "Entitás",
   save: "Mentés",

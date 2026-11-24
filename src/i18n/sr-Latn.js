@@ -51,6 +51,7 @@ export default {
   action: "Radnja",
   days: "Dani",
   days_note: "Dani važe za ceo raspored.",
+  days_note_new: "Drugi dani od onih u rasporedu: termin se čuva kao novi raspored.",
   name: "Naziv",
   entity: "Entitet",
   save: "Sačuvaj",

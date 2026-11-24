@@ -49,6 +49,7 @@ export default {
   action: "Handling",
   days: "Dage",
   days_note: "Dagene gælder for hele tidsplanen.",
+  days_note_new: "Andre dage end tidsplanens: tidsrummet gemmes som en ny tidsplan.",
   name: "Navn",
   entity: "Entitet",
   save: "Gem",
